@@ -84,6 +84,7 @@ Background = Background()
 while running:
     clear_canvas()
     Background.draw()
+    print(Player.exdir)
     Player.draw()
     update_canvas()
     handle_events(Player)
