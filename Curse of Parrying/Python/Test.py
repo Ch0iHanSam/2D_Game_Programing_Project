@@ -82,24 +82,38 @@ class Player_Dash:
                 self.image.clip_draw(self.frame*68, 0, 68, 68, self.x, self.y)
         elif self.dir == 'idle':
             if self.exdir == 'right':
-                self.image.clip_draw(2 * 68, 68, 68, 68, self.x, self.y)
+                self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
             elif self.exdir == 'left':
-                self.image.clip_draw(2 * 68, 0, 68, 68, self.x, self.y)
+                self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
 
 
     def set_dir(self, Player):
         self.dir = Player.dir
         self.exdir = Player.exdir
+        self.x = Player.x
+        self.y = Player.y
 
     def update(self):
+        self.frame = (self.frame+1)%8
         if self.dir == 'right':
             self.x += 10
+            Player.x = self.x
         elif self.dir == 'left':
             self.x -= 10
+            Player.x = self.x
         elif self.dir == 'up':
             self.y += 10
+            Player.y = self.y
         elif self.dir == 'down':
             self.y -= 10
+            Player.y = self.y
+        elif self.dir == 'idle':
+            if self.exdir == 'right':
+                self.x += 10
+                Player.x = self.x
+            elif self.exdir == 'left':
+                self.x -= 10
+                Player.x = self.x
 
 def handle_events(Player, Player_Dash):
     global running
@@ -131,11 +145,13 @@ Background = Background()
 Player_Dash = Player_Dash()
 
 while running:
+    #멈춤상태
     clear_canvas()
     Background.draw()
     Player.draw()
     update_canvas()
     handle_events(Player, Player_Dash)
+    #대쉬
     if Player.dash == 'on':
         Player_Dash.set_dir(Player)
         for a in range(8):
@@ -147,6 +163,7 @@ while running:
             Player_Dash.update()
             delay(0.01)
         Player.dash = 'off'
+    #걷기
     while Player.dir != 'idle':
         clear_canvas()
         Background.draw()
@@ -154,10 +171,10 @@ while running:
         update_canvas()
         Player.set_exdir()
         handle_events(Player, Player_Dash)
+        #대쉬
         if Player.dash == 'on':
             Player_Dash.set_dir(Player)
             for a in range(8):
-                print('a')
                 clear_canvas()
                 Background.draw()
                 Player_Dash.draw()
