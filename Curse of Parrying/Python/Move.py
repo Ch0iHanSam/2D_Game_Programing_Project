@@ -1,5 +1,6 @@
 from pico2d import *
 
+#배경 클래스
 class Background:
     def __init__(self):
         self.image = load_image('../BackGround/Practice.png')
@@ -9,6 +10,7 @@ class Background:
         self.image.draw(self.x, self.y)
 
 
+#플레이어 걷기 클래스
 class Player:
     def __init__(self):
         self.image = load_image('../Object/Character/Walking/Character_Player_Walking.png')
@@ -56,6 +58,8 @@ class Player:
         if self.dir == 'right' or self.dir == 'left':
             self.exdir = self.dir
 
+
+#대쉬 클래스
 class Player_Dash:
     def __init__(self):
         self.image = load_image('../Object/Character/Dash/Character_Player_Dash.png')
@@ -115,6 +119,8 @@ class Player_Dash:
                 self.x -= 10
                 Player.x = self.x
 
+
+#이벤트 받기 함수
 def handle_events(Player, Player_Dash):
     global running
     events = get_events()
@@ -136,14 +142,15 @@ def handle_events(Player, Player_Dash):
         elif event.type == SDL_KEYDOWN and event.key == SDLK_z:
             Player.dash = 'on'
 
+#기본 세팅
 open_canvas()
-
 running = True
-
 Player = Player()
 Background = Background()
 Player_Dash = Player_Dash()
 
+
+#게임 내부
 while running:
     #멈춤상태
     clear_canvas()
@@ -155,7 +162,6 @@ while running:
     if Player.dash == 'on':
         Player_Dash.set_dir(Player)
         for a in range(8):
-            print('a')
             clear_canvas()
             Background.draw()
             Player_Dash.draw()
@@ -163,7 +169,7 @@ while running:
             Player_Dash.update()
             delay(0.01)
         Player.dash = 'off'
-    #걷기
+    #움직임 상태
     while Player.dir != 'idle':
         clear_canvas()
         Background.draw()
@@ -186,7 +192,10 @@ while running:
         delay(0.05)
     delay(0.05)
 
+
+#마무리
 del Player
 del Background
+del Player_Dash
 
 close_canvas()
