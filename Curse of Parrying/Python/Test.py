@@ -1,6 +1,30 @@
 from pico2d import *
 
-#배경 클래스
+
+class Interact:
+    def __init__(self):
+        self.image = load_image('../Effect/ETC/interact.png')
+        self.x, self.y = 0, 0
+
+    def draw(self, Object):
+        bndry = 50
+        if (Object.x + bndry > self.x > Object.x - bndry) and (Object.y + bndry > self.y > Object.y - bndry):
+            self.image.draw(self.x, self.y)
+
+    def set_xy(self, Player):
+        self.x, self.y = Player.x, Player.y
+
+
+class MonsterBox:
+    def __init__(self):
+        self.image = load_image('../Object/ETC/MonsterBox.png')
+        self.x, self.y = 700, 500
+
+    def draw(self):
+        self.image.draw(self.x, self.y)
+
+
+# 배경 클래스
 class Background:
     def __init__(self):
         self.image = load_image('../BackGround/Practice.png')
@@ -10,7 +34,7 @@ class Background:
         self.image.draw(self.x, self.y)
 
 
-#플레이어 걷기 클래스
+# 플레이어 걷기 클래스
 class Player:
     def __init__(self):
         self.image = load_image('../Object/Character/Walking/Character_Player_Walking.png')
@@ -23,29 +47,27 @@ class Player:
 
     def draw(self):
         if self.dir == 'right':
-            self.image.clip_draw(self.frame*68, 68, 68, 68, self.x, self.y)
+            self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
         elif self.dir == 'left':
             self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
         elif self.dir == 'up':
             if self.exdir == 'right':
-                self.image.clip_draw(self.frame*68, 68, 68, 68, self.x, self.y)
+                self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
             elif self.exdir == 'left':
-                self.image.clip_draw(self.frame*68, 0, 68, 68, self.x, self.y)
+                self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
         elif self.dir == 'down':
             if self.exdir == 'right':
-                self.image.clip_draw(self.frame*68, 68, 68, 68, self.x, self.y)
+                self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
             elif self.exdir == 'left':
-                self.image.clip_draw(self.frame*68, 0, 68, 68, self.x, self.y)
+                self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
         elif self.dir == 'idle':
             if self.exdir == 'right':
                 self.image.clip_draw(2 * 68, 68, 68, 68, self.x, self.y)
             elif self.exdir == 'left':
                 self.image.clip_draw(2 * 68, 0, 68, 68, self.x, self.y)
 
-
-
     def update(self):
-        self.frame = (self.frame+1)%8
+        self.frame = (self.frame + 1) % 8
         if self.dir == 'right':
             self.x += 5
         elif self.dir == 'left':
@@ -60,7 +82,7 @@ class Player:
             self.exdir = self.dir
 
 
-#대쉬 클래스
+# 대쉬 클래스
 class Player_Dash:
     def __init__(self):
         self.image = load_image('../Object/Character/Dash/Character_Player_Dash.png')
@@ -69,28 +91,26 @@ class Player_Dash:
         self.dir = ' '
         self.exdir = ' '
 
-
     def draw(self):
         if self.dir == 'right':
-            self.image.clip_draw(self.frame*68, 68, 68, 68, self.x, self.y)
+            self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
         elif self.dir == 'left':
             self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
         elif self.dir == 'up':
             if self.exdir == 'right':
-                self.image.clip_draw(self.frame*68, 68, 68, 68, self.x, self.y)
+                self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
             elif self.exdir == 'left':
-                self.image.clip_draw(self.frame*68, 0, 68, 68, self.x, self.y)
+                self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
         elif self.dir == 'down':
             if self.exdir == 'right':
-                self.image.clip_draw(self.frame*68, 68, 68, 68, self.x, self.y)
+                self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
             elif self.exdir == 'left':
-                self.image.clip_draw(self.frame*68, 0, 68, 68, self.x, self.y)
+                self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
         elif self.dir == 'idle':
             if self.exdir == 'right':
                 self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
             elif self.exdir == 'left':
                 self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
-
 
     def set_dir(self, Player):
         self.dir = Player.dir
@@ -99,7 +119,7 @@ class Player_Dash:
         self.y = Player.y
 
     def update(self):
-        self.frame = (self.frame+1)%8
+        self.frame = (self.frame + 1) % 8
         if self.dir == 'right':
             self.x += 10
             Player.x = self.x
@@ -121,7 +141,7 @@ class Player_Dash:
                 Player.x = self.x
 
 
-#패링 클래스
+# 패링 클래스
 class Player_Parrying:
     def __init__(self):
         self.image = load_image('../Object/Character/Parrying/Character_Player_Parrying.png')
@@ -143,14 +163,15 @@ class Player_Parrying:
         self.x, self.y = Player.x, Player.y
 
 
-#이벤트 받기 함수
+# 이벤트 받기 함수
 def handle_events(Player):
     global running
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
             running = False
-        elif event.type == SDL_KEYUP and (event.key == SDLK_RIGHT or event.key == SDLK_LEFT or event.key == SDLK_UP or event.key == SDLK_DOWN):
+        elif event.type == SDL_KEYUP and (
+                event.key == SDLK_RIGHT or event.key == SDLK_LEFT or event.key == SDLK_UP or event.key == SDLK_DOWN):
             Player.dir = 'idle'
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
@@ -167,71 +188,83 @@ def handle_events(Player):
         elif event.type == SDL_KEYDOWN and event.key == SDLK_x:
             Player.parrying = 'on'
 
-#기본 세팅
+
+# 기본 세팅
 open_canvas()
 running = True
 Player = Player()
 Background = Background()
 Player_Dash = Player_Dash()
 Player_Parrying = Player_Parrying()
+MonsterBox = MonsterBox()
+Interact = Interact()
 
-
-#게임 내부
+# 게임 내부
 while running:
-    #멈춤상태
+    # 멈춤상태
     clear_canvas()
     Background.draw()
     Player.draw()
+    Interact.set_xy(Player)
+    Interact.draw(MonsterBox)
+    MonsterBox.draw()
     update_canvas()
     handle_events(Player)
-    #대쉬
+    # 대쉬
     if Player.dash == 'on':
         Player_Dash.set_dir(Player)
         for a in range(8):
             clear_canvas()
             Background.draw()
             Player_Dash.draw()
+            MonsterBox.draw()
             update_canvas()
             Player_Dash.update()
             delay(0.01)
         Player.dash = 'off'
-    #패링
+    # 패링
     if Player.parrying == 'on':
         Player_Parrying.set_exdir(Player)
         for a in range(9):
             clear_canvas()
             Background.draw()
             Player_Parrying.draw()
+            MonsterBox.draw()
             update_canvas()
             Player_Parrying.update()
             delay(0.04)
         Player.parrying = 'off'
-    #움직임 상태
+    # 움직임 상태
     while Player.dir != 'idle':
         clear_canvas()
         Background.draw()
         Player.draw()
+        Interact.set_xy(Player)
+        Interact.draw(MonsterBox)
+        MonsterBox.draw()
         update_canvas()
         Player.set_exdir()
         handle_events(Player)
-        #대쉬
+        # 대쉬
         if Player.dash == 'on':
             Player_Dash.set_dir(Player)
             for a in range(8):
                 clear_canvas()
                 Background.draw()
                 Player_Dash.draw()
+                MonsterBox.draw()
                 update_canvas()
                 Player_Dash.update()
                 delay(0.01)
             Player.dash = 'off'
-        #패링
+        # 패링
         if Player.parrying == 'on':
             Player_Parrying.set_exdir(Player)
             for a in range(9):
                 clear_canvas()
                 Background.draw()
                 Player_Parrying.draw()
+                MonsterBox.draw()
                 update_canvas()
                 Player_Parrying.update()
                 delay(0.04)
@@ -240,8 +273,7 @@ while running:
         delay(0.05)
     delay(0.05)
 
-
-#마무리
+# 마무리
 del Player
 del Background
 del Player_Dash
