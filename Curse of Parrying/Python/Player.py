@@ -33,7 +33,7 @@ class Player:
                 self.image.clip_draw(2 * 68, 0, 68, 68, self.x, self.y)
 
     def update(self):
-        self.frame = (self.frame + 1) % 8
+        self.frame = (self.frame + 1) % 4
         if self.dir == 'right':
             self.x += 5
         elif self.dir == 'left':
@@ -83,7 +83,7 @@ class Player_Dash:
         self.x = Player.x
         self.y = Player.y
 
-    def update(self):
+    def update(self, Player):
         self.frame = (self.frame + 1) % 4
         if self.dir == 'right':
             self.x += 20
