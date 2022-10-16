@@ -86,23 +86,23 @@ class Player_Dash:
     def update(self, Player):
         self.frame = (self.frame + 1) % 4
         if self.dir == 'right':
-            self.x += 20
+            self.x += 15
             Player.x = self.x
         elif self.dir == 'left':
-            self.x -= 20
+            self.x -= 15
             Player.x = self.x
         elif self.dir == 'up':
-            self.y += 20
+            self.y += 15
             Player.y = self.y
         elif self.dir == 'down':
-            self.y -= 20
+            self.y -= 15
             Player.y = self.y
         elif self.dir == 'idle':
             if self.exdir == 'right':
-                self.x += 20
+                self.x += 15
                 Player.x = self.x
             elif self.exdir == 'left':
-                self.x -= 20
+                self.x -= 15
                 Player.x = self.x
 
 #패링

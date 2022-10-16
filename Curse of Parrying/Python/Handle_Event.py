@@ -2,7 +2,7 @@ from pico2d import *
 
 
 running = True
-def handle_events(Player):
+def handle_events(Player, Interact, Monster):
     global running
     events = get_events()
     for event in events:
@@ -25,3 +25,10 @@ def handle_events(Player):
             Player.dash = 'on'
         elif event.type == SDL_KEYDOWN and event.key == SDLK_x:
             Player.parrying = 'on'
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_f:
+            if Interact.judge == 'on':
+                if Monster.summon == 'off':
+                    Monster.summon = 'on'
+                elif Monster.summon == 'on':
+                    Monster.summon = 'off'
+                    Monster.frame = 0
