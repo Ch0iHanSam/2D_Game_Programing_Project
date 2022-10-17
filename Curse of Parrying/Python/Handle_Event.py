@@ -2,7 +2,7 @@ from pico2d import *
 
 
 running = True
-def handle_events(Player, Interact, Monster):
+def handle_events(Player, Interact_MonsterBox, Interact_BlueShield, Interact_RedCrossShield, Monster, Shields):
     global running
     events = get_events()
     for event in events:
@@ -26,9 +26,21 @@ def handle_events(Player, Interact, Monster):
         elif event.type == SDL_KEYDOWN and event.key == SDLK_x:
             Player.parrying = 'on'
         elif event.type == SDL_KEYDOWN and event.key == SDLK_f:
-            if Interact.judge == 'on':
+            if Interact_MonsterBox.judge == 'on':
                 if Monster.summon == 'off':
                     Monster.summon = 'on'
                 elif Monster.summon == 'on':
                     Monster.summon = 'off'
                     Monster.frame = 0
+            if Interact_BlueShield.judge == 'on':
+                if Shields[0].judge_click == False:
+                    Shields[0].judge_click = True
+                    Player.damage = 15
+                elif Shields[0].judge_click == True:
+                    Shields[0].judge_click = False
+                    Player.damage = 10
+            if Interact_RedCrossShield.judge == 'on':
+                if Shields[1].judge_click == False:
+                    Shields[1].judge_click = True
+                elif Shields[1].judge_click == True:
+                    Shields[1].judge_click = False

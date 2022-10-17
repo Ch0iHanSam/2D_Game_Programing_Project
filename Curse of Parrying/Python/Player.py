@@ -10,6 +10,7 @@ class Player:
         self.exdir = 'right'
         self.dash = 'off'
         self.parrying = 'off'
+        self.damage = 10
 
     def draw(self):
         if self.dir == 'right':
@@ -33,7 +34,7 @@ class Player:
                 self.image.clip_draw(2 * 68, 0, 68, 68, self.x, self.y)
 
     def update(self):
-        self.frame = (self.frame + 1) % 4
+        self.frame = (self.frame + 1) % 8
         if self.dir == 'right':
             self.x += 5
         elif self.dir == 'left':
@@ -112,6 +113,7 @@ class Player_Parrying:
         self.x, self.y = 0, 0
         self.frame = 0
         self.exdir = ' '
+        self.shieldNone = True
 
     def draw(self):
         if self.exdir == 'right':
@@ -125,3 +127,16 @@ class Player_Parrying:
     def set_exdir(self, Player):
         self.exdir = Player.exdir
         self.x, self.y = Player.x, Player.y
+
+    def hit(self, Effects, Shield_Use_1, Shield_Use_2, Shields, Player_):
+        for effect in Effects:
+            if self.x-60 < effect.x < self.x+60 and self.y-60 < effect.y < self.y+60:
+                Effects.remove(effect)
+                Shield_Use_1()
+                Shield_Use_2()
+                for shield in Shields:
+                    if shield.judge_click != False:
+                        self.shieldNone = False
+                if self.shieldNone:
+                    print(Player_.damage, '만큼의 피해를 입혔습니다!')
+
