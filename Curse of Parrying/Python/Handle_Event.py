@@ -1,8 +1,10 @@
 from pico2d import *
 
-
 running = True
-def handle_events(Player, Interact_MonsterBox, Interact_BlueShield, Interact_RedCrossShield, Monster, Shields):
+
+
+def handle_events(Player, Interact_MonsterBox, Interact_BlueShield, Interact_RedCrossShield, Monster, Shields,
+                  Player_Parrying):
     global running
     events = get_events()
     for event in events:
@@ -39,8 +41,10 @@ def handle_events(Player, Interact_MonsterBox, Interact_BlueShield, Interact_Red
                 elif Shields[0].judge_click == True:
                     Shields[0].judge_click = False
                     Player.damage = 10
+                    Player_Parrying.shieldNone = True
             if Interact_RedCrossShield.judge == 'on':
                 if Shields[1].judge_click == False:
                     Shields[1].judge_click = True
                 elif Shields[1].judge_click == True:
                     Shields[1].judge_click = False
+                    Player_Parrying.shieldNone = True

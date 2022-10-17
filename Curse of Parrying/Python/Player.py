@@ -135,7 +135,7 @@ class Player_Parrying:
                 Shield_Use_1()
                 Shield_Use_2()
                 for shield in Shields:
-                    if shield.judge_click != False:
+                    if shield.judge_click:
                         self.shieldNone = False
                 if self.shieldNone:
                     print(Player_.damage, '만큼의 피해를 입혔습니다!')

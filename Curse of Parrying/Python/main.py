@@ -137,7 +137,7 @@ def Walking():
     # 캔버스 업데이트
     update_canvas()
     # 입력 받기
-    Handle_Event.handle_events(Player_Walk, Button_MonsterBox, Button_BlueShield, Button_RedCrossShield, Test_Monster, Shields)
+    Handle_Event.handle_events(Player_Walk, Button_MonsterBox, Button_BlueShield, Button_RedCrossShield, Test_Monster, Shields, Player_Parrying)
     # 대쉬
     Dash()
     # 패링
