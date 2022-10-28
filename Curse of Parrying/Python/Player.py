@@ -10,8 +10,7 @@ class Player:
         self.dir_x = 0
         self.dir_y = 0
         self.exdir = 1
-        self.dash = False
-        self.parrying = 'off'
+        self.parrying = False
         self.damage = 10
         self.delay = 0
 
@@ -40,56 +39,14 @@ class Player:
         self.delay += 1
         if self.delay > 100:
             self.delay = 0
-        if self.delay % 3 == 0:
+        if self.delay % 5 == 0:
             self.frame = (self.frame + 1) % 8
-        self.x += self.dir_x * 5
-        self.y += self.dir_y * 5
+        self.x += self.dir_x * 2.5
+        self.y += self.dir_y * 2.5
 
     def set_exdir(self):
         if self.dir_x > 0 or self.dir_x < 0:
             self.exdir = self.dir_x
-
-
-# 대쉬
-class Player_Dash:
-    def __init__(self):
-        self.image = load_image('../Object/Character/Dash/Character_Player_Dash.png')
-        self.x, self.y = 0, 0
-        self.frame = 0
-        self.dir_x = 0
-        self.dir_y = 0
-        self.exdir = 0
-
-    def draw(self):
-        if self.dir_x > 0:
-            self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
-        elif self.dir_x < 0:
-            self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
-        elif self.dir_y > 0:
-            if self.exdir > 0:
-                self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
-            elif self.exdir < 0:
-                self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
-        elif self.dir_y < 0:
-            if self.exdir > 0:
-                self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
-            elif self.exdir < 0:
-                self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
-
-    def set_dir(self, Player):
-        if Player.dir_x != 0 or Player.dir_y != 0:
-            self.dir_x = Player.dir_x
-            self.dir_y = Player.dir_y
-            self.exdir = Player.exdir
-            self.x = Player.x
-            self.y = Player.y
-
-    def update(self, Player):
-        self.frame = (self.frame + 1) % 4
-        self.x += self.dir_x * 15
-        Player.x = self.x
-        self.y += self.dir_y * 15
-        Player.y = self.y
 
 
 # 패링
@@ -100,6 +57,8 @@ class Player_Parrying:
         self.frame = 0
         self.exdir = 0
         self.shieldNone = True
+        self.delay = 0
+        self.do = False
 
     def draw(self):
         if self.exdir > 0:
@@ -108,7 +67,13 @@ class Player_Parrying:
             self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
 
     def update(self):
-        self.frame = (self.frame + 1) % 9
+        self.delay += 1
+        if self.delay > 100:
+            self.delay = 0
+        if self.delay % 2 == 0:
+            if self.frame == 8:
+                self.do = False
+            self.frame = (self.frame + 1) % 9
 
     def set_exdir(self, Player):
         self.exdir = Player.exdir

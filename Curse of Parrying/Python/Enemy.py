@@ -8,6 +8,7 @@ class Test_Monster:
         self.x, self.y = 100, 200
         self.frame = 0
         self.summon = 'off'
+        self.delay = 0
 
     def draw(self):
         if self.summon == 'on':
@@ -15,7 +16,11 @@ class Test_Monster:
 
     def update(self):
         if self.summon == 'on':
-            self.frame = (self.frame + 1) % 9
+            self.delay += 1
+            if self.delay > 100:
+                self.delay = 0
+            if self.delay % 4 == 0:
+                self.frame = (self.frame + 1) % 9
 
 
 # 테스트용 몬스터의 공격 이펙트 클래스
@@ -25,6 +30,7 @@ class Test_Monster_Attack_Effect:
         self.x, self.y = 100, 200
         self.frame = 0
         self.judge = 'off'
+        self.delay = 0
 
     def draw(self):
         if self.judge == 'on':
@@ -33,7 +39,11 @@ class Test_Monster_Attack_Effect:
 
     def update(self):
         if self.judge == 'on':
-            self.frame = (self.frame + 1) % 7
-            self.x += 10
+            self.delay += 1
+            if self.delay > 100:
+                self.delay = 0
+            if self.delay%4 == 0:
+                self.frame = (self.frame + 1) % 7
+            self.x += 2
         if self.x > 700:
             self.judge = 'off'

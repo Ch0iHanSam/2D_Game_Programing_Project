@@ -28,8 +28,8 @@ def handle_events(Player, Interact_MonsterBox, Interact_BlueShield, Interact_Red
                 Player.dir_y -= 1
             # 패링
             elif event.key == SDLK_x:
-                Player.parrying = 'on'
-                pass
+                Player.parrying = True
+                Player_Parrying.do = True
             # 상호작용
             elif event.key == SDLK_f:
                 if Interact_MonsterBox.judge == 'on':
