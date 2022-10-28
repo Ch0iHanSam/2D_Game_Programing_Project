@@ -4,7 +4,7 @@ running = True
 
 
 def handle_events(Player, Interact_MonsterBox, Interact_MonsterBox2, Interact_BlueShield, Interact_RedCrossShield, Monster, Shields,
-                  Player_Parrying):
+                  Player_Parrying, Monsters, enemy_variable):
     global running
     events = get_events()
     for event in events:
@@ -32,15 +32,20 @@ def handle_events(Player, Interact_MonsterBox, Interact_MonsterBox2, Interact_Bl
             # 상호작용
             elif event.key == SDLK_f:
                 # 몬스터박스
-                if Interact_MonsterBox.judge == True:
+                if Interact_MonsterBox.judge:
                     if not Monster.summon:
                         Monster.summon = True
                     elif Monster.summon:
                         Monster.summon = False
                         Monster.frame = 0
                 # 몬스터박스2
-                # if Interact_MonsterBox2.judge == True:
-
+                if Interact_MonsterBox2.judge:
+                    if enemy_variable.monster_summon == False:
+                        enemy_variable.monster_judge = True
+                    elif enemy_variable.monster_summon == True:
+                        enemy_variable.monster_summon = False
+                        for i in Monsters:
+                            i.frame = 0
                 # 파랑방패
                 if Interact_BlueShield.judge == True:
                     if Shields[0].judge_click == False:

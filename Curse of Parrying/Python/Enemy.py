@@ -1,6 +1,15 @@
 from pico2d import *
 import random
 
+
+# 변수 모음 클래스
+class Variable:
+    def __init__(self):
+        self.monster_judge = False
+        self.magic_circle_summon_judge = False
+        self.monster_summon = False
+
+
 # 테스트 몬스터 클래스
 class Test_Monster:
     def __init__(self):
@@ -55,20 +64,17 @@ class Boar:
         self.image = load_image('../Object/Enemy/Stage1/Boar/Enemy_Boar_Move.png')
         self.x, self.y = 0, 0
         self.frame = 0
-        self.summon = False
         self.delay = 0
 
     def draw(self):
-        self.image.clip_draw(0*self.frame, 0, 68, 68, self.x, self.y)
+        self.image.clip_draw(68*self.frame, 0, 68, 68, self.x, self.y)
 
     def update(self):
-        if self.summon == True:
-            if self.summon:
-                self.delay += 1
-                if self.delay > 100:
-                    self.delay = 0
-                if self.delay % 4 == 0:
-                    self.frame = (self.frame + 1) % 6
+        self.delay += 1
+        if self.delay > 100:
+            self.delay = 0
+        if self.delay % 4 == 0:
+            self.frame = (self.frame + 1) % 6
 
     def set_xy(self):
         self.x = random.randint(100, 701)
@@ -81,20 +87,17 @@ class Rabbit:
         self.image = load_image('../Object/Enemy/Stage1/Rabbit/Enemey_Rabbit_Move.png')
         self.x, self.y = 0, 0
         self.frame = 0
-        self.summon = False
         self.delay = 0
 
     def draw(self):
-        self.image.clip_draw(0 * self.frame, 0, 68, 68, self.x, self.y)
+        self.image.clip_draw(68 * self.frame, 0, 68, 68, self.x, self.y)
 
     def update(self):
-        if self.summon == True:
-            if self.summon:
-                self.delay += 1
-                if self.delay > 100:
-                    self.delay = 0
-                if self.delay % 4 == 0:
-                    self.frame = (self.frame + 1) % 7
+        self.delay += 1
+        if self.delay > 100:
+            self.delay = 0
+        if self.delay % 4 == 0:
+            self.frame = (self.frame + 1) % 7
 
     def set_xy(self):
         self.x = random.randint(100, 701)
@@ -107,20 +110,17 @@ class Pigeon:
         self.image = load_image('../Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Fly.png')
         self.x, self.y = 0, 0
         self.frame = 0
-        self.summon = False
         self.delay = 0
 
     def draw(self):
         self.image.clip_draw(68 * self.frame, 0, 68, 68, self.x, self.y)
 
     def update(self):
-        if self.summon == True:
-            if self.summon:
-                self.delay += 1
-                if self.delay > 100:
-                    self.delay = 0
-                if self.delay % 4 == 0:
-                    self.frame = (self.frame + 1) % 7
+        self.delay += 1
+        if self.delay > 100:
+            self.delay = 0
+        if self.delay % 4 == 0:
+            self.frame = (self.frame + 1) % 7
 
     def set_xy(self):
         self.x = random.randint(100, 701)
@@ -146,5 +146,5 @@ class Summon:
             self.frame = (self.frame + 1) % 17
 
     def set_xy(self, monster):
-        monster.x = self.x
-        monster.y = self.y
+        self.x = monster.x
+        self.y = monster.y

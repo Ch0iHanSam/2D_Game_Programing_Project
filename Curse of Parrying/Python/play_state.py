@@ -10,16 +10,16 @@ import random
 
 open_canvas()
 # 배경
-Backgrounds = Background.Background()                                                                                     # 배경
+Backgrounds = Background.Background()  # 배경
 # 플레이어 움직임
-Player_Walk = Player.Player()                                                                                             # 플레이어 걷기
-Player_Parrying = Player.Player_Parrying()                                                                                # 패링
+Player_Walk = Player.Player()  # 플레이어 걷기
+Player_Parrying = Player.Player_Parrying()  # 패링
 # 오브젝트
-MonsterBox = Object.MonsterBox()                                                                                          # 몬스터박스(테스트 몬스터 소환)
-MonsterBox2 = Object.MonsterBox2()                                                                                        # 몬스터박스2(몬스터 랜덤 배치)
+MonsterBox = Object.MonsterBox()  # 몬스터박스(테스트 몬스터 소환)
+MonsterBox2 = Object.MonsterBox2()  # 몬스터박스2(몬스터 랜덤 배치)
 # 몬스터
-Test_Monster = Enemy.Test_Monster()                                                                                       # 테스트 몬스터
-Monster_type = []                                                                                                         # 몬스터 타입(빈리스트)
+Test_Monster = Enemy.Test_Monster()  # 테스트 몬스터
+Monsters = []  # 몬스터들
 # 몬스터 공격
 Effect = [Enemy.Test_Monster_Attack_Effect() for i in range(1)]
 # 상호작용 버튼
@@ -30,13 +30,79 @@ Button_RedCrossShield = Interact.Interact()
 # 방패
 Shields = [Shield.Shield() for a in range(2)]
 # 이펙트
-
+MagicCircle_Summon = [] #소환 마법진
 # 기타 변수
 effect_judge = False
+num_monster = 0
+enemy_variable = Enemy.Variable()
 
 
+# 몬스터 랜덤 저장
+def Random_Monster_Select():
+    global num_monster
+    Monsters.clear()
+    num_monster = random.randint(2, 20)
+    for i in range(num_monster):
+        monster_type = random.randint(1, 3)
+        if monster_type == 1:
+            Monsters.append(Enemy.Boar())
+        elif monster_type == 2:
+            Monsters.append(Enemy.Rabbit())
+        elif monster_type == 3:
+            Monsters.append(Enemy.Pigeon())
 
-# 랜덤 몬스터 생성
+
+# 몬스터 랜덤 위치 결정
+def Random_Monster_set_xy():
+    global num_monster
+    for i in range(num_monster):
+        Monsters[i].set_xy()
+        # 몬스터 위치 결정
+        for a in range(num_monster):
+            if i != a:
+                while Monsters[a].x - 20 < Monsters[i].x < Monsters[a].x + 20 or Monsters[a].y - 20 < Monsters[i].y < Monsters[a].y + 20:
+                    Monsters[i].set_xy()
+
+
+# 몬스터 소환
+def Random_Monster_Summon():
+    for i in Monsters:
+        i.draw()
+        i.update()
+
+
+# 몬스터 소환 마법진
+def Magic_Circle_Monster_Summon():
+    global num_monster
+    for i in range(num_monster):
+        MagicCircle_Summon.append(Enemy.Summon())
+        MagicCircle_Summon[i].set_xy(Monsters[i])
+
+
+# 몬스터 소환 마법진 그리기
+def Magic_Circle_Monster_Summon_Draw():
+    for i in MagicCircle_Summon:
+        i.draw()
+        i.update()
+
+
+# 랜덤 몬스터 소환 전 과정
+def Monster_Summon():
+    if enemy_variable.monster_judge:
+        Random_Monster_Select()
+        Random_Monster_set_xy()
+        Magic_Circle_Monster_Summon()
+        enemy_variable.monster_judge = False
+        enemy_variable.magic_circle_summon_judge = True
+    if enemy_variable.magic_circle_summon_judge:
+        Magic_Circle_Monster_Summon_Draw()
+        if MagicCircle_Summon[0].frame == 16:
+            enemy_variable.magic_circle_summon_judge = False
+            for i in MagicCircle_Summon:
+                i.frame = 1
+            enemy_variable.monster_summon = True
+    if enemy_variable.monster_summon:
+        Random_Monster_Summon()
 
 
 # 적십자방패 상호작용 버튼
@@ -106,6 +172,7 @@ def Button_MonsterBox2_Make():
     Button_MonsterBox2.set_xy(Player_Walk)
     Button_MonsterBox2.draw(MonsterBox2, 35)
 
+
 # 패링
 def Parrying():
     if Player_Parrying.do:
@@ -114,6 +181,7 @@ def Parrying():
             clear_canvas()
             Backgrounds.draw()
             Player_Parrying.draw()
+            Monster_Summon()
             Button_MonsterBox_Make()
             Button_MonsterBox2_Make()
             MonsterBox.draw()
@@ -136,6 +204,8 @@ def Walking():
     Backgrounds.draw()
     # 이동 그리기
     Player_Walk.draw()
+    # 몬스터 박스2 상호작용 시 나오는 몬스터
+    Monster_Summon()
     # 몬스터 박스 상호작용 키 그리기
     Button_MonsterBox_Make()
     # 몬스터 박스2 상호작용 키 그리기
@@ -155,8 +225,8 @@ def Walking():
     # 캔버스 업데이트
     update_canvas()
     # 입력 받기
-    Handle_Event.handle_events(Player_Walk, Button_MonsterBox, Button_MonsterBox2, Button_BlueShield, Button_RedCrossShield, Test_Monster,
-                               Shields, Player_Parrying)
+    Handle_Event.handle_events(Player_Walk, Button_MonsterBox, Button_MonsterBox2, Button_BlueShield,
+                               Button_RedCrossShield, Test_Monster, Shields, Player_Parrying, Monsters, enemy_variable)
     # 패링
     Parrying()
     # 좌우 설정
