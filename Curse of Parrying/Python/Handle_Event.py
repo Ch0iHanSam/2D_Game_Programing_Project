@@ -3,7 +3,7 @@ from pico2d import *
 running = True
 
 
-def handle_events(Player, Interact_MonsterBox, Interact_BlueShield, Interact_RedCrossShield, Monster, Shields,
+def handle_events(Player, Interact_MonsterBox, Interact_MonsterBox2, Interact_BlueShield, Interact_RedCrossShield, Monster, Shields,
                   Player_Parrying):
     global running
     events = get_events()
@@ -28,17 +28,21 @@ def handle_events(Player, Interact_MonsterBox, Interact_BlueShield, Interact_Red
                 Player.dir_y -= 1
             # 패링
             elif event.key == SDLK_x:
-                Player.parrying = True
                 Player_Parrying.do = True
             # 상호작용
             elif event.key == SDLK_f:
-                if Interact_MonsterBox.judge == 'on':
-                    if Monster.summon == 'off':
-                        Monster.summon = 'on'
-                    elif Monster.summon == 'on':
-                        Monster.summon = 'off'
+                # 몬스터박스
+                if Interact_MonsterBox.judge == True:
+                    if not Monster.summon:
+                        Monster.summon = True
+                    elif Monster.summon:
+                        Monster.summon = False
                         Monster.frame = 0
-                if Interact_BlueShield.judge == 'on':
+                # 몬스터박스2
+                # if Interact_MonsterBox2.judge == True:
+
+                # 파랑방패
+                if Interact_BlueShield.judge == True:
                     if Shields[0].judge_click == False:
                         Shields[0].judge_click = True
                         Player.damage = 15
@@ -46,7 +50,8 @@ def handle_events(Player, Interact_MonsterBox, Interact_BlueShield, Interact_Red
                         Shields[0].judge_click = False
                         Player.damage = 10
                         Player_Parrying.shieldNone = True
-                if Interact_RedCrossShield.judge == 'on':
+                # 적십자방패
+                if Interact_RedCrossShield.judge == True:
                     if Shields[1].judge_click == False:
                         Shields[1].judge_click = True
                     elif Shields[1].judge_click == True:

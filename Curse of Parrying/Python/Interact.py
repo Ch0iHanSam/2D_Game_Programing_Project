@@ -6,14 +6,14 @@ class Interact:
     def __init__(self):
         self.image = load_image('../Effect/ETC/interact.png')
         self.x, self.y = 0, 0
-        self.judge = 'off'
+        self.judge = False
 
     def draw(self, Object, bndry):
         if (Object.x + bndry > self.x > Object.x - bndry) and (Object.y + bndry > self.y > Object.y - bndry):
-            self.judge = 'on'
+            self.judge = True
             self.image.draw(self.x, self.y)
         else:
-            self.judge = 'off'
+            self.judge = False
 
     def set_xy(self, Player):
         self.x, self.y = Player.x, Player.y

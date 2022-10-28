@@ -10,7 +10,6 @@ class Player:
         self.dir_x = 0
         self.dir_y = 0
         self.exdir = 1
-        self.parrying = False
         self.damage = 10
         self.delay = 0
 

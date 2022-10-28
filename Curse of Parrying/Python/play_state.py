@@ -6,41 +6,64 @@ import Object
 import Enemy
 import Interact
 import Shield
+import random
 
 open_canvas()
-Backgrounds = Background.Background()
-Player_Walk = Player.Player()
-Player_Parrying = Player.Player_Parrying()
-MonsterBox = Object.MonsterBox()
-Test_Monster = Enemy.Test_Monster()
+# 배경
+Backgrounds = Background.Background()                                                                                     # 배경
+# 플레이어 움직임
+Player_Walk = Player.Player()                                                                                             # 플레이어 걷기
+Player_Parrying = Player.Player_Parrying()                                                                                # 패링
+# 오브젝트
+MonsterBox = Object.MonsterBox()                                                                                          # 몬스터박스(테스트 몬스터 소환)
+MonsterBox2 = Object.MonsterBox2()                                                                                        # 몬스터박스2(몬스터 랜덤 배치)
+# 몬스터
+Test_Monster = Enemy.Test_Monster()                                                                                       # 테스트 몬스터
+Monster_type = []                                                                                                         # 몬스터 타입(빈리스트)
+# 몬스터 공격
 Effect = [Enemy.Test_Monster_Attack_Effect() for i in range(1)]
+# 상호작용 버튼
 Button_MonsterBox = Interact.Interact()
+Button_MonsterBox2 = Interact.Interact()
 Button_BlueShield = Interact.Interact()
 Button_RedCrossShield = Interact.Interact()
+# 방패
 Shields = [Shield.Shield() for a in range(2)]
+# 이펙트
+
+# 기타 변수
 effect_judge = False
 
 
+
+# 랜덤 몬스터 생성
+
+
+# 적십자방패 상호작용 버튼
 def Button_RedCrossShield_Make():
     Button_RedCrossShield.set_xy(Player_Walk)
     Button_RedCrossShield.draw(Shields[1], 50)
 
 
+# 파랑방패 상호작용 버튼
 def Button_BlueShield_Make():
     Button_BlueShield.set_xy(Player_Walk)
     Button_BlueShield.draw(Shields[0], 50)
 
 
+# 적십자 방패 사용
 def RedCrossShield_Use():
     Shields[1].attack(Player_Walk)
     Shields[1].Shield_ability()
 
 
+# 파랑 방패 사용
 def BlueShield_Use():
     Shields[0].attack(Player_Walk)
     Shields[0].Shield_ability()
 
 
+# 방패들 설치
 def Shields_Make():
     for i in range(2):
         Shields[i].draw()
@@ -53,7 +76,7 @@ def Test_Monster_Effect():
     for effect in Effect:
         effect.draw()
         effect.update()
-    if Test_Monster.summon == 'on':
+    if Test_Monster.summon:
         if Test_Monster.frame == 3:
             Test_Monster.frame += 1
             if effect_judge:
@@ -62,7 +85,7 @@ def Test_Monster_Effect():
                 effect_judge = True
             if effect_judge:
                 Effect.append(Enemy.Test_Monster_Attack_Effect())
-                Effect[len(Effect) - 1].judge = 'on'
+                Effect[len(Effect) - 1].judge = True
 
 
 # 테스트 몬스터 그리기, 몬스터 공격 발사
@@ -72,21 +95,29 @@ def Test_Monster_Summon():
     Test_Monster_Effect()
 
 
-# 몬스터 박스 설치
+# 몬스터박스 상호작용
 def Button_MonsterBox_Make():
     Button_MonsterBox.set_xy(Player_Walk)
-    Button_MonsterBox.draw(MonsterBox, 50)
+    Button_MonsterBox.draw(MonsterBox, 35)
 
 
+# 몬스터박스2 상호작용
+def Button_MonsterBox2_Make():
+    Button_MonsterBox2.set_xy(Player_Walk)
+    Button_MonsterBox2.draw(MonsterBox2, 35)
+
+# 패링
 def Parrying():
-    if Player_Walk.parrying:
+    if Player_Parrying.do:
         Player_Parrying.set_exdir(Player_Walk)
-        while Player_Parrying.do == True:
+        while Player_Parrying.do:
             clear_canvas()
             Backgrounds.draw()
             Player_Parrying.draw()
             Button_MonsterBox_Make()
+            Button_MonsterBox2_Make()
             MonsterBox.draw()
+            MonsterBox2.draw()
             Test_Monster_Summon()
             Button_BlueShield_Make()
             Button_RedCrossShield_Make()
@@ -95,9 +126,9 @@ def Parrying():
             Player_Parrying.update()
             Player_Parrying.hit(Effect, BlueShield_Use, RedCrossShield_Use, Shields, Player_Walk)
             delay(0.01)
-        Player_Walk.parrying = False
 
 
+# 걷기(게임 진행)
 def Walking():
     # 클리어
     clear_canvas()
@@ -107,8 +138,12 @@ def Walking():
     Player_Walk.draw()
     # 몬스터 박스 상호작용 키 그리기
     Button_MonsterBox_Make()
+    # 몬스터 박스2 상호작용 키 그리기
+    Button_MonsterBox2_Make()
     # 몬스터 박스 그리기
     MonsterBox.draw()
+    # 몬스터 박스2 그리기
+    MonsterBox2.draw()
     # 몬스터 박스 상호작용 시 나오는 몬스터
     Test_Monster_Summon()
     # 파란 방패 상호작용 키 그리기
@@ -120,7 +155,7 @@ def Walking():
     # 캔버스 업데이트
     update_canvas()
     # 입력 받기
-    Handle_Event.handle_events(Player_Walk, Button_MonsterBox, Button_BlueShield, Button_RedCrossShield, Test_Monster,
+    Handle_Event.handle_events(Player_Walk, Button_MonsterBox, Button_MonsterBox2, Button_BlueShield, Button_RedCrossShield, Test_Monster,
                                Shields, Player_Parrying)
     # 패링
     Parrying()
@@ -132,12 +167,14 @@ def Walking():
     delay(0.01)
 
 
+# 방패 세팅
 Shields[0].set_Shield('../Object/Shield/Shield_BlueShield.png')
 Shields[0].set_xy(600, 400)
 Shields[1].set_Shield('../Object/Shield/Shield_RedCrossShield.png')
 Shields[1].set_xy(450, 400)
 
 
+# 게임 실행
 def Run():
     while Handle_Event.running:
         Walking()
