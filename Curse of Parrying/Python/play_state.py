@@ -76,7 +76,7 @@ def Button_MonsterBox_Make():
 
 
 def Dash():
-    if Player_Walk.dash == 'on':
+    if Player_Walk.dash:
         Player_Dash.set_dir(Player_Walk)
         for a in range(4):
             clear_canvas()
@@ -90,8 +90,8 @@ def Dash():
             Shields_Make()
             update_canvas()
             Player_Dash.update(Player_Walk)
-            delay(0.05)
-        Player_Walk.dash = 'off'
+            delay(0.01)
+        Player_Walk.dash = False
 
 
 def Parrying():
@@ -110,7 +110,7 @@ def Parrying():
             update_canvas()
             Player_Parrying.update()
             Player_Parrying.hit(Effect, BlueShield_Use, RedCrossShield_Use, Shields, Player_Walk)
-            delay(0.05)
+            delay(0.01)
 
         Player_Walk.parrying = 'off'
 
@@ -147,14 +147,16 @@ def Walking():
     # 걷기 업데이트
     Player_Walk.update()
     # 딜레이
-    delay(0.05)
+    delay(0.01)
 
 
 Shields[0].set_Shield('../Object/Shield/Shield_BlueShield.png')
 Shields[0].set_xy(600, 400)
 Shields[1].set_Shield('../Object/Shield/Shield_RedCrossShield.png')
 Shields[1].set_xy(450, 400)
-while Handle_Event.running:
-    Walking()
 
-close_canvas()
+def Run():
+    while Handle_Event.running:
+        Walking()
+
+    close_canvas()
