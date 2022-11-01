@@ -18,6 +18,7 @@ class Test_Monster:
         self.frame = 0
         self.summon = False
         self.delay = 0
+        self.hp = 30
 
     def draw(self):
         if self.summon:
@@ -30,32 +31,41 @@ class Test_Monster:
                 self.delay = 0
             if self.delay % 4 == 0:
                 self.frame = (self.frame + 1) % 9
+        if self.hp <= 0:
+            print('테스트 몬스터가 처치되었습니다')
+            self.summon = False
+            self.hp = 30 #이후 몬스터를 리스트로 관리할 것이기 때문에 hp를 원래대로 돌려줄 필요는 없음
 
 
 # 테스트용 몬스터의 공격 이펙트 클래스
 class Test_Monster_Attack_Effect:
-    def __init__(self):
+    def __init__(self, Monster):
         self.image = load_image('../Effect/Monster/Monster_Attack/Pigeon/Pigeon_Attack.png')
         self.x, self.y = 100, 200
         self.frame = 0
         self.judge = False
         self.delay = 0
+        self.monster = Monster
 
     def draw(self):
         if self.judge:
             if self.x < 700:
                 self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
 
-    def update(self):
+    def update(self, List):
         if self.judge:
             self.delay += 1
             if self.delay > 100:
                 self.delay = 0
-            if self.delay%4 == 0:
+            if self.delay % 4 == 0:
                 self.frame = (self.frame + 1) % 7
             self.x += 2
         if self.x > 700:
-            self.judge = False
+            List.remove(self)
+
+    def check_pop(self, List):
+        if not self.judge:
+            List.remove(self)
 
 
 # 스테이지1 몬스터(멧돼지) 클래스
@@ -65,6 +75,7 @@ class Boar:
         self.x, self.y = 0, 0
         self.frame = 0
         self.delay = 0
+        self.hp = 50
 
     def draw(self):
         self.image.clip_draw(68*self.frame, 0, 68, 68, self.x, self.y)
@@ -88,6 +99,7 @@ class Rabbit:
         self.x, self.y = 0, 0
         self.frame = 0
         self.delay = 0
+        self.hp = 30
 
     def draw(self):
         self.image.clip_draw(68 * self.frame, 0, 68, 68, self.x, self.y)
@@ -111,6 +123,7 @@ class Pigeon:
         self.x, self.y = 0, 0
         self.frame = 0
         self.delay = 0
+        self.hp = 0
 
     def draw(self):
         self.image.clip_draw(68 * self.frame, 0, 68, 68, self.x, self.y)

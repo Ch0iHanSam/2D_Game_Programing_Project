@@ -12,6 +12,7 @@ class Player:
         self.exdir = 1
         self.damage = 10
         self.delay = 0
+        self.hp = 100
 
     def draw(self):
         if self.dir_x > 0:  # 오른쪽
@@ -47,6 +48,16 @@ class Player:
         if self.dir_x > 0 or self.dir_x < 0:
             self.exdir = self.dir_x
 
+    def check_hit(self, Effects):
+        for i in range(len(Effects)):
+            if self.x - 30 < Effects[i].x < self.x + 30 and self.y - 30 < Effects[i].y < self.y + 30:
+                Effects[i].judge = False
+                self.hp -= 30
+                print(self.hp)
+        if self.hp <= 0:
+            self.x, self.y = 400, 90
+            self.hp = 100
+
 
 # 패링
 class Player_Parrying:
@@ -55,7 +66,6 @@ class Player_Parrying:
         self.x, self.y = 0, 0
         self.frame = 0
         self.exdir = 0
-        self.shieldNone = True
         self.delay = 0
         self.do = False
 
@@ -78,14 +88,10 @@ class Player_Parrying:
         self.exdir = Player.exdir
         self.x, self.y = Player.x, Player.y
 
-    def hit(self, Effects, Shield_Use_1, Shield_Use_2, Shields, Player_):
+    def hit(self, Effects, Shield_Use_1, Shield_Use_2, Player):
         for effect in Effects:
             if self.x - 30 < effect.x < self.x + 30 and self.y - 30 < effect.y < self.y + 30:
                 Effects.remove(effect)
                 Shield_Use_1()
                 Shield_Use_2()
-                for shield in Shields:
-                    if shield.judge_click:
-                        self.shieldNone = False
-                if self.shieldNone:
-                    print(Player_.damage, '만큼의 피해를 입혔습니다!')
+                effect.monster.hp -= Player.damage

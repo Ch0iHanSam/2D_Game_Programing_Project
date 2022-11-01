@@ -21,7 +21,7 @@ MonsterBox2 = Object.MonsterBox2()  # 몬스터박스2(몬스터 랜덤 배치)
 Test_Monster = Enemy.Test_Monster()  # 테스트 몬스터
 Monsters = []  # 몬스터들
 # 몬스터 공격
-Effect = [Enemy.Test_Monster_Attack_Effect() for i in range(1)]
+Effect = [Enemy.Test_Monster_Attack_Effect(Test_Monster) for i in range(1)]
 # 상호작용 버튼
 Button_MonsterBox = Interact.Interact()
 Button_MonsterBox2 = Interact.Interact()
@@ -119,14 +119,14 @@ def Button_BlueShield_Make():
 
 # 적십자 방패 사용
 def RedCrossShield_Use():
-    Shields[1].attack(Player_Walk)
-    Shields[1].Shield_ability()
+    Shields[1].attack()
+    Shields[1].Shield_ability(Player_Walk)
 
 
 # 파랑 방패 사용
 def BlueShield_Use():
-    Shields[0].attack(Player_Walk)
-    Shields[0].Shield_ability()
+    Shields[0].attack()
+    Shields[0].Shield_ability(Player_Walk)
 
 
 # 방패들 설치
@@ -139,9 +139,11 @@ def Shields_Make():
 # 테스트 몬스터 공격 그리기
 def Test_Monster_Effect():
     global effect_judge
+
     for effect in Effect:
         effect.draw()
-        effect.update()
+        effect.update(Effect)
+        effect.check_pop(Effect)
     if Test_Monster.summon:
         if Test_Monster.frame == 3:
             Test_Monster.frame += 1
@@ -150,7 +152,7 @@ def Test_Monster_Effect():
             elif not effect_judge:
                 effect_judge = True
             if effect_judge:
-                Effect.append(Enemy.Test_Monster_Attack_Effect())
+                Effect.append(Enemy.Test_Monster_Attack_Effect(Test_Monster))
                 Effect[len(Effect) - 1].judge = True
 
 
@@ -192,7 +194,7 @@ def Parrying():
             Shields_Make()
             update_canvas()
             Player_Parrying.update()
-            Player_Parrying.hit(Effect, BlueShield_Use, RedCrossShield_Use, Shields, Player_Walk)
+            Player_Parrying.hit(Effect, BlueShield_Use, RedCrossShield_Use, Player_Walk)
             delay(0.01)
 
 
@@ -233,6 +235,8 @@ def Walking():
     Player_Walk.set_exdir()
     # 걷기 업데이트
     Player_Walk.update()
+    # 피격 체크
+    Player_Walk.check_hit(Effect)
     # 딜레이
     delay(0.01)
 
