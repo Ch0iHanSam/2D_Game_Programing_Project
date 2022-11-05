@@ -56,8 +56,8 @@ class RUN:
             self.frame = (self.frame + 1) % 8
         self.x += self.dir_x * 2.5
         self.y += self.dir_y * 2.5
-        self.x = clamp(0, self.x, 800)
-        self.y = clamp(0, self.y, 600)
+        self.x = clamp(50, self.x, 750)
+        self.y = clamp(78, self.y, 578)
 
     @staticmethod
     def draw(self):
@@ -75,6 +75,10 @@ class RUN:
                 self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
             elif self.face_dir < 0:  # 왼쪽 바라봄
                 self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+        elif self.dir_x == 0:
+            self.cur_state.exit(self)
+            self.cur_state = IDLE
+            self.cur_state.enter(self, None)
 
 
 class PARRYING:
@@ -132,10 +136,10 @@ next_state = {
 }
 
 class Player_Character:
-    def __init__(self):
-        self.x, self.y = 800//2, 300
+    def __init__(self, x, y, face):
+        self.x, self.y = x, y
         self.frame = 0
-        self.dir_x, self.dir_y, self.face_dir = 0, 0, 1
+        self.dir_x, self.dir_y, self.face_dir = 0, 0, face
         self.delay = 0
         self.image = load_image('../Object/Character/Walking/Character_Player_Walking.png')
 
