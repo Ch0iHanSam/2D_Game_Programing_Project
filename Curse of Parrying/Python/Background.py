@@ -8,3 +8,9 @@ class Test_Background:
     def draw(self):
         self.image.draw(400, 300)
 
+class Home_Stage:
+    def __init__(self):
+        self.image = load_image('../BackGround/Home_Stage.png')
+
+    def draw(self):
+        self.image.draw(400, 300)
