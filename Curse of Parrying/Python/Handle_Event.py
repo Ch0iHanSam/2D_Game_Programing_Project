@@ -1,8 +1,11 @@
 from pico2d import *
 
+running = True
 
 def handle_events(Player, Interact_MonsterBox, Interact_MonsterBox2, Interact_BlueShield, Interact_RedCrossShield, Monster, Shields,
                   Player_Parrying, Monsters, enemy_variable):
+    global running
+
     events = get_events()
     for event in events:
         # 종료
