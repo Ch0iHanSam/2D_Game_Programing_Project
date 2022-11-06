@@ -265,7 +265,7 @@ class Fu_Va:
     @staticmethod
     def Portal_Left_update():
         Portal_Left.update()
-        Portal_Left.check_enter(Player, stage_home_state, -50, -20, 0, 57, 'stage_home')
+        Portal_Left.check_enter(Player, stage_home_state, -50, -20, 0, 57, 'stage_lab', 'stage_home')
 
 
     @staticmethod
@@ -281,7 +281,7 @@ class Fu_Va:
     @staticmethod
     def Draw_Enter_Home_Stage():
         enter_lab = load_image('../BackGround/Lab_Enter.png')
-        if Portal_Left.next_stage_name() == 'stage_home':
+        if Portal_Left.out_stage_name() == 'stage_home':
             for i in range(14):
                 clear_canvas()
                 draw_world()
@@ -294,6 +294,7 @@ class Fu_Va:
 Player = Player_Character  # 플레이어
 Background = Home_Stage  # 배경
 Portal_Left = Object.Portal  # 오른쪽 포탈
+Monster_Box = Object.Test_Monster_Box
 
 def handle_events():
     events = get_events()
@@ -307,13 +308,15 @@ def handle_events():
 
 
 def enter():
-    global Player, Background, Portal_Left
+    global Player, Background, Portal_Left, Monster_Box
     if Fu_Va.first_judge:
         Player = Player_Character(Fu_Va.first_x, Fu_Va.first_y, 1)
     else:
         Player = Player_Character(120, 330, 1)
     Background = Home_Stage()
     Portal_Left = Object.Portal('../Object/ETC/Portal_LEFT.png', 97, 300)
+    Monster_Box = Object.Test_Monster_Box(400, 450)
+    ########################아래 6줄은 항상 마지막에(객체 추가 후 그려야됨)#################################
     Fu_Va.Draw_Enter_This_Stage()
 
 
@@ -333,6 +336,7 @@ def update():
 def draw_world():
     Background.draw()
     Portal_Left.draw()
+    Monster_Box.draw()
     Player.draw()
 
 

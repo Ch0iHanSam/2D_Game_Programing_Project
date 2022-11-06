@@ -168,6 +168,7 @@ class Player_Character:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
 
+
 # 걷기
 # class Player:
 #     def __init__(self):
