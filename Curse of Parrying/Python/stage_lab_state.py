@@ -6,19 +6,12 @@ from Background import Home_Stage
 import Handle_Event
 import Object
 import Enemy
-import Interact
+from Interact import Interact
 import Shield
 import random
 
-# open_canvas()
-# # 배경
-# Test_Background = Background.Test_Background()  # 배경
-# Home_Stage = Background.Home_Stage()
-# # 플레이어 움직임
-# Player_Walk = Player.Player()  # 플레이어 걷기
-# Player_Parrying = Player.Player_Parrying()  # 패링
-# # 오브젝트
-# MonsterBox = Object.MonsterBox()  # 몬스터박스(테스트 몬스터 소환)
+
+
 # MonsterBox2 = Object.MonsterBox2()  # 몬스터박스2(몬스터 랜덤 배치)
 # # 몬스터
 # Test_Monster = Enemy.Test_Monster()  # 테스트 몬스터
@@ -291,10 +284,13 @@ class Fu_Va:
             delay(0.5)
 
 
+################### 생성되는 객체들 선언부 #####################################
 Player = Player_Character  # 플레이어
 Background = Home_Stage  # 배경
 Portal_Left = Object.Portal  # 오른쪽 포탈
-Monster_Box = Object.Test_Monster_Box
+Monster_Box = Object.Test_Monster_Box  # 테스트 몬스터 소환 오브젝트
+Button_MonsterBox = Interact  # 몬스터 박스 상호작용
+############### enter에서 한번더 선언, exit에서 삭제###############################
 
 def handle_events():
     events = get_events()
@@ -303,12 +299,14 @@ def handle_events():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.quit()
+        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_f):
+            Button_MonsterBox.handle_event(event)
         else:
             Player.handle_event(event)  # 플레이어에게 이벤트를 전달함
 
 
 def enter():
-    global Player, Background, Portal_Left, Monster_Box
+    global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox
     if Fu_Va.first_judge:
         Player = Player_Character(Fu_Va.first_x, Fu_Va.first_y, 1)
     else:
@@ -316,21 +314,25 @@ def enter():
     Background = Home_Stage()
     Portal_Left = Object.Portal('../Object/ETC/Portal_LEFT.png', 97, 300)
     Monster_Box = Object.Test_Monster_Box(400, 450)
+    Button_MonsterBox = Interact()
     ########################아래 6줄은 항상 마지막에(객체 추가 후 그려야됨)#################################
     Fu_Va.Draw_Enter_This_Stage()
 
 
 def exit():
-    global Player, Background, Portal_Left
+    global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox
     Fu_Va.Draw_Enter_Home_Stage()
     del Player
     del Background
     del Portal_Left
+    del Monster_Box
+    del Button_MonsterBox
 
 
 def update():
     Player.update()
     Fu_Va.Portal_Left_update()
+    Button_MonsterBox.update(Player, Monster_Box)
 
 
 def draw_world():
@@ -338,6 +340,7 @@ def draw_world():
     Portal_Left.draw()
     Monster_Box.draw()
     Player.draw()
+    Button_MonsterBox.draw(Monster_Box, 40)
 
 
 def draw():

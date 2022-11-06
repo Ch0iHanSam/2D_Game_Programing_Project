@@ -1,5 +1,10 @@
 from pico2d import *
 
+FD = range(1)
+
+key_event_table = {
+    (SDL_KEYDOWN, SDLK_f): FD
+}
 
 # 상호작용 클래스
 class Interact:
@@ -7,6 +12,7 @@ class Interact:
         self.image = load_image('../Effect/ETC/interact.png')
         self.x, self.y = 0, 0
         self.judge = False
+        self.event_que = []
 
     def draw(self, Object, bndry):
         if (Object.x + bndry > self.x > Object.x - bndry) and (Object.y + bndry > self.y > Object.y - bndry):
@@ -15,5 +21,19 @@ class Interact:
         else:
             self.judge = False
 
-    def set_xy(self, Player):
+    def run(self, Object):
+        Object.act()
+
+    def update(self, Player, Object):
         self.x, self.y = Player.x, Player.y
+        if self.event_que:
+            self.event_que.pop()
+            self.run(Object)
+
+    def add_event(self, event):
+        self.event_que.insert(0, event)
+
+    def handle_event(self, event):
+        if (event.type, event.key) in key_event_table:
+            key_event = key_event_table[(event.type, event.key)]
+            self.add_event(key_event)
