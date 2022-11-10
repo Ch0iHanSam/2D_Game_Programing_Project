@@ -26,9 +26,13 @@ class Interact:
 
     def update(self, Player, Object):
         self.x, self.y = Player.x, Player.y
-        if self.event_que:
-            self.event_que.pop()
-            self.run(Object)
+
+        if self.event_que:  # F의 입력이 되었다면 F입력 제거하고 run함수 실행
+            if self.judge:  # 상호작용 가능 거리에 있을 때만 오브젝트 작동
+                self.event_que.pop()
+                self.run(Object)
+            else:
+                self.event_que.pop()
 
     def add_event(self, event):
         self.event_que.insert(0, event)
