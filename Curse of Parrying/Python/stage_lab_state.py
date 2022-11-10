@@ -251,6 +251,7 @@ import random
 
 
 class Fu_Va:
+    running = True
     first_x, first_y = 400, 330
     first_judge = False
 
@@ -293,19 +294,21 @@ Button_MonsterBox = Interact  # 몬스터 박스 상호작용
 ############### enter에서 한번더 선언, exit에서 삭제###############################
 
 def handle_events():
-    events = get_events()
-    for event in events:
-        if event.type == SDL_QUIT:
-            game_framework.quit()
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
-            game_framework.quit()
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_f):
-            Button_MonsterBox.handle_event(event)
-        else:
-            Player.handle_event(event)  # 플레이어에게 이벤트를 전달함
+    if Fu_Va.running:
+        events = get_events()
+        for event in events:
+            if event.type == SDL_QUIT:
+                game_framework.quit()
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
+                game_framework.quit()
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_f):
+                Button_MonsterBox.handle_event(event)
+            else:
+                Player.handle_event(event)  # 플레이어에게 이벤트를 전달함
 
 
 def enter():
+    Fu_Va.running = True
     global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox
     if Fu_Va.first_judge:
         Player = Player_Character(Fu_Va.first_x, Fu_Va.first_y, 1)
@@ -320,6 +323,7 @@ def enter():
 
 
 def exit():
+    Fu_Va.running = False
     global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox
     Fu_Va.Draw_Enter_Home_Stage()
     del Player
@@ -330,9 +334,11 @@ def exit():
 
 
 def update():
-    Player.update()
-    Fu_Va.Portal_Left_update()
-    Button_MonsterBox.update(Player, Monster_Box)
+    if Fu_Va.running:
+        Player.update()
+        Button_MonsterBox.update(Player, Monster_Box)
+        Fu_Va.Portal_Left_update()  # 포탈 업데이트는 항상 마지막에(exit하면서 다른 객체들이 삭제되기 때문에 이 밑에 다른 객체 update가 있으면 오류남)
+
 
 
 def draw_world():
@@ -344,10 +350,11 @@ def draw_world():
 
 
 def draw():
-    clear_canvas()
-    draw_world()
-    update_canvas()
-    delay(0.01)
+    if Fu_Va.running:
+        clear_canvas()
+        draw_world()
+        update_canvas()
+        delay(0.01)
 
 def pause():
     pass
