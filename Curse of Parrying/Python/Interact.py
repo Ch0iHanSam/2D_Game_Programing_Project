@@ -21,7 +21,7 @@ class Interact:
         else:
             self.judge = False
 
-    def run(self, Object):
+    def run(self, Object):  # Object : 상호작용 대상 / Object_Object : 대상의 대상
         Object.act()
 
     def update(self, Player, Object):

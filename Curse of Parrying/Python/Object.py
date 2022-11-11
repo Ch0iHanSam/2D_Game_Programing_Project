@@ -1,7 +1,6 @@
 from pico2d import *
 import game_framework
 
-
 class Portal:
 
     def __init__(self, name, x, y):
@@ -37,9 +36,10 @@ class Portal:
 
 
 class Test_Monster_Box:
-    def __init__(self, x, y):
+    def __init__(self, x, y, Monster):
         self.x, self.y = x, y
         self.image = load_image('../Object/ETC/MonsterBox.png')
+        self.monster = Monster
 
     def update(self):
         pass
@@ -49,3 +49,4 @@ class Test_Monster_Box:
 
     def act(self):
         print('오브젝트가 작동했습니다.')
+        self.monster.set_summon()

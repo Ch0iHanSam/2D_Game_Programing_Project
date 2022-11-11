@@ -5,6 +5,30 @@ import random
 class Test_Monster:
     def __init__(self, x = 200, y = 100):
         self.x, self.y, self.frame = x, y, 0
+        self.image = load_image('../Object/Enemy/Test/Enemy_Test_Attack.png')
+        self.summon = False
+        self.delay = 0
+
+    def draw(self):
+        if self.summon:
+            self.image.clip_draw(self.frame*68, 0, 68, 68, self.x, self.y)
+
+    def update(self):
+        if self.summon:
+            self.delay += 1
+            if self.delay == 100:
+                self.delay = 0
+            if self.delay%6 == 0:
+                self.frame = (self.frame+1)%10
+
+    def set_summon(self):
+        if self.summon:
+            self.summon = False
+            self.frame = 0
+        else:
+            self.summon = True
+
+
 
 
 #
