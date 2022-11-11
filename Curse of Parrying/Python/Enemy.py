@@ -8,6 +8,7 @@ class Test_Monster:
         self.image = load_image('../Object/Enemy/Test/Enemy_Test_Attack.png')
         self.summon = False
         self.delay = 0
+        self.attack = False
 
     def draw(self):
         if self.summon:
@@ -20,6 +21,8 @@ class Test_Monster:
                 self.delay = 0
             if self.delay%6 == 0:
                 self.frame = (self.frame+1)%10
+                if self.frame == 4:
+                    self.attack = True  # 4프레임에서 True로 만들어놓고 Effect에서 소환한 뒤에 False로 하면 1회만 발사(delay때문에 프레임이 6번씩 반복돼서 이펙트 6개씩 나가는거 방지)
 
     def set_summon(self):
         if self.summon:
@@ -28,6 +31,30 @@ class Test_Monster:
         else:
             self.summon = True
 
+class Test_Monster_Effect:
+    def __init__(self):
+        self.x, self.y, self.frame, self.delay = 0, 0, 0, 0
+        self.image = load_image('../Object/Enemy/Test/Effect.png')
+        self.first = True
+
+    def draw(self, monster):
+        self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+        if monster.frame == 5:
+            monster.attack = False
+
+    def update(self):
+        self.delay += 1
+        if self.delay > 100:
+            self.delay = 0
+        if self.delay % 4 == 0:
+            self.frame = (self.frame + 1) % 4
+        self.x += 1  # 이건 속도 리팩토리 할 때 고쳐야함
+
+    def set_xy(self, monster):
+        if self.first:
+            self.x = monster.x + 30
+            self.y = monster.y
+            self.first = False
 
 
 

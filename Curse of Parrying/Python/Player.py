@@ -54,7 +54,7 @@ class RUN:
             self.delay = 0
         if self.delay % 5 == 0:
             self.frame = (self.frame + 1) % 8
-        self.x += self.dir_x * 2.5
+        self.x += self.dir_x * 2.5  # 속도 리팩토리 할 때 고치기!
         self.y += self.dir_y * 2.5
         self.x = clamp(50, self.x, 750)
         self.y = clamp(78, self.y, 578)

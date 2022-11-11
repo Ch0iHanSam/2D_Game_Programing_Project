@@ -48,5 +48,4 @@ class Test_Monster_Box:
         self.image.draw(self.x, self.y)
 
     def act(self):
-        print('오브젝트가 작동했습니다.')
         self.monster.set_summon()
