@@ -1,5 +1,6 @@
 from pico2d import *
 
+
 class IDLE:
     @staticmethod
     def enter(self, event):
@@ -106,7 +107,6 @@ class PARRYING:
             self.cur_state = RUN
             self.cur_state.enter(self, None)
 
-
     @staticmethod
     def draw(self):
         if self.face_dir > 0:
@@ -132,8 +132,10 @@ key_event_table = {
 next_state = {
     IDLE: {RU: IDLE, LU: IDLE, UU: IDLE, DU: IDLE, RD: RUN, LD: RUN, UD: RUN, DD: RUN, XD: PARRYING},
     RUN: {RU: IDLE, LU: IDLE, UU: IDLE, DU: IDLE, RD: IDLE, LD: IDLE, UD: IDLE, DD: IDLE, XD: PARRYING},
-    PARRYING: {RU: PARRYING, LU: PARRYING, UU: PARRYING, DU: PARRYING, RD: PARRYING, LD: PARRYING, UD: PARRYING, DD: PARRYING, XD: PARRYING}
+    PARRYING: {RU: PARRYING, LU: PARRYING, UU: PARRYING, DU: PARRYING, RD: PARRYING, LD: PARRYING, UD: PARRYING,
+               DD: PARRYING, XD: PARRYING}
 }
+
 
 class Player_Character:
     def __init__(self, x, y, face):
@@ -142,6 +144,8 @@ class Player_Character:
         self.dir_x, self.dir_y, self.face_dir = 0, 0, face
         self.delay = 0
         self.image = load_image('../Object/Character/Walking/Character_Player_Walking.png')
+        self.HP = 100
+        self.ATK = 10
 
         self.event_que = []
         self.cur_state = IDLE
@@ -159,6 +163,9 @@ class Player_Character:
 
     def draw(self):
         self.cur_state.draw(self)
+        if self.HP <= 0:  # 죽음 확인 (아마 함수로 대체해야하지 않을까 싶음)
+            self.x, self.y = 400,300
+            self.HP = 100
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -168,7 +175,13 @@ class Player_Character:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
 
-
+    def check_hit(self, object_List):
+        if object_List:
+            for i in object_List:
+                if self.x - 30 < i.x < self.x + 30 and self.y - 50 < i.y < self.y + 10:
+                    object_List.remove(i)
+                    self.HP -= 10
+                    print(self.HP)
 # 걷기
 # class Player:
 #     def __init__(self):

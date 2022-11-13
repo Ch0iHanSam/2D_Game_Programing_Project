@@ -286,22 +286,24 @@ class Fu_Va:
 
     @staticmethod
     def update_monster_effect():
-        if Test_Monster_Effect:
-            for i in Test_Monster_Effect:
-                i.set_xy(Test_Monster)
-                i.update()
+        for i in Test_Monster_Effect:
+            i.set_xy(Test_Monster)
+            i.update()
 
     @staticmethod
     def draw_monster_effect():
-        if Test_Monster.frame == 5:
+        if Test_Monster.attack:
             Test_Monster_Effect.append(Enemy.Test_Monster_Effect())
-        for i in Test_Monster_Effect:
-            if i.x > 600:
-                Test_Monster_Effect.remove(i)
         if Test_Monster_Effect:
             for i in Test_Monster_Effect:
-                i.draw(Test_Monster)
+                if i.x > 600:
+                    Test_Monster_Effect.remove(i)
+                i.draw()
 
+    @staticmethod
+    def update_Player():
+        Player.update()
+        Player.check_hit(Test_Monster_Effect)
 
 ################### 생성되는 객체들 선언부 #####################################
 Player = Player_Character  # 플레이어
@@ -359,7 +361,7 @@ def exit():
 
 def update():
     if Fu_Va.running:
-        Player.update()
+        Fu_Va.update_Player()
         Button_MonsterBox.update(Player, Monster_Box)
         Test_Monster.update()
         Fu_Va.update_monster_effect()

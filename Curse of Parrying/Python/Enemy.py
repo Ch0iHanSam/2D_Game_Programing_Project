@@ -9,6 +9,7 @@ class Test_Monster:
         self.summon = False
         self.delay = 0
         self.attack = False
+        self.val_check_attack = 0  # 어택 변환 용으로 사용됨. 다른 곳에 사용되지 않음
 
     def draw(self):
         if self.summon:
@@ -21,8 +22,14 @@ class Test_Monster:
                 self.delay = 0
             if self.delay%6 == 0:
                 self.frame = (self.frame+1)%10
-                if self.frame == 4:
-                    self.attack = True  # 4프레임에서 True로 만들어놓고 Effect에서 소환한 뒤에 False로 하면 1회만 발사(delay때문에 프레임이 6번씩 반복돼서 이펙트 6개씩 나가는거 방지)
+            self.val_check_attack += 1
+            if self.val_check_attack == 31:
+                self.attack = True  # 최초 5프레임 달성 시에만 (1 증가시키고 나서니까 화면 상에서는 5, 코드 상에선 6)소환 시키게끔 / 6*5=30
+            else:
+                if self.attack:
+                    self.attack = False
+            if self.frame == 0:
+                self.val_check_attack = 0
 
     def set_summon(self):
         if self.summon:
@@ -32,15 +39,13 @@ class Test_Monster:
             self.summon = True
 
 class Test_Monster_Effect:
-    def __init__(self):
-        self.x, self.y, self.frame, self.delay = 0, 0, 0, 0
+    def __init__(self, x = 0, y = 0):
+        self.x, self.y, self.frame, self.delay = x, y, 0, 0
         self.image = load_image('../Object/Enemy/Test/Effect.png')
         self.first = True
 
-    def draw(self, monster):
+    def draw(self):
         self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
-        if monster.frame == 5:
-            monster.attack = False
 
     def update(self):
         self.delay += 1
