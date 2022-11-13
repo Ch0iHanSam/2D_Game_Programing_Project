@@ -43,6 +43,7 @@ class Test_Monster_Effect:
         self.x, self.y, self.frame, self.delay = x, y, 0, 0
         self.image = load_image('../Object/Enemy/Test/Effect.png')
         self.first = True
+        self.damage = 20
 
     def draw(self):
         self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
