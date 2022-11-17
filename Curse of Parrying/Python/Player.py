@@ -146,6 +146,7 @@ class Player_Character:
         self.image = load_image('../Object/Character/Walking/Character_Player_Walking.png')
         self.HP = 100
         self.ATK = 10
+        self.Parrying = False
 
         self.event_que = []
         self.cur_state = IDLE
@@ -176,8 +177,15 @@ class Player_Character:
             self.add_event(key_event)
 
     def check_hit(self, object_List):
-        if object_List:
-            for i in object_List:
-                if self.x - 30 < i.x < self.x + 30 and self.y - 50 < i.y < self.y + 10:
-                    object_List.remove(i)
-                    self.HP -= i.damage
+        if self.cur_state == PARRYING:
+            if object_List:
+                for i in object_List:
+                    if self.x - 30 < i.x < self.x + 30 and self.y - 50 < i.y < self.y + 10:
+                        object_List.remove(i)
+                        i.monster.HP -= self.ATK
+        else:
+            if object_List:
+                for i in object_List:
+                    if self.x - 30 < i.x < self.x + 30 and self.y - 50 < i.y < self.y + 10:
+                        object_List.remove(i)
+                        self.HP -= i.damage

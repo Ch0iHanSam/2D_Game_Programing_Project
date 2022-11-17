@@ -10,12 +10,16 @@ class Test_Monster:
         self.delay = 0
         self.attack = False
         self.val_check_attack = 0  # 어택 변환 용으로 사용됨. 다른 곳에 사용되지 않음
+        self.HP = 30
 
     def draw(self):
         if self.summon:
             self.image.clip_draw(self.frame*68, 0, 68, 68, self.x, self.y)
 
     def update(self):
+        if self.HP <= 0:
+            self.summon = False
+            self.HP = 30
         if self.summon:
             self.delay += 1
             if self.delay == 100:
@@ -44,6 +48,7 @@ class Test_Monster_Effect:
         self.image = load_image('../Object/Enemy/Test/Effect.png')
         self.first = True
         self.damage = 20
+        self.monster = None
 
     def draw(self):
         self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
@@ -60,6 +65,7 @@ class Test_Monster_Effect:
         if self.first:
             self.x = monster.x + 30
             self.y = monster.y
+            self.monster = monster
             self.first = False
 
 
