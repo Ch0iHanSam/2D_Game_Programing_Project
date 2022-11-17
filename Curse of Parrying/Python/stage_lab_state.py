@@ -305,6 +305,11 @@ class Fu_Va:
         Player.update()
         Player.check_hit(Test_Monster_Effect)
 
+    @staticmethod
+    def draw_Shield():
+        for i in Shields:
+            Shields[i].draw()
+
 ################### 생성되는 객체들 선언부 #####################################
 Player = Player_Character  # 플레이어
 Background = Home_Stage  # 배경
@@ -313,6 +318,8 @@ Monster_Box = Object.Test_Monster_Box  # 테스트 몬스터 소환 오브젝트
 Button_MonsterBox = Interact  # 몬스터 박스 상호작용
 Test_Monster = Enemy.Test_Monster  # 테스트 몬스터
 Test_Monster_Effect = Enemy.Test_Monster_Effect  # 테스트 몬스터의 공격 이펙트
+Shields = Shield.Shield  # 방패들
+
 ############### enter에서 한번더 선언, exit에서 삭제###############################
 
 def handle_events():
@@ -331,7 +338,7 @@ def handle_events():
 
 def enter():
     Fu_Va.running = True
-    global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox, Test_Monster, Test_Monster_Effect
+    global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox, Test_Monster, Test_Monster_Effect, Shields
     if Fu_Va.first_judge:
         Player = Player_Character(Fu_Va.first_x, Fu_Va.first_y, 1)
     else:
@@ -342,13 +349,17 @@ def enter():
     Test_Monster = Enemy.Test_Monster()
     Monster_Box = Object.Test_Monster_Box(400, 450, Test_Monster)  # 몬스터를 받아야하기 때문에 항상 몬스터 뒤에 위치
     Test_Monster_Effect = []
+    Shields = {'BlueShield':Shield.Shield(100, 520, '../Object/Shield/Shield_BlueShield.png'), 'HealShield':Shield.Shield(160, 520, '../Object/Shield/Shield_RedCrossShield.png'),
+               'CarShield':Shield.Shield(220, 520, '../Object/Shield/Shield_CarShield.png'), 'DragonShield':Shield.Shield(280, 520, '../Object/Shield/Shield_DragonShield.png'),
+               'GukPongShield':Shield.Shield(340, 520, '../Object/Shield/Shield_GukPongShield.png'), 'LockShield':Shield.Shield(400, 520, '../Object/Shield/Shield_LockShield.png'),
+               'SoulShield':Shield.Shield(460, 520, '../Object/Shield/Shield_SoulShield.png'), 'ToyShield':Shield.Shield(520, 520, '../Object/Shield/Shield_ToyShield.png')}
     ########################아래 6줄은 항상 마지막에(객체 추가 후 그려야됨)#################################
     Fu_Va.Draw_Enter_This_Stage()
 
 
 def exit():
     Fu_Va.running = False
-    global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox, Test_Monster, Test_Monster_Effect
+    global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox, Test_Monster, Test_Monster_Effect, Shields
     Fu_Va.Draw_Enter_Home_Stage()
     del Player
     del Background
@@ -357,6 +368,7 @@ def exit():
     del Button_MonsterBox
     del Test_Monster
     del Test_Monster_Effect
+    del Shields
 
 
 def update():
@@ -374,9 +386,10 @@ def draw_world():
     Portal_Left.draw()
     Monster_Box.draw()
     Player.draw()
-    Button_MonsterBox.draw(Monster_Box, 40)
+    Button_MonsterBox.draw(Monster_Box, 30)
     Test_Monster.draw()
     Fu_Va.draw_monster_effect()
+    Fu_Va.draw_Shield()
 
 
 def draw():
