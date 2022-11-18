@@ -38,6 +38,7 @@ class TestGameState:
 
 running = None
 stack = []
+ex_state = None
 
 def get_prev_state():
     try:
@@ -47,9 +48,10 @@ def get_prev_state():
 
 
 def change_state(state):
-    global stack
+    global stack, ex_state
     if(len(stack)>0):
         stack[-1].exit()  # 현재 state의 exit함수 실행
+        ex_state = stack[-1]
         stack.pop()  # 현재 state 삭제 (state 변경이니까 현재와 관계 없음)
     stack.append(state)
     state.enter()

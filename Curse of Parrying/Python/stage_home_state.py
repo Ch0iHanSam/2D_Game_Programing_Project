@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 import stage_lab_state
 import pause_state
+import stage_1_state
 from Player import Player_Character
 from Background import Home_Stage
 import Object
@@ -12,18 +13,17 @@ from Interact import Interact
 class Fu_Va:
     running = True
     first_x, first_y = 400, 330
-    first_judge = True
-    first_enter = True
 
     @staticmethod
-    def Portal_Right_update():
+    def Portal_update():
         Portal_Right.update()
-        Portal_Right.check_enter(Player, stage_lab_state, 24, 48, 0, 55,'stage_home', 'stage_lab')
-
-    @staticmethod
-    def Portal_UP_update():
-        Portal_Right.update()
-        Portal_Right.check_enter(Player, stage_lab_state, 24, 48, 0, 55, 'stage_home', 'stage_1')
+        Portal_Up.update()
+        if Portal_Right.x + 24 < Player.x < Portal_Right.x + 48 and Portal_Right.y < Player.y < Portal_Right.y + 55:
+            Portal_Up.check_enter(Player, stage_1_state, -25, 25, 45, 85, 'stage_home', 'stage_1')
+            Portal_Right.check_enter(Player, stage_lab_state, 24, 48, 0, 55,'stage_home', 'stage_lab')
+        elif Portal_Up.x - 25 < Player.x < Portal_Up.x + 25 and Portal_Up.y + 45 < Player.y < Portal_Up.y + 85:
+            Portal_Right.check_enter(Player, stage_lab_state, 24, 48, 0, 55, 'stage_home', 'stage_lab')
+            Portal_Up.check_enter(Player, stage_1_state, -25, 25, 45, 85, 'stage_home', 'stage_1')
 
     @staticmethod
     def Draw_Enter_This_Stage():
@@ -39,6 +39,18 @@ class Fu_Va:
     def Draw_Enter_Lab_Stage():
         enter_lab = load_image('../BackGround/Lab_Enter.png')
         if Portal_Right.out_stage_name() == 'stage_lab':
+            for i in range(14):
+                clear_canvas()
+                draw_world()
+                enter_lab.clip_draw(i * 400, 0, 400, 300, 400, 300, 800, 600)
+                update_canvas()
+                delay(0.03)
+            delay(0.5)
+
+    @staticmethod
+    def Draw_Enter_Stage_1():
+        enter_lab = load_image('../BackGround/Lab_Enter.png')
+        if Portal_Up.out_stage_name() == 'stage_1':
             for i in range(14):
                 clear_canvas()
                 draw_world()
@@ -87,12 +99,15 @@ def enter():
     ########################아래 줄은 항상 마지막에(객체 추가 후 그려야됨)#################################
     # 인터페이스나 Player을 받아야 하는 객체를 여기에 쓰는 것임
     Pause = Effect.Pause()
-    if Fu_Va.first_judge:
+    if game_framework.ex_state is None:
         Player = Player_Character(Fu_Va.first_x, Fu_Va.first_y, 1)
         HP = Effect.HP(Player)
-        Fu_Va.first_judge = False
-    else:
+    elif game_framework.ex_state == stage_lab_state:
         Player = Player_Character(680, 330, -1)
+        HP = Effect.HP(Player)
+        Fu_Va.Draw_Enter_This_Stage()
+    elif game_framework.ex_state == stage_1_state:
+        Player = Player_Character(400, 520, 1)
         HP = Effect.HP(Player)
         Fu_Va.Draw_Enter_This_Stage()
 
@@ -102,6 +117,7 @@ def exit():
     Fu_Va.running = False
     global Player, Background, Portal_Up, Portal_Right, HP, Pause, Unknown, Button_Unknown
     Fu_Va.Draw_Enter_Lab_Stage()
+    Fu_Va.Draw_Enter_Stage_1()
     del Player
     del Background
     del Portal_Up
@@ -118,8 +134,9 @@ def update():
         HP.update(Player)
         Button_Unknown.update(Player, Unknown)
 
-        Portal_Up.update()   # 포탈 업데이트는 항상 마지막에(exit하면서 다른 객체들이 삭제되기 때문에 이 밑에 다른 객체 update가 있으면 오류남)
-        Fu_Va.Portal_Right_update()   # 포탈 업데이트는 항상 마지막에(exit하면서 다른 객체들이 삭제되기 때문에 이 밑에 다른 객체 update가 있으면 오류남)
+        Fu_Va.Portal_update()# 포탈 업데이트는 항상 마지막에(exit하면서 다른 객체들이 삭제되기 때문에 이 밑에 다른 객체 update가 있으면 오류남)
+
+
 
 
 def draw_world():

@@ -21,9 +21,10 @@ class Portal:
 
     def draw(self):
         self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y, 100, 100)
+        # draw_rectangle(self.x-25, self.y-30, self.x+25, self.y+2)
 
     def check_enter(self, Player, state, min_x, max_x, min_y, max_y, this_stage_name, out_stage_name):
-        if self.x + min_x  < Player.x < self.x + max_x and self.y - min_y < Player.y < self.y + max_y:
+        if self.x + min_x  < Player.x < self.x + max_x and self.y + min_y < Player.y < self.y + max_y:
             self.this_stage = this_stage_name
             self.out_stage = out_stage_name
             game_framework.change_state(state)
