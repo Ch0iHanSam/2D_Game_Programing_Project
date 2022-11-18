@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import stage_home_state
+import pause_state
 from Player import Player_Character
 from Background import Home_Stage
 import Object
@@ -113,9 +114,12 @@ def handle_events():
                 game_framework.quit()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 game_framework.quit()
-            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_f):
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_f):  # 상호작용
                 Button_MonsterBox.handle_event(event)
                 Fu_Va.handle_event_Button_Shield(event)
+            elif (event.type, event.button) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT):
+                if 750 < event.x < 790 and 10 < event.y < 50:
+                    game_framework.push_state(pause_state)
             else:
                 Player.handle_event(event)  # 플레이어에게 이벤트를 전달함
 

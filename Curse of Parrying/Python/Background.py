@@ -14,3 +14,10 @@ class Home_Stage:
 
     def draw(self):
         self.image.draw(400, 300)
+
+class Pause:
+    def __init__(self):
+        self.image = load_image('../BackGround/Pause.png')
+
+    def draw(self):
+        self.image.draw(400,300)

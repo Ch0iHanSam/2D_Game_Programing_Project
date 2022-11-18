@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import stage_lab_state
+import pause_state
 from Player import Player_Character
 from Background import Home_Stage
 import Object
@@ -58,6 +59,9 @@ def handle_events():
                 game_framework.quit()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 game_framework.quit()
+            elif (event.type, event.button) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT):
+                if 750 < event.x < 790 and 10 < event.y < 50:
+                    game_framework.push_state(pause_state)
             else:
                 Player.handle_event(event)  # 플레이어에게 이벤트를 전달함
 
@@ -67,7 +71,7 @@ def enter():
     global Player, Background, Portal_Up, Portal_Right, HP, Pause
     Background = Home_Stage()
     Portal_Up = Object.Portal('../Object/ETC/Portal_UP.png', 400, 507)
-    Portal_Right = Object.Portal('../Object/ETC/Portal_RIGHT.png', 703, 300)\
+    Portal_Right = Object.Portal('../Object/ETC/Portal_RIGHT.png', 703, 300)
     ########################아래 줄은 항상 마지막에(객체 추가 후 그려야됨)#################################
     Pause = Effect.Pause()
     if Fu_Va.first_judge:

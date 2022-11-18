@@ -1,4 +1,5 @@
 from pico2d import *
+import game_framework
 
 class Test_Monster_Effect:
     def __init__(self, x = 0, y = 0):
