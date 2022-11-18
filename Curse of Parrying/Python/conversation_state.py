@@ -1,9 +1,8 @@
 from pico2d import *
 import game_framework
-from Background import Pause
+from Background import Conversation
 import stage_home_state
 import stage_lab_state
-import conversation_state
 
 
 class Fu_Va:
@@ -12,7 +11,7 @@ class Fu_Va:
 
 
 ################### 생성되는 객체들 선언부 #####################################
-Background = Pause  # 배경
+Background = Conversation  # 배경
 ############### enter에서 한번더 선언, exit에서 삭제###############################
 
 def handle_events():
@@ -23,14 +22,14 @@ def handle_events():
                 game_framework.quit()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 game_framework.quit()
-            elif (event.type, event.button) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT):
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_f):
                 game_framework.pop_state()
 
 
 def enter():
     Fu_Va.running = True
     global Background
-    Background = Pause()
+    Background = Conversation()
 
 
 

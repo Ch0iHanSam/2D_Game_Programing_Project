@@ -1,5 +1,6 @@
 from pico2d import *
 import game_framework
+import conversation_state
 
 class Portal:
 
@@ -49,3 +50,15 @@ class Test_Monster_Box:
 
     def act(self):
         self.monster.set_summon()
+
+#NPC
+class Unknown:
+    def __init__(self, x = 0, y = 0):
+        self.x, self.y = x, y
+        self.image = load_image('../Object/NPC/NPC_UNKNOWN.png')
+
+    def draw(self):
+        self.image.draw(self.x, self.y)
+
+    def act(self):
+        game_framework.push_state(conversation_state)

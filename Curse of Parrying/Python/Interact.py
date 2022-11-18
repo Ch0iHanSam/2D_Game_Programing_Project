@@ -15,7 +15,7 @@ class Interact:
         self.event_que = []
 
     def draw(self, Object, bndry):
-        if (Object.x + bndry > self.x > Object.x - bndry) and (Object.y + bndry > self.y > Object.y - bndry):
+        if (Object.x + bndry > self.x > Object.x - bndry) and (Object.y + bndry + 10 > self.y > Object.y - bndry):
             self.judge = True
             self.image.draw(self.x, self.y)
         else:

@@ -6,6 +6,7 @@ from Player import Player_Character
 from Background import Home_Stage
 import Object
 import Effect
+from Interact import Interact
 
 
 class Fu_Va:
@@ -49,6 +50,8 @@ Portal_Up = Object.Portal  # 위쪽 포탈
 Portal_Right = Object.Portal  # 오른쪽 포탈
 HP = Effect.HP  # 플레이어 HP
 Pause = Effect.Pause  # 일시정지 버튼
+Unknown = Object.Unknown  # 물음표 NPC
+Button_Unknown = Interact # NPC 상호작용
 ############### enter에서 한번더 선언, exit에서 삭제###############################
 
 def handle_events():
@@ -59,6 +62,8 @@ def handle_events():
                 game_framework.quit()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 game_framework.quit()
+            elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_f):  # 상호작용
+                Button_Unknown.handle_event(event)
             elif (event.type, event.button) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT):
                 if 750 < event.x < 790 and 10 < event.y < 50:
                     game_framework.push_state(pause_state)
@@ -68,11 +73,14 @@ def handle_events():
 
 def enter():
     Fu_Va.running = True
-    global Player, Background, Portal_Up, Portal_Right, HP, Pause
+    global Player, Background, Portal_Up, Portal_Right, HP, Pause, Unknown, Button_Unknown
     Background = Home_Stage()
     Portal_Up = Object.Portal('../Object/ETC/Portal_UP.png', 400, 507)
     Portal_Right = Object.Portal('../Object/ETC/Portal_RIGHT.png', 703, 300)
+    Unknown = Object.Unknown(450, 300)
+    Button_Unknown = Interact()
     ########################아래 줄은 항상 마지막에(객체 추가 후 그려야됨)#################################
+    # 인터페이스나 Player을 받아야 하는 객체를 여기에 쓰는 것임
     Pause = Effect.Pause()
     if Fu_Va.first_judge:
         Player = Player_Character(Fu_Va.first_x, Fu_Va.first_y, 1)
@@ -87,7 +95,7 @@ def enter():
 
 def exit():
     Fu_Va.running = False
-    global Player, Background, Portal_Up, Portal_Right, HP, Pause
+    global Player, Background, Portal_Up, Portal_Right, HP, Pause, Unknown, Button_Unknown
     Fu_Va.Draw_Enter_Lab_Stage()
     del Player
     del Background
@@ -95,12 +103,15 @@ def exit():
     del Portal_Right
     del HP
     del Pause
+    del Unknown
+    del Button_Unknown
 
 
 def update():
     if Fu_Va.running:
         Player.update()
         HP.update(Player)
+        Button_Unknown.update(Player, Unknown)
 
         Portal_Up.update()   # 포탈 업데이트는 항상 마지막에(exit하면서 다른 객체들이 삭제되기 때문에 이 밑에 다른 객체 update가 있으면 오류남)
         Fu_Va.Portal_Right_update()   # 포탈 업데이트는 항상 마지막에(exit하면서 다른 객체들이 삭제되기 때문에 이 밑에 다른 객체 update가 있으면 오류남)
@@ -111,6 +122,8 @@ def draw_world():
     Portal_Up.draw()
     Portal_Right.draw()
     Player.draw()
+    Unknown.draw()
+    Button_Unknown.draw(Unknown, 20)
     # 인터페이스들은 가장 위에 그려지게끔
     HP.draw()
     Pause.draw()
