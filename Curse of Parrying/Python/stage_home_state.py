@@ -21,6 +21,11 @@ class Fu_Va:
         Portal_Right.check_enter(Player, stage_lab_state, 24, 48, 0, 55,'stage_home', 'stage_lab')
 
     @staticmethod
+    def Portal_UP_update():
+        Portal_Right.update()
+        Portal_Right.check_enter(Player, stage_lab_state, 24, 48, 0, 55, 'stage_home', 'stage_1')
+
+    @staticmethod
     def Draw_Enter_This_Stage():
         enter_lab = load_image('../BackGround/Lab_Enter_2.png')
         for i in range(11):
