@@ -151,9 +151,11 @@ class Player_Character:
         self.event_que = []
         self.cur_state = IDLE
         self.cur_state.enter(self, None)
+        self.hit = None
 
     def update(self):
         self.cur_state.do(self)
+        self.hit = None
 
         if self.cur_state != PARRYING:
             if self.event_que:
@@ -165,7 +167,7 @@ class Player_Character:
     def draw(self):
         self.cur_state.draw(self)
         if self.HP <= 0:  # 죽음 확인 (아마 함수로 수정해야하지 않을까 싶음)
-            self.x, self.y = 400,300
+            self.x, self.y = 400, 300
             self.HP = 100
 
     def add_event(self, event):
@@ -183,9 +185,19 @@ class Player_Character:
                     if self.x - 30 < i.x < self.x + 30 and self.y - 50 < i.y < self.y + 10:
                         object_List.remove(i)
                         i.monster.HP -= self.ATK
+                        self.hit = False
         else:
             if object_List:
                 for i in object_List:
                     if self.x - 30 < i.x < self.x + 30 and self.y - 50 < i.y < self.y + 10:
                         object_List.remove(i)
                         self.HP -= i.damage
+                        self.hit = True
+
+    def cur_name(self):
+        if self.cur_state == IDLE:
+            return 'IDLE'
+        elif self.cur_state == RUN:
+            return 'RUN'
+        elif self.cur_state == PARRYING:
+            return 'PARRYING'
