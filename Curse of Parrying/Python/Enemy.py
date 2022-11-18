@@ -42,32 +42,6 @@ class Test_Monster:
         else:
             self.summon = True
 
-class Test_Monster_Effect:
-    def __init__(self, x = 0, y = 0):
-        self.x, self.y, self.frame, self.delay = x, y, 0, 0
-        self.image = load_image('../Object/Enemy/Test/Effect.png')
-        self.first = True
-        self.damage = 20
-        self.monster = None
-
-    def draw(self):
-        self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
-
-    def update(self):
-        self.delay += 1
-        if self.delay > 100:
-            self.delay = 0
-        if self.delay % 4 == 0:
-            self.frame = (self.frame + 1) % 4
-        self.x += 1  # 이건 속도 리팩토리 할 때 고쳐야함
-
-    def set_xy(self, monster):
-        if self.first:
-            self.x = monster.x + 30
-            self.y = monster.y
-            self.monster = monster
-            self.first = False
-
 
 
 #

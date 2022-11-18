@@ -7,6 +7,7 @@ import Object
 import Enemy
 from Interact import Interact
 import Shield
+import Effect
 
 
 
@@ -53,7 +54,7 @@ class Fu_Va:
     @staticmethod
     def draw_monster_effect():
         if Test_Monster.attack:
-            Test_Monster_Effect.append(Enemy.Test_Monster_Effect())
+            Test_Monster_Effect.append(Effect.Test_Monster_Effect())
         if Test_Monster_Effect:
             for i in Test_Monster_Effect:
                 if i.x > 600:
@@ -97,10 +98,11 @@ Portal_Left = Object.Portal  # 오른쪽 포탈
 Monster_Box = Object.Test_Monster_Box  # 테스트 몬스터 소환 오브젝트
 Button_MonsterBox = Interact  # 몬스터 박스 상호작용
 Test_Monster = Enemy.Test_Monster  # 테스트 몬스터
-Test_Monster_Effect = Enemy.Test_Monster_Effect  # 테스트 몬스터의 공격 이펙트
+Test_Monster_Effect = Effect.Test_Monster_Effect  # 테스트 몬스터의 공격 이펙트
 Shields = Shield.Shield  # 방패들
 Button_Shield = Interact  # 방패 상호작용
-
+HP = Effect.HP  # 플레이어 HP
+Pause = Effect.Pause  # 일시정지 버튼
 ############### enter에서 한번더 선언, exit에서 삭제###############################
 
 def handle_events():
@@ -120,7 +122,7 @@ def handle_events():
 
 def enter():
     Fu_Va.running = True
-    global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox, Test_Monster, Test_Monster_Effect, Shields, Button_Shield
+    global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox, Test_Monster, Test_Monster_Effect, Shields, Button_Shield, HP, Pause
     if Fu_Va.first_judge:
         Player = Player_Character(Fu_Va.first_x, Fu_Va.first_y, 1)
     else:
@@ -137,13 +139,15 @@ def enter():
                Shield.Shield(340, 520, '../Object/Shield/Shield_GukPongShield.png'), Shield.Shield(400, 520, '../Object/Shield/Shield_LockShield.png'),
                Shield.Shield(460, 520, '../Object/Shield/Shield_SoulShield.png'), Shield.Shield(520, 520, '../Object/Shield/Shield_ToyShield.png')]
     Button_Shield = [Interact() for i in range(8)]
+    HP = Effect.HP(Player)
+    Pause = Effect.Pause()
     ########################아래 6줄은 항상 마지막에(객체 추가 후 그려야됨)#################################
     Fu_Va.Draw_Enter_This_Stage()
 
 
 def exit():
     Fu_Va.running = False
-    global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox, Test_Monster, Test_Monster_Effect, Shields, Button_Shield
+    global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox, Test_Monster, Test_Monster_Effect, Shields, Button_Shield, HP, Pause
     Fu_Va.Draw_Enter_Home_Stage()
     del Player
     del Background
@@ -154,6 +158,8 @@ def exit():
     del Test_Monster_Effect
     del Shields
     del Button_Shield
+    del HP
+    del Pause
 
 
 def update():
@@ -164,6 +170,7 @@ def update():
         Fu_Va.update_monster_effect()
         Fu_Va.update_Shield()
         Fu_Va.update_Button_Shield()
+        HP.update(Player)
         Fu_Va.Portal_Left_update()  # 포탈 업데이트는 항상 마지막에(exit하면서 다른 객체들이 삭제되기 때문에 이 밑에 다른 객체 update가 있으면 오류남)
 
 
@@ -177,6 +184,10 @@ def draw_world():
     Fu_Va.draw_Shield()
     Player.draw()
     Fu_Va.draw_Button_Shield()
+
+    # 인터페이스들은 가장 위에 그려지게끔
+    HP.draw()
+    Pause.draw()
 
 
 def draw():

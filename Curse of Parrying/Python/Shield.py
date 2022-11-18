@@ -34,7 +34,10 @@ class Shield:
                 state_name = Player.cur_name()
                 if state_name == 'PARRYING':
                     if Player.hit == False:  # 1회만 회복되도록 처치 ( Player.check_hit 에서 .hit을 패링 시 False로 하고, 이 함수를 실행, Player.update에서 hit을 다시 None으로 조정함으로 반복가능~
-                        Player.HP += 10
+                        if Player.HP < 95:
+                            Player.HP += 10
+                        elif Player.HP == 95:
+                            Player.HP += 5
         elif self.name == '../Object/Shield/Shield_CarShield.png':  # 어디서 많이 본 방패 - 자동차 소환 (투사체 삭제, 데미지)
             pass
         elif self.name == '../Object/Shield/Shield_DragonShield.png':  # 드래곤실드 - 전방에 브레스
