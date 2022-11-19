@@ -28,19 +28,19 @@ class RUN:
     def enter(self, event):
         if event == RD:
             self.dir_x += 1
-        elif event == LD:
+        if event == LD:
             self.dir_x -= 1
-        elif event == UD:
+        if event == UD:
             self.dir_y += 1
-        elif event == DD:
+        if event == DD:
             self.dir_y -= 1
-        elif event == RU:
+        if event == RU:
             self.dir_x -= 1
-        elif event == LU:
+        if event == LU:
             self.dir_x += 1
-        elif event == UU:
+        if event == UU:
             self.dir_y -= 1
-        elif event == DU:
+        if event == DU:
             self.dir_y += 1
 
     @staticmethod
@@ -130,8 +130,8 @@ key_event_table = {
 }
 
 next_state = {
-    IDLE: {RU: IDLE, LU: IDLE, UU: IDLE, DU: IDLE, RD: RUN, LD: RUN, UD: RUN, DD: RUN, XD: PARRYING},
-    RUN: {RU: IDLE, LU: IDLE, UU: IDLE, DU: IDLE, RD: IDLE, LD: IDLE, UD: IDLE, DD: IDLE, XD: PARRYING},
+    IDLE: {RU: RUN, LU: RUN, UU: RUN, DU: RUN, RD: RUN, LD: RUN, UD: RUN, DD: RUN, XD: PARRYING},
+    RUN: {RU: RUN, LU: RUN, UU: RUN, DU: RUN, RD: RUN, LD: RUN, UD: RUN, DD: RUN, XD: PARRYING},
     PARRYING: {RU: PARRYING, LU: PARRYING, UU: PARRYING, DU: PARRYING, RD: PARRYING, LD: PARRYING, UD: PARRYING,
                DD: PARRYING, XD: PARRYING}
 }
@@ -161,12 +161,15 @@ class Player_Character:
             if self.event_que:
                 event = self.event_que.pop()
                 self.cur_state.exit(self)
-                self.cur_state = next_state[self.cur_state][event]
+                if self.cur_state != IDLE and self.dir_x == 0 and self.dir_y == 0:
+                    self.cur_state = IDLE
+                else:
+                    self.cur_state = next_state[self.cur_state][event]
                 self.cur_state.enter(self, event)
 
     def draw(self):
         self.cur_state.draw(self)
-        draw_rectangle(self.x-5, self.y-5, self.x+5, self.y+5)
+        # draw_rectangle(self.x-2, self.y-2, self.x+2, self.y+2)
         if self.HP <= 0:  # 죽음 확인 (아마 함수로 수정해야하지 않을까 싶음)
             self.x, self.y = 400, 300
             self.HP = 100
