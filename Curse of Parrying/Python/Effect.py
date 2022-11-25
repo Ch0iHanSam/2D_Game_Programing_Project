@@ -37,6 +37,9 @@ class Lego:  # 미완 - 장난감 방패에 들어갈 것임
     def draw(self):
         self.image.draw(self.x, self.y)
 
+    def update(self):
+        pass
+
     def check_hit(self, Target):
         if self.x - 10 < Target.x < self.x + 10 and self.y < Target.y < self.y + 20:
             Target.HP -= self.damage
@@ -45,6 +48,7 @@ class Lego:  # 미완 - 장난감 방패에 들어갈 것임
 #HP
 class HP:
     def __init__(self, Player):
+        self.Player = Player
         if Player.HP == 100:
             self.image = load_image('../Effect/Character/HP/HP=100.png')
         elif Player.HP == 95:
@@ -88,46 +92,46 @@ class HP:
         self.x = 110
         self.y = 490
 
-    def update(self, Player):
-        if Player.HP == 100:
+    def update(self):
+        if self.Player.HP == 100:
             self.image = load_image('../Effect/Character/HP/HP=100.png')
-        elif Player.HP == 95:
+        elif self.Player.HP == 95:
             self.image = load_image('../Effect/Character/HP/HP=95.png')
-        elif Player.HP == 90:
+        elif self.Player.HP == 90:
             self.image = load_image('../Effect/Character/HP/HP=90.png')
-        elif Player.HP == 85:
+        elif self.Player.HP == 85:
             self.image = load_image('../Effect/Character/HP/HP=85.png')
-        elif Player.HP == 80:
+        elif self.Player.HP == 80:
             self.image = load_image('../Effect/Character/HP/HP=80.png')
-        elif Player.HP == 75:
+        elif self.Player.HP == 75:
             self.image = load_image('../Effect/Character/HP/HP=75.png')
-        elif Player.HP == 70:
+        elif self.Player.HP == 70:
             self.image = load_image('../Effect/Character/HP/HP=70.png')
-        elif Player.HP == 65:
+        elif self.Player.HP == 65:
             self.image = load_image('../Effect/Character/HP/HP=65.png')
-        elif Player.HP == 60:
+        elif self.Player.HP == 60:
             self.image = load_image('../Effect/Character/HP/HP=60.png')
-        elif Player.HP == 55:
+        elif self.Player.HP == 55:
             self.image = load_image('../Effect/Character/HP/HP=55.png')
-        elif Player.HP == 50:
+        elif self.Player.HP == 50:
             self.image = load_image('../Effect/Character/HP/HP=50.png')
-        elif Player.HP == 45:
+        elif self.Player.HP == 45:
             self.image = load_image('../Effect/Character/HP/HP=45.png')
-        elif Player.HP == 40:
+        elif self.Player.HP == 40:
             self.image = load_image('../Effect/Character/HP/HP=40.png')
-        elif Player.HP == 35:
+        elif self.Player.HP == 35:
             self.image = load_image('../Effect/Character/HP/HP=35.png')
-        elif Player.HP == 30:
+        elif self.Player.HP == 30:
             self.image = load_image('../Effect/Character/HP/HP=30.png')
-        elif Player.HP == 25:
+        elif self.Player.HP == 25:
             self.image = load_image('../Effect/Character/HP/HP=25.png')
-        elif Player.HP == 20:
+        elif self.Player.HP == 20:
             self.image = load_image('../Effect/Character/HP/HP=20.png')
-        elif Player.HP == 15:
+        elif self.Player.HP == 15:
             self.image = load_image('../Effect/Character/HP/HP=15.png')
-        elif Player.HP == 10:
+        elif self.Player.HP == 10:
             self.image = load_image('../Effect/Character/HP/HP=10.png')
-        elif Player.HP == 5:
+        elif self.Player.HP == 5:
             self.image = load_image('../Effect/Character/HP/HP=5.png')
 
     def draw(self):
@@ -141,3 +145,6 @@ class Pause:
 
     def draw(self):
         self.image.draw(self.x, self.y, 100, 100)
+
+    def update(self):
+        pass

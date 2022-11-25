@@ -61,5 +61,8 @@ class Unknown:
     def draw(self):
         self.image.draw(self.x, self.y)
 
+    def update(self):
+        pass
+
     def act(self):
         game_framework.push_state(conversation_state)
