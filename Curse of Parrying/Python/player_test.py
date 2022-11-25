@@ -204,8 +204,3 @@ class Player_Character:
             return 'RUN'
         elif self.cur_state == PARRYING:
             return 'PARRYING'
-
-    def set_xy(self, x, y, face):
-        self.x = x
-        self.y = y
-        self.face_dir = face

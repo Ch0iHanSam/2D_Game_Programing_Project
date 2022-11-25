@@ -9,13 +9,11 @@ import Enemy
 from Interact import Interact
 import Shield
 import Effect
-
+import server
 
 
 class Fu_Va:
     running = True
-    first_x, first_y = 400, 330
-    first_judge = False
 
 
     @staticmethod
@@ -93,7 +91,7 @@ class Fu_Va:
             i.handle_event(event)
 
 ################### 생성되는 객체들 선언부 #####################################
-Player = Player_Character  # 플레이어
+Player = server.Player  # 플레이어
 Background = Home_Stage  # 배경
 Portal_Left = Object.Portal  # 오른쪽 포탈
 Monster_Box = Object.Test_Monster_Box  # 테스트 몬스터 소환 오브젝트
@@ -127,10 +125,8 @@ def handle_events():
 def enter():
     Fu_Va.running = True
     global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox, Test_Monster, Test_Monster_Effect, Shields, Button_Shield, HP, Pause
-    if Fu_Va.first_judge:
-        Player = Player_Character(Fu_Va.first_x, Fu_Va.first_y, 1)
-    else:
-        Player = Player_Character(120, 330, 1)
+    Player = server.Player
+    Player.set_xy(120, 330, 1)
     Background = Home_Stage()
     Portal_Left = Object.Portal('../Object/ETC/Portal_LEFT.png', 97, 300)
     Button_MonsterBox = Interact()
@@ -153,7 +149,7 @@ def exit():
     Fu_Va.running = False
     global Player, Background, Portal_Left, Monster_Box, Button_MonsterBox, Test_Monster, Test_Monster_Effect, Shields, Button_Shield, HP, Pause
     Fu_Va.Draw_Enter_Home_Stage()
-    del Player
+    # del Player
     del Background
     del Portal_Left
     del Monster_Box

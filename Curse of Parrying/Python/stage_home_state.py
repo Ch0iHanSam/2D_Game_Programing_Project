@@ -2,13 +2,13 @@ from pico2d import *
 import game_framework
 import stage_lab_state
 import pause_state
-import stage_1_state
+import stage_forest_state
 from Player import Player_Character
 from Background import Home_Stage
 import Object
 import Effect
 from Interact import Interact
-
+import server
 
 class Fu_Va:
     running = True
@@ -19,11 +19,11 @@ class Fu_Va:
         Portal_Right.update()
         Portal_Up.update()
         if Portal_Right.x + 24 < Player.x < Portal_Right.x + 48 and Portal_Right.y < Player.y < Portal_Right.y + 55:
-            Portal_Up.check_enter(Player, stage_1_state, -25, 25, 45, 85, 'stage_home', 'stage_1')
+            Portal_Up.check_enter(Player, stage_forest_state, -25, 25, 45, 85, 'stage_home', 'stage_1')
             Portal_Right.check_enter(Player, stage_lab_state, 24, 48, 0, 55,'stage_home', 'stage_lab')
         elif Portal_Up.x - 25 < Player.x < Portal_Up.x + 25 and Portal_Up.y + 45 < Player.y < Portal_Up.y + 85:
             Portal_Right.check_enter(Player, stage_lab_state, 24, 48, 0, 55, 'stage_home', 'stage_lab')
-            Portal_Up.check_enter(Player, stage_1_state, -25, 25, 45, 85, 'stage_home', 'stage_1')
+            Portal_Up.check_enter(Player, stage_forest_state, -25, 25, 45, 85, 'stage_home', 'stage_1')
 
     @staticmethod
     def Draw_Enter_This_Stage():
@@ -61,7 +61,7 @@ class Fu_Va:
 
 
 ################### 생성되는 객체들 선언부 #####################################
-Player = Player_Character  # 플레이어
+Player = server.Player  # 플레이어
 Background = Home_Stage  # 배경
 Portal_Up = Object.Portal  # 위쪽 포탈
 Portal_Right = Object.Portal  # 오른쪽 포탈
@@ -100,14 +100,18 @@ def enter():
     # 인터페이스나 Player을 받아야 하는 객체를 여기에 쓰는 것임
     Pause = Effect.Pause()
     if game_framework.ex_state is None:
-        Player = Player_Character(Fu_Va.first_x, Fu_Va.first_y, 1)
+        server.Player = Player_Character(0, 0, 1)
+        Player = server.Player
+        Player.set_xy(Fu_Va.first_x, Fu_Va.first_y, 1)
         HP = Effect.HP(Player)
     elif game_framework.ex_state == stage_lab_state:
-        Player = Player_Character(680, 330, -1)
+        Player = server.Player
+        Player.set_xy(680, 330, -1)
         HP = Effect.HP(Player)
         Fu_Va.Draw_Enter_This_Stage()
-    elif game_framework.ex_state == stage_1_state:
-        Player = Player_Character(400, 520, 1)
+    elif game_framework.ex_state == stage_forest_state:
+        Player = server.Player
+        Player.set_xy(400, 520, 1)
         HP = Effect.HP(Player)
         Fu_Va.Draw_Enter_This_Stage()
 
@@ -118,7 +122,7 @@ def exit():
     global Player, Background, Portal_Up, Portal_Right, HP, Pause, Unknown, Button_Unknown
     Fu_Va.Draw_Enter_Lab_Stage()
     Fu_Va.Draw_Enter_Stage_1()
-    del Player
+    # del Player
     del Background
     del Portal_Up
     del Portal_Right

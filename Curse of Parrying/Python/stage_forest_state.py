@@ -9,6 +9,8 @@ import Enemy
 from Interact import Interact
 import Shield
 import Effect
+import player_test
+import server
 
 
 
@@ -50,7 +52,7 @@ class Fu_Va:
         # Player.check_hit(Test_Monster_Effect)  # 몬스터 소환한 뒤에 설정 다시 해줘야함
 
 ################### 생성되는 객체들 선언부 #####################################
-Player = Player_Character  # 플레이어
+Player = server.Player  # 플레이어
 Background = Home_Stage  # 배경
 Portal_Down = Object.Portal # 포탈
 HP = Effect.HP  # 플레이어 HP
@@ -75,7 +77,8 @@ def handle_events():
 def enter():
     Fu_Va.running = True
     global Player, Background, Portal_Down, HP, Pause
-    Player = Player_Character(400, 120, 1)
+    Player = server.Player
+    Player.set_xy(400, 120, 1)
     Background = Home_Stage()
     Portal_Down = Object.Portal('../Object/ETC/Portal_Down.png', 400, 95)
     # 인터페이스
@@ -130,7 +133,7 @@ def resume():
 
 # 게임 실행
 def test_self():
-    import stage_1_state
+    import stage_forest_state
 
     pico2d.open_canvas()
     game_framework.run(stage_1_state)
