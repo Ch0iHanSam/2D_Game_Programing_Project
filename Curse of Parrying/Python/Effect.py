@@ -2,12 +2,12 @@ from pico2d import *
 import game_framework
 
 class Test_Monster_Effect:
-    def __init__(self, x = 0, y = 0):
+    def __init__(self, x = 0, y = 0, monster = None):
         self.x, self.y, self.frame, self.delay = x, y, 0, 0
         self.image = load_image('../Object/Enemy/Test/Effect.png')
         self.first = True
         self.damage = 5
-        self.monster = None
+        self.monster = monster
 
     def draw(self):
         self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)

@@ -1,4 +1,5 @@
 from pico2d import *
+import game_world
 
 
 class IDLE:
@@ -151,6 +152,7 @@ class Player_Character:
         self.cur_state = IDLE
         self.cur_state.enter(self, None)
         self.hit = None
+        self.exist = True
 
     def update(self):
         self.cur_state.do(self)
@@ -181,21 +183,19 @@ class Player_Character:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
 
-    def check_hit(self, object_List):
+    def check_hit(self):
         if self.cur_state == PARRYING:
-            if object_List:
-                for i in object_List:
-                    if self.x - 30 < i.x < self.x + 30 and self.y - 50 < i.y < self.y + 10:
-                        object_List.remove(i)
-                        i.monster.HP -= self.ATK
-                        self.hit = False
+            for i in game_world.objects[3]:
+                if self.x - 30 < i.x < self.x + 30 and self.y - 50 < i.y < self.y + 10:
+                    game_world.remove_object(i)
+                    i.monster.HP -= self.ATK
+                    self.hit = False  # 패링 성공
         else:
-            if object_List:
-                for i in object_List:
-                    if self.x - 30 < i.x < self.x + 30 and self.y - 50 < i.y < self.y + 10:
-                        object_List.remove(i)
-                        self.HP -= i.damage
-                        self.hit = True
+            for i in game_world.objects[3]:
+                if self.x - 30 < i.x < self.x + 30 and self.y - 50 < i.y < self.y + 10:
+                    game_world.remove_object(i)
+                    self.HP -= i.damage
+                    self.hit = True  # 패링 실패(공격 맞음)
 
     def cur_name(self):
         if self.cur_state == IDLE:
