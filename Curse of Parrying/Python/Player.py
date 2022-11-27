@@ -1,11 +1,12 @@
 from pico2d import *
 import game_world
-
+import game_framework
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
-
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 
 class IDLE:
@@ -62,8 +63,8 @@ class RUN:
             self.delay = 0
         if self.delay % 5 == 0:
             self.frame = (self.frame + 1) % 8
-        self.x += self.dir_x * 2.5  # 속도 리팩토링? 할 때 고치기!
-        self.y += self.dir_y * 2.5
+        self.x += self.dir_x * RUN_SPEED_PPS * game_framework.frame_time
+        self.y += self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
         self.x = clamp(50, self.x, 750)
         self.y = clamp(78, self.y, 578)
 

@@ -1,3 +1,6 @@
+import time
+frame_time = 0.0
+
 class GameState:
     def __init__(self, state):
         self.enter = state.enter
@@ -95,10 +98,17 @@ def run(start_state):
 
     stack.append(start_state)  # start_state로 지정해놓은 state 추가하기
     stack[-1].enter()  # start_state로 들어가기
+
+    current_time = time.time()
     while running:
         stack[-1].handle_events()  # 현재 state의 진행
         stack[-1].update()
         stack[-1].draw()  # state 삭제할 때까지 반복
+        global frame_time
+        frame_time = time.time() - current_time
+        frame_rate = 1.0 / frame_time
+        current_time += frame_time
+        # print(f'Frame Time: {frame_time}, Frame Rate: {frame_rate}')
 
     while (len(stack) > 0):
         stack[-1].exit() # 게임 진행이 끝났는데 state가 남아있다면 전부다 나가고 삭제하기

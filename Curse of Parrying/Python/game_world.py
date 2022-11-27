@@ -1,11 +1,12 @@
 # layer 0 : Background Objects
 # layer 1 : Foreground Objects
 # layer 2 : Shields
-# layer 3 : Attack Effects
-# layer 4 : Button Objects
-# layer 5 : UI Objects
+# layer 3 : Monsters
+# layer 4 : Attack Effects
+# layer 5 : Button Objects
+# layer 6 : UI Objects
 
-objects = [ [], [], [], [], [], []]
+objects = [ [], [], [], [], [], [], [] ]
 
 def add_object(o, depth):  # 한 요소 해당 레이어(depth)에 추가
     objects[depth].append(o)

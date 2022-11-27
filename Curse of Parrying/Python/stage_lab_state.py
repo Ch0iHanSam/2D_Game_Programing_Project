@@ -15,33 +15,10 @@ import game_world
 
 class Fu_Va:
 
-
     @staticmethod
     def Portal_Left_update():
-        server.Portal_Left.check_enter(Player, stage_home_state, -50, -20, 0, 57, 'stage_lab', 'stage_home')
+        server.Portal_Left.check_enter(Player, stage_home_state, -50, -20, 0, 57)
 
-
-    @staticmethod
-    def Draw_Enter_This_Stage():
-        enter_lab = load_image('../BackGround/Lab_Enter_2.png')
-        for i in range(11):
-            clear_canvas()
-            draw_world()
-            enter_lab.clip_draw(i*400, 0, 400, 300, 400, 300, 800, 600)
-            update_canvas()
-            delay(0.03)
-
-    @staticmethod
-    def Draw_Enter_Home_Stage():
-        enter_lab = load_image('../BackGround/Lab_Enter.png')
-        if server.Portal_Left.out_stage_name() == 'stage_home':
-            for i in range(14):
-                clear_canvas()
-                draw_world()
-                enter_lab.clip_draw(i * 400, 0, 400, 300, 400, 300, 800, 600)
-                update_canvas()
-                delay(0.03)
-            delay(0.5)
 
     @staticmethod
     def monster_attack_effect():
@@ -57,7 +34,7 @@ class Fu_Va:
 
     @staticmethod
     def handle_event_Button(event):
-        for i in game_world.objects[4]:
+        for i in game_world.objects[5]:
             i.handle_event(event)
 
 
@@ -90,11 +67,11 @@ def enter():
     server.Portal_Left = Object.Portal('../Object/ETC/Portal_LEFT.png', 97, 300)
     game_world.add_object(server.Portal_Left, 1)
     server.Test_Monster = Enemy.Test_Monster()
-    game_world.add_object(server.Test_Monster, 1)
+    game_world.add_object(server.Test_Monster, 3)
     server.Monster_Box = Object.Test_Monster_Box(400, 450, server.Test_Monster)  # 몬스터를 받아야하기 때문에 항상 몬스터 뒤에 위치
     game_world.add_object(server.Monster_Box, 1)
     server.Button_MonsterBox = Interact(Player, server.Monster_Box, 20)  # 몬스터박스 밑에
-    game_world.add_object(server.Button_MonsterBox, 4)
+    game_world.add_object(server.Button_MonsterBox, 5)
     # 0 : 파랑방패, 1 : 회복방패, 2 : 어디서많이본방패, 3 : 드래곤실드, 4 : 우리의 것, 5 : 자물쇠방패, 6 : 소울실드, 7 : 장난감방패
     server.Shields = [Shield.BlueShield(100, 520, Player), Shield.RedcrossShield(160, 520, Player),
                       Shield.CarShield(220, 520, Player), Shield.DragonShield(280, 520, Player),
@@ -105,17 +82,15 @@ def enter():
                             Interact(Player, server.Shields[2], 20), Interact(Player, server.Shields[3], 20),
                             Interact(Player, server.Shields[4], 20), Interact(Player, server.Shields[5], 20),
                             Interact(Player, server.Shields[6], 20), Interact(Player, server.Shields[7], 20)]
-    game_world.add_objects(server.Button_Shield, 4)
+    game_world.add_objects(server.Button_Shield, 5)
     server.HP = Effect.HP(Player)
-    game_world.add_object(server.HP, 5)
+    game_world.add_object(server.HP, 6)
     server.Pause = Effect.Pause()
-    game_world.add_object(server.Pause, 5)
-    ########################아래 6줄은 항상 마지막에(객체 추가 후 그려야됨)#################################
-    Fu_Va.Draw_Enter_This_Stage()
+    game_world.add_object(server.Pause, 6)
+
 
 
 def exit():
-    Fu_Va.Draw_Enter_Home_Stage()
     game_world.clear()
 
 

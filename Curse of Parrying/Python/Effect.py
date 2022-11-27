@@ -1,6 +1,12 @@
 from pico2d import *
 import game_framework
 
+PIXEL_PER_METER = (10.0 / 0.3)
+RUN_SPEED_KMPH = 10.0
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
 class Test_Monster_Effect:
     def __init__(self, x = 0, y = 0, monster = None):
         self.x, self.y, self.frame, self.delay = x, y, 0, 0
@@ -18,7 +24,7 @@ class Test_Monster_Effect:
             self.delay = 0
         if self.delay % 4 == 0:
             self.frame = (self.frame + 1) % 4
-        self.x += 1  # 이건 속도 리팩토리 할 때 고쳐야함
+        self.x += 1 * RUN_SPEED_PPS * game_framework.frame_time  # 나가는 방향이 한 방향이므로 1에 곱해줌
 
     def set_xy(self, monster):
         if self.first:

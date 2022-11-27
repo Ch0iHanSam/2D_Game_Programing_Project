@@ -18,30 +18,7 @@ import game_world
 class Fu_Va:
     @staticmethod
     def Portal_Down_update():
-        server.Portal_Down.check_enter(Player, stage_home_state, -25, 25, -30, 2, 'stage_forest', 'stage_home')
-
-
-    @staticmethod
-    def Draw_Enter_This_Stage():
-        enter_lab = load_image('../BackGround/Lab_Enter_2.png')
-        for i in range(11):
-            clear_canvas()
-            draw_world()
-            enter_lab.clip_draw(i*400, 0, 400, 300, 400, 300, 800, 600)
-            update_canvas()
-            delay(0.03)
-
-    @staticmethod
-    def Draw_Enter_Home_Stage():
-        enter_lab = load_image('../BackGround/Lab_Enter.png')  # 로딩창 다양하게 해서 수정해야함
-        if server.Portal_Down.out_stage_name() == 'stage_home':
-            for i in range(14):
-                clear_canvas()
-                draw_world()
-                enter_lab.clip_draw(i * 400, 0, 400, 300, 400, 300, 800, 600)
-                update_canvas()
-                delay(0.03)
-            delay(0.5)
+        server.Portal_Down.check_enter(Player, stage_home_state, -25, 25, -30, 2)
 
     @staticmethod
     def update_Player():
@@ -78,16 +55,13 @@ def enter():
 
     # 인터페이스
     server.HP = Effect.HP(Player)
-    game_world.add_object(server.HP, 5)
+    game_world.add_object(server.HP, 6)
     server.Pause = Effect.Pause()
-    game_world.add_object(server.Pause, 5)
+    game_world.add_object(server.Pause, 6)
 
-    # 마지막에 넣어야함
-    Fu_Va.Draw_Enter_This_Stage()
 
 
 def exit():
-    Fu_Va.Draw_Enter_Home_Stage()
     game_world.clear()
 
 
