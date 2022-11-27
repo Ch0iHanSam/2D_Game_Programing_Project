@@ -46,7 +46,7 @@ class Fu_Va:
             delay(0.5)
 
     @staticmethod
-    def Draw_Enter_Stage_forest():
+    def Draw_Enter_forest_Stage():
         enter_lab = load_image('../BackGround/Lab_Enter.png')
         if server.Portal_Up.out_stage_name() == 'stage_forest':
             for i in range(14):
@@ -57,16 +57,9 @@ class Fu_Va:
                 delay(0.03)
             delay(0.5)
 
-# # ################### 생성되는 객체들 선언부 #####################################
+
 Player = None  # 플레이어
-# Background = None  # 배경
-# Portal_Up = None  # 위쪽 포탈
-# Portal_Right = None  # 오른쪽 포탈
-# HP = None  # 플레이어 HP
-# Pause = None  # 일시정지 버튼
-# Unknown = None  # 물음표 NPC
-# Button_Unknown = None # NPC 상호작용
-# # ############### enter에서 한번더 선언, exit에서 삭제###############################
+
 
 
 def handle_events():
@@ -130,6 +123,7 @@ def enter():
 
 
 def exit():
+    Fu_Va.Draw_Enter_forest_Stage()
     Fu_Va.Draw_Enter_Lab_Stage()
     game_world.clear()
 

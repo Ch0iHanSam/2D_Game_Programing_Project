@@ -60,10 +60,9 @@ class Fu_Va:
         for i in game_world.objects[4]:
             i.handle_event(event)
 
-################### 생성되는 객체들 선언부 #####################################
-# 였는데 게임월드 구현하고 Player만 만들어놓는 용도...
-Player = None  # 플레이어
-############### enter에서 한번더 선언, exit에서 삭제###############################
+
+Player = None
+
 
 def handle_events():
     events = get_events()

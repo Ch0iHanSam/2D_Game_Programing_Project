@@ -2,6 +2,12 @@ from pico2d import *
 import game_world
 
 
+PIXEL_PER_METER = (10.0 / 0.3)
+RUN_SPEED_KMPH = 20.0
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+
+
+
 class IDLE:
     @staticmethod
     def enter(self, event):
