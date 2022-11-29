@@ -2,8 +2,13 @@ from pico2d import *
 import game_framework
 import random
 
+
+
+PIXEL_PER_METER = (10.0 / 0.3)
+
+
 class Test_Monster:
-    def __init__(self, x = 200, y = 100):
+    def __init__(self, x=200, y=100):
         self.x, self.y, self.frame = x, y, 0
         self.image = load_image('../Object/Enemy/Test/Enemy_Test_Attack.png')
         self.summon = False
@@ -14,7 +19,7 @@ class Test_Monster:
 
     def draw(self):
         if self.summon:
-            self.image.clip_draw(self.frame*68, 0, 68, 68, self.x, self.y)
+            self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
 
     def update(self):
         if self.HP <= 0:
@@ -24,8 +29,8 @@ class Test_Monster:
             self.delay += 1
             if self.delay == 100:
                 self.delay = 0
-            if self.delay%6 == 0:
-                self.frame = (self.frame+1)%10
+            if self.delay % 6 == 0:
+                self.frame = (self.frame + 1) % 10
             self.val_check_attack += 1
             if self.val_check_attack == 31:
                 self.attack = True  # 최초 5프레임 달성 시에만 (1 증가시키고 나서니까 화면 상에서는 5, 코드 상에선 6)소환 시키게끔 / 6*5=30
@@ -43,164 +48,57 @@ class Test_Monster:
             self.summon = True
 
 
+class Monster:
+    image = None
+    x, y, frame, delay, t_frame = None, None, 0, 0, None  # t_frame : total frame
+    HP = None  # 체력
+    ATK = None  # 공격력
+    SPEED_KMPH = 0
+    SPEED_PPS = SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+    first = True
+    dir = None
+    i = 0
+    turn = 0
 
-#
-# # 변수 모음 클래스
-# class Variable:
-#     def __init__(self):
-#         self.monster_judge = False
-#         self.magic_circle_summon_judge = False
-#         self.monster_summon = False
-#
-#
-# # 테스트 몬스터 클래스
-# class Test_Monster:
-#     def __init__(self):
-#         self.image = load_image('../Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Attack.png')
-#         self.x, self.y = 100, 200
-#         self.frame = 0
-#         self.summon = False
-#         self.delay = 0
-#         self.hp = 30
-#
-#     def draw(self):
-#         if self.summon:
-#             self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
-#
-#     def update(self):
-#         if self.summon:
-#             self.delay += 1
-#             if self.delay > 100:
-#                 self.delay = 0
-#             if self.delay % 4 == 0:
-#                 self.frame = (self.frame + 1) % 9
-#         if self.hp <= 0:
-#             print('테스트 몬스터가 처치되었습니다')
-#             self.summon = False
-#             self.hp = 30 #이후 몬스터를 리스트로 관리할 것이기 때문에 hp를 원래대로 돌려줄 필요는 없음
-#
-#
-# # 테스트용 몬스터의 공격 이펙트 클래스
-# class Test_Monster_Attack_Effect:
-#     def __init__(self, Monster):
-#         self.image = load_image('../Effect/Monster/Monster_Attack/Pigeon/Pigeon_Attack.png')
-#         self.x, self.y = 100, 200
-#         self.frame = 0
-#         self.judge = False
-#         self.delay = 0
-#         self.monster = Monster
-#
-#     def draw(self):
-#         if self.judge:
-#             if self.x < 700:
-#                 self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
-#
-#     def update(self, List):
-#         if self.judge:
-#             self.delay += 1
-#             if self.delay > 100:
-#                 self.delay = 0
-#             if self.delay % 4 == 0:
-#                 self.frame = (self.frame + 1) % 7
-#             self.x += 2
-#         if self.x > 700:
-#             List.remove(self)
-#
-#     def check_pop(self, List):
-#         if not self.judge:
-#             List.remove(self)
-#
-#
-# # 스테이지1 몬스터(멧돼지) 클래스
-# class Boar:
-#     def __init__(self):
-#         self.image = load_image('../Object/Enemy/Stage1/Boar/Enemy_Boar_Move.png')
-#         self.x, self.y = 0, 0
-#         self.frame = 0
-#         self.delay = 0
-#         self.hp = 50
-#
-#     def draw(self):
-#         self.image.clip_draw(68*self.frame, 0, 68, 68, self.x, self.y)
-#
-#     def update(self):
-#         self.delay += 1
-#         if self.delay > 100:
-#             self.delay = 0
-#         if self.delay % 4 == 0:
-#             self.frame = (self.frame + 1) % 6
-#
-#     def set_xy(self):
-#         self.x = random.randint(100, 701)
-#         self.y = random.randint(100, 501)
-#
-#
-# # 스테이지1 몬스터(토끼) 클래스
-# class Rabbit:
-#     def __init__(self):
-#         self.image = load_image('../Object/Enemy/Stage1/Rabbit/Enemey_Rabbit_Move.png')
-#         self.x, self.y = 0, 0
-#         self.frame = 0
-#         self.delay = 0
-#         self.hp = 30
-#
-#     def draw(self):
-#         self.image.clip_draw(68 * self.frame, 0, 68, 68, self.x, self.y)
-#
-#     def update(self):
-#         self.delay += 1
-#         if self.delay > 100:
-#             self.delay = 0
-#         if self.delay % 4 == 0:
-#             self.frame = (self.frame + 1) % 7
-#
-#     def set_xy(self):
-#         self.x = random.randint(100, 701)
-#         self.y = random.randint(100, 501)
-#
-#
-# # 스테이지1 몬스터(비둘기) 클래스
-# class Pigeon:
-#     def __init__(self):
-#         self.image = load_image('../Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Fly.png')
-#         self.x, self.y = 0, 0
-#         self.frame = 0
-#         self.delay = 0
-#         self.hp = 0
-#
-#     def draw(self):
-#         self.image.clip_draw(68 * self.frame, 0, 68, 68, self.x, self.y)
-#
-#     def update(self):
-#         self.delay += 1
-#         if self.delay > 100:
-#             self.delay = 0
-#         if self.delay % 4 == 0:
-#             self.frame = (self.frame + 1) % 7
-#
-#     def set_xy(self):
-#         self.x = random.randint(100, 701)
-#         self.y = random.randint(100, 501)
-#
-#
-# # 소환 마법진 클래스
-# class Summon:
-#     def __init__(self):
-#         self.image = load_image('../Effect/Monster/Effect_Summon.png')
-#         self.x, self.y = 0, 0
-#         self.frame = 0
-#         self.delay = 0
-#
-#     def draw(self):
-#         self.image.clip_draw(self.frame*68, 0, 68, 68, self.x, self.y)
-#
-#     def update(self):
-#         self.delay += 1
-#         if self.delay > 100:
-#             self.delay = 0
-#         if self.delay % 4 == 0:
-#             self.frame = (self.frame + 1) % 17
-#
-#     def set_xy(self, monster):
-#         self.x = monster.x
-#         self.y = monster.y
+    def draw(self):
+        if self.first:
+            magic_circle = load_image('../Effect/Monster/Effect_Summon.png')
+            magic_circle.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+            if self.frame == 15:
+                self.first = False
+        else:
+            self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+
+    def update(self):
+        if self.first:
+            self.delay = (self.delay + 1) % 2
+            if self.delay == 1:
+                self.frame = (self.frame + 1) % 16
+        else:
+            self.delay = (self.delay + 1) % 7  # delay는 1~6사이의 값 (frame증가 6배 늦춤)
+            if self.delay == 6:
+                self.frame = (self.frame + 1) % self.t_frame
+
+        if not self.first:
+            self.i += 1
+            t = self.i/10000
+            self.x = (1-t) * self.x + t * (self.dir[0])
+            self.y = (1-t) * self.y + t * (self.dir[1])
+
+        if self.i >= self.turn:
+            self.dir = [random.randint(50, 750), random.randint(50, 550)]
+            self.i = 0
+            self.turn = random.randint(100, 301)
+
+
+class Pigeon(Monster):
+    def __init__(self, t_frame):
+        self.image = load_image('../Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Fly.png')
+        self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, t_frame
+        self.HP = 30
+        self.ATK = 5
+        self.SPEED_KMPH = 15.0
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        self.first = True
+        self.dir = [random.randint(50, 750), random.randint(50, 550)]
+        self.turn = random.randint(20, 81)

@@ -9,7 +9,6 @@ import Enemy
 from Interact import Interact
 import Shield
 import Effect
-import player_test
 import server
 import game_world
 
@@ -52,6 +51,8 @@ def enter():
     game_world.add_object(server.Background, 0)
     server.Portal_Down = Object.Portal('../Object/ETC/Portal_Down.png', 400, 95)
     game_world.add_object(server.Portal_Down, 1)
+    server.Monsters = [Enemy.Pigeon(7) for i in range(10)]
+    game_world.add_objects(server.Monsters, 3)
 
     # 인터페이스
     server.HP = Effect.HP(Player)

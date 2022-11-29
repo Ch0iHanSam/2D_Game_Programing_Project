@@ -9,26 +9,26 @@ RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 
-class IDLE:
-    @staticmethod
-    def enter(self, event):
-        self.dir_x = 0
-        self.dir_y = 0
-
-    @staticmethod
-    def exit(self):
-        pass
-
-    @staticmethod
-    def do(self):  # 원래 함수의 update 함수 역할
-        pass
-
-    @staticmethod
-    def draw(self):
-        if self.face_dir == 1:  # 원래 함수의 exdir 변수 역할
-            self.image.clip_draw(2 * 68, 68, 68, 68, self.x, self.y)
-        else:
-            self.image.clip_draw(2 * 68, 0, 68, 68, self.x, self.y)
+# class IDLE:
+#     @staticmethod
+#     def enter(self, event):
+#         self.dir_x = 0
+#         self.dir_y = 0
+#
+#     @staticmethod
+#     def exit(self):
+#         pass
+#
+#     @staticmethod
+#     def do(self):  # 원래 함수의 update 함수 역할
+#         pass
+#
+#     @staticmethod
+#     def draw(self):
+#         if self.face_dir == 1:  # 원래 함수의 exdir 변수 역할
+#             self.image.clip_draw(2 * 68, 68, 68, 68, self.x, self.y)
+#         else:
+#             self.image.clip_draw(2 * 68, 0, 68, 68, self.x, self.y)
 
 
 class RUN:
@@ -84,10 +84,11 @@ class RUN:
                 self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
             elif self.face_dir < 0:  # 왼쪽 바라봄
                 self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
-        elif self.dir_x == 0:
-            self.cur_state.exit(self)
-            self.cur_state = IDLE
-            self.cur_state.enter(self, None)
+        if self.dir_x == 0 and self.dir_y == 0:
+            if self.face_dir == 1:  # 원래 함수의 exdir 변수 역할
+                self.image.clip_draw(2 * 68, 68, 68, 68, self.x, self.y)
+            else:
+                self.image.clip_draw(2 * 68, 0, 68, 68, self.x, self.y)
 
 
 class PARRYING:
@@ -137,7 +138,7 @@ key_event_table = {
 }
 
 next_state = {
-    IDLE: {RU: RUN, LU: RUN, UU: RUN, DU: RUN, RD: RUN, LD: RUN, UD: RUN, DD: RUN, XD: PARRYING},
+    # IDLE: {RU: RUN, LU: RUN, UU: RUN, DU: RUN, RD: RUN, LD: RUN, UD: RUN, DD: RUN, XD: PARRYING},
     RUN: {RU: RUN, LU: RUN, UU: RUN, DU: RUN, RD: RUN, LD: RUN, UD: RUN, DD: RUN, XD: PARRYING},
     PARRYING: {RU: PARRYING, LU: PARRYING, UU: PARRYING, DU: PARRYING, RD: PARRYING, LD: PARRYING, UD: PARRYING,
                DD: PARRYING, XD: PARRYING}
@@ -156,7 +157,7 @@ class Player_Character:
         self.Parrying = False
 
         self.event_que = []
-        self.cur_state = IDLE
+        self.cur_state = RUN
         self.cur_state.enter(self, None)
         self.hit = None
         self.exist = True
@@ -169,10 +170,7 @@ class Player_Character:
             if self.event_que:
                 event = self.event_que.pop()
                 self.cur_state.exit(self)
-                if self.cur_state != IDLE and self.dir_x == 0 and self.dir_y == 0:
-                    self.cur_state = IDLE
-                else:
-                    self.cur_state = next_state[self.cur_state][event]
+                self.cur_state = next_state[self.cur_state][event]
                 self.cur_state.enter(self, event)
 
     def draw(self):
@@ -205,7 +203,7 @@ class Player_Character:
                     self.hit = True  # 패링 실패(공격 맞음)
 
     def cur_name(self):
-        if self.cur_state == IDLE:
+        if self.dir_x == 0 and self.dir_y == 0:
             return 'IDLE'
         elif self.cur_state == RUN:
             return 'RUN'

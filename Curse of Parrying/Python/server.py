@@ -21,3 +21,6 @@ Button_Unknown = None  # NPC 상호작용
 Button_MonsterBox = None  # stage_lab의 몬스터박스 상호작용 버튼
 Test_Monster = None  # stage_lab의 테스트 몬스터
 Monster_Box = None  # stage_lab의 테스트 몬스터
+
+#stage_forest, beach, castle
+Monsters = None # 몬스터 리스트
