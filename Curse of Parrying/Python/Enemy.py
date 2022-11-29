@@ -57,8 +57,9 @@ class Monster:
     SPEED_PPS = SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
     first = True
     dir = None
-    i = 0
-    turn = 0
+    dir_counter = False
+    dir_cycle = 0
+
 
     def draw(self):
         if self.first:
@@ -80,15 +81,20 @@ class Monster:
                 self.frame = (self.frame + 1) % self.t_frame
 
         if not self.first:
-            self.i += 1
-            t = self.i/10000
-            self.x = (1-t) * self.x + t * (self.dir[0])
-            self.y = (1-t) * self.y + t * (self.dir[1])
+            self.x += self.dir[0] * self.SPEED_PPS * game_framework.frame_time
+            self.y += self.dir[1] * self.SPEED_PPS * game_framework.frame_time
 
-        if self.i >= self.turn:
-            self.dir = [random.randint(50, 750), random.randint(50, 550)]
-            self.i = 0
-            self.turn = random.randint(100, 301)
+            self.x = clamp(70, self.x, 720)
+            self.y = clamp(100, self.y, 550)
+
+
+            if get_time() % self.dir_cycle < 1:
+                if self.dir_counter:
+                    self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
+                    self.dir_counter = False
+                    self.dir_cycle = random.randint(2,3)
+            else:
+                self.dir_counter = True
 
 
 class Pigeon(Monster):
@@ -97,8 +103,8 @@ class Pigeon(Monster):
         self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, t_frame
         self.HP = 30
         self.ATK = 5
-        self.SPEED_KMPH = 15.0
+        self.SPEED_KMPH = 5.0
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         self.first = True
-        self.dir = [random.randint(50, 750), random.randint(50, 550)]
-        self.turn = random.randint(20, 81)
+        self.dir = [random.randint(-1,1), random.randint(-1,1)]
+        self.dir_cycle = random.randint(2, 3)
