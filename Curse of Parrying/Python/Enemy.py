@@ -50,15 +50,18 @@ class Test_Monster:
 
 class Monster:
     image = None
+    image_normal, image_attack = None, None
     x, y, frame, delay, t_frame = None, None, 0, 0, None  # t_frame : total frame
+    frame_normal, frame_attack = None, None
     HP = None  # 체력
     ATK = None  # 공격력
     SPEED_KMPH = 0
     SPEED_PPS = SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
     first = True
     dir = None
-    dir_counter = False
-    dir_cycle = 0
+    attack = False
+    behavior = False  # False : move, True : attack
+    move_end = 0
 
 
     def draw(self):
@@ -81,26 +84,52 @@ class Monster:
                 self.frame = (self.frame + 1) % self.t_frame
 
         if not self.first:
-            self.x += self.dir[0] * self.SPEED_PPS * game_framework.frame_time
-            self.y += self.dir[1] * self.SPEED_PPS * game_framework.frame_time
-
-            self.x = clamp(70, self.x, 720)
-            self.y = clamp(100, self.y, 550)
-
-
-            if get_time() % self.dir_cycle < 1:
-                if self.dir_counter:
-                    self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
-                    self.dir_counter = False
-                    self.dir_cycle = random.randint(2,3)
+            if self.behavior:
+                self.set_attack()
             else:
-                self.dir_counter = True
+                self.set_move()
+
+
+    def set_move(self):
+        self.image = load_image(self.image_normal)
+        self.t_frame = self.frame_normal
+
+        self.x += self.dir[0] * self.SPEED_PPS * game_framework.frame_time
+        self.y += self.dir[1] * self.SPEED_PPS * game_framework.frame_time
+
+        self.x = clamp(70, self.x, 720)
+        self.y = clamp(100, self.y, 550)
+
+
+        if int(get_time() % 6) == self.move_end:
+            self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
+            self.move_end = random.randint(2, 5)
+            self.behavior = True
+            self.frame = 0
+
+
+    def set_attack(self):
+        if self.frame == 3:
+            if not self.attack:  # 최초 1회만 어택 발동하게
+                self.image = load_image(self.image_attack)
+                self.t_frame = self.frame_attack
+                self.attack = True
+        else:
+            self.attack = False
+
+        if self.frame == self.frame_attack - 1:
+            self.behavior = False
+            self.frame = 0
 
 
 class Pigeon(Monster):
-    def __init__(self, t_frame):
+    def __init__(self):
         self.image = load_image('../Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Fly.png')
-        self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, t_frame
+        self.image_normal = '../Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Fly.png'
+        self.image_attack = '../Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Attack.png'
+        self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 7
+        self.frame_normal = 7
+        self.frame_attack = 9
         self.HP = 30
         self.ATK = 5
         self.SPEED_KMPH = 5.0
@@ -108,3 +137,4 @@ class Pigeon(Monster):
         self.first = True
         self.dir = [random.randint(-1,1), random.randint(-1,1)]
         self.dir_cycle = random.randint(2, 3)
+        self.move_end = random.randint(2, 5)
