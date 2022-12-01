@@ -155,12 +155,10 @@ class Player_Character:
         self.event_que = []
         self.cur_state = RUN
         self.cur_state.enter(self, None)
-        self.hit = None
         self.exist = True
 
     def update(self):
         self.cur_state.do(self)
-        self.hit = None
 
         if self.cur_state != PARRYING:
             if self.event_que:
@@ -171,7 +169,7 @@ class Player_Character:
 
     def draw(self):
         self.cur_state.draw(self)
-        # draw_rectangle(self.x-2, self.y-2, self.x+2, self.y+2)
+        draw_rectangle(self.x-15, self.y-35, self.x+15, self.y - 10)
         if self.HP <= 0:  # 죽음 확인 (아마 함수로 수정해야하지 않을까 싶음)
             self.x, self.y = 400, 300
             self.HP = 100
@@ -184,19 +182,14 @@ class Player_Character:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
 
-    def check_hit(self):
+    def handle_collision(self, b, group):
         if self.cur_state == PARRYING:
-            for i in game_world.objects[3]:
-                if self.x - 30 < i.x < self.x + 30 and self.y - 50 < i.y < self.y + 10:
-                    game_world.remove_object(i)
-                    i.monster.HP -= self.ATK
-                    self.hit = False  # 패링 성공
+            game_world.remove_object(b)
+            b.Monster.HP -= self.ATK
         else:
-            for i in game_world.objects[3]:
-                if self.x - 30 < i.x < self.x + 30 and self.y - 50 < i.y < self.y + 10:
-                    game_world.remove_object(i)
-                    self.HP -= i.damage
-                    self.hit = True  # 패링 실패(공격 맞음)
+            game_world.remove_object(b)
+            self.HP -= b.damage
+        pass
 
     def cur_name(self):
         if self.dir_x == 0 and self.dir_y == 0:
@@ -210,3 +203,6 @@ class Player_Character:
         self.x = x
         self.y = y
         self.face_dir = face
+
+    def get_bb(self):
+        return self.x - 15, self.y - 35, self.x + 15, self.y -10

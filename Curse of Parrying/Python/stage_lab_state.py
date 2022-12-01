@@ -23,19 +23,29 @@ class Fu_Va:
     @staticmethod
     def monster_attack_effect():
         if server.Test_Monster.attack:
-            game_world.add_object(Effect.Test_Monster_Effect(server.Test_Monster.x + 30, server.Test_Monster.y, server.Test_Monster), 3)
-        for i in game_world.objects[3]:
+            effect = Effect.Test_Monster_Effect(server.Test_Monster.x + 30, server.Test_Monster.y, server.Test_Monster)
+            game_world.add_object(effect, 4)
+            game_world.add_collision_pairs(None, effect, 'player:attack')
+        for i in game_world.objects[4]:
             if i.x > 600:
                 game_world.remove_object(i)
-
-    @staticmethod
-    def update_Player():
-        Player.check_hit()
 
     @staticmethod
     def handle_event_Button(event):
         for i in game_world.objects[5]:
             i.handle_event(event)
+
+    @staticmethod
+    def collide(a, b):
+        left_a, bottom_a, right_a, top_a = a.get_bb()
+        left_b, bottom_b, right_b, top_b = b.get_bb()
+
+        if left_a > right_b: return False
+        if right_a < left_b: return False
+        if top_a < bottom_b: return False
+        if bottom_a > top_b: return False
+
+        return True
 
 
 Player = None
@@ -88,6 +98,7 @@ def enter():
     server.Pause = Effect.Pause()
     game_world.add_object(server.Pause, 6)
 
+    game_world.add_collision_pairs( Player, None, 'player:attack')
 
 
 def exit():
@@ -98,7 +109,11 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    Fu_Va.update_Player()  # 캐릭터 피격/패링 확인
+    for a, b, group in game_world.all_collision_pairs():
+        if Fu_Va.collide(a, b):
+            a.handle_collision(b, group)
+            b.handle_collision(a, group)
+
     Fu_Va.Portal_Left_update()  # 포탈 업데이트는 항상 마지막에(exit하면서 다른 객체들이 삭제되기 때문에 이 밑에 다른 객체 update가 있으면 오류남)
 
 

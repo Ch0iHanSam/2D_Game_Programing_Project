@@ -6,6 +6,7 @@
 # layer 5 : Button Objects
 # layer 6 : UI Objects
 
+collision_group = { }
 objects = [ [], [], [], [], [], [], [] ]
 
 def add_object(o, depth):  # 한 요소 해당 레이어(depth)에 추가
@@ -18,6 +19,7 @@ def remove_object(o):
     for layer in objects:
         try:  # 이 try except 말고 if o in layer를 사용해도 됨
             layer.remove(o)
+            remove_collision_object(o)
             del o
             return
         except:
@@ -34,3 +36,33 @@ def clear():
         del o
     for layer in objects:
         layer.clear()
+
+def add_collision_pairs(a, b, group):
+
+    if group not in collision_group:
+        collision_group[group] = [ [], [] ]
+
+    if a:
+        if type(a) is list:
+            collision_group[group][1] += a
+        else:
+            collision_group[group][1].append(a)
+
+    if b:
+        if type(b) is list:
+            collision_group[group][0] += b
+        else:
+            collision_group[group][0].append(b)
+
+def all_collision_pairs():
+    for group, pairs in collision_group.items():
+        for a in pairs[0]:
+            for b in pairs[1]:
+                yield a, b, group
+
+def remove_collision_object(o):
+    for pairs in collision_group.values():
+        if o in pairs[0]:
+            pairs[0].remove(o)
+        if o in pairs[1]:
+            pairs[1].remove(o)

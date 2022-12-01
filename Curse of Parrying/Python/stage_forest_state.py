@@ -20,10 +20,6 @@ class Fu_Va:
     def Portal_Down_update():
         server.Portal_Down.check_enter(Player, stage_home_state, -25, 25, -30, 2)
 
-    @staticmethod
-    def update_Player():
-        Player.update()
-        # Player.check_hit(Test_Monster_Effect)  # 몬스터 소환한 뒤에 설정 다시 해줘야함
 
     @staticmethod
     def select_Monster():
@@ -45,11 +41,25 @@ class Fu_Va:
         for monster in game_world.objects[3]:
             if monster.attack:
                 if type(monster) == Enemy.Pigeon:
-                    game_world.add_object(Effect.Pigeon_Attack(monster, Player), 4)
+                    effect = Effect.Pigeon_Attack(monster, Player)
+                    game_world.add_object(effect, 4)
+                    game_world.add_collision_pairs(None, effect, 'player:attack')
                 elif type(monster) == Enemy.Boar:
                     pass
                 elif type(monster) == Enemy.Rabbit:
                     pass
+
+    @staticmethod
+    def collide(a, b):
+        left_a, bottom_a, right_a, top_a = a.get_bb()
+        left_b, bottom_b, right_b, top_b = b.get_bb()
+
+        if left_a > right_b: return False
+        if right_a < left_b: return False
+        if top_a < bottom_b: return False
+        if bottom_a > top_b: return False
+
+        return True
 
 
 Player = None  # 플레이어
@@ -86,6 +96,8 @@ def enter():
     server.Pause = Effect.Pause()
     game_world.add_object(server.Pause, 6)
 
+    # 충돌
+    game_world.add_collision_pairs(Player, None, 'player:attack')
 
 
 def exit():
@@ -95,6 +107,11 @@ def exit():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+
+    for a, b, group in game_world.all_collision_pairs():
+        if Fu_Va.collide(a, b):
+            a.handle_collision(b, group)
+            b.handle_collision(a, group)
 
     Fu_Va.add_Attack_Effect()
     Fu_Va.Portal_Down_update()  # 포탈 업데이트는 항상 마지막에(exit하면서 다른 객체들이 삭제되기 때문에 이 밑에 다른 객체 update가 있으면 오류남)

@@ -49,7 +49,7 @@ class Test_Monster:
 class Monster:
     image = None
     image_normal, image_attack = None, None
-    x, y, frame, delay, t_frame = None, None, 0, 0, None  # t_frame : total frame
+    x, y, frame, delay, t_frame = None, None, 0, get_time(), None  # t_frame : total frame
     frame_normal, frame_attack = None, None
     HP = None  # 체력
     ATK = None  # 공격력
@@ -60,7 +60,6 @@ class Monster:
     behavior = False  # False : move, True : attack
     move_end = None
     dir = None
-    time = None
     move_time = None
 
     def draw(self):
@@ -77,12 +76,12 @@ class Monster:
 
     def update(self):
         if self.first:
-            if get_time() - self.time > 0.005:
-                self.time = get_time()
+            if get_time() - self.delay > 0.005:
+                self.delay = get_time()
                 self.frame = (self.frame + 1) % 16
         else:
-            if get_time() - self.time > 0.1:
-                self.time = get_time()
+            if get_time() - self.delay > 0.1:
+                self.delay = get_time()
                 self.frame = (self.frame + 1) % self.t_frame
 
         if not self.first:
@@ -147,7 +146,6 @@ class Pigeon(Monster):
         self.first = True
         self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
         self.move_end = random.randint(2, 5)
-        self.time = get_time()
         self.move_time = 0
 
 
@@ -166,7 +164,6 @@ class Boar(Monster):
         self.first = True
         self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
         self.move_end = random.randint(2, 5)
-        self.time = get_time()
         self.move_time = 0
 
 class Rabbit(Monster):
@@ -184,5 +181,4 @@ class Rabbit(Monster):
         self.first = True
         self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
         self.move_end = random.randint(2, 5)
-        self.time = get_time()
         self.move_time = 0

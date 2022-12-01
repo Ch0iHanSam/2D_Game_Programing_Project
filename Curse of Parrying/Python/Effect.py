@@ -15,10 +15,11 @@ class Test_Monster_Effect:
         self.x, self.y, self.frame, self.delay = x, y, 0, 0
         self.image = load_image('../Object/Enemy/Test/Effect.png')
         self.first = True
+        self.Monster = monster
         self.damage = 5
-        self.monster = monster
 
     def draw(self):
+        draw_rectangle(self.x - 12, self.y - 10, self.x + 12, self.y + 5)
         self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
 
     def update(self):
@@ -29,16 +30,17 @@ class Test_Monster_Effect:
             self.frame = (self.frame + 1) % 4
         self.x += 1 * RUN_SPEED_PPS * game_framework.frame_time  # 나가는 방향이 한 방향이므로 1에 곱해줌
 
-    def set_xy(self, monster):
-        if self.first:
-            self.x = monster.x + 30
-            self.y = monster.y
-            self.monster = monster
-            self.first = False
+    def get_bb(self):
+        return self.x - 12, self.y - 10, self.x + 12, self.y + 5
+
+    def handle_collision(self, a, group):
+        pass
+
 
 
 class Monster_Attack_Effect:
     x, y, frame, t_frame, delay = None, None, 0, None, 0
+    min_x, min_y, max_x, max_y = 0, 0, 0, 0
     image = None
     Monster = None
     Player = None
@@ -49,16 +51,22 @@ class Monster_Attack_Effect:
 
     def draw(self):
         self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+        draw_rectangle(self.x - self.min_x, self.y - self.min_y, self.x + self.max_x, self.y + self.max_y)
 
     def update(self):
-        self.delay = (self.delay + 1) % 7
-        if self.delay == 6:
+        if get_time() - self.delay > 0.1:
+            self.delay = get_time()
             self.frame = (self.frame + 1) % self.t_frame
 
 
         self.x += math.cos(self.dir) * self.SPEED_PPS * game_framework.frame_time
         self.y += math.sin(self.dir) * self.SPEED_PPS * game_framework.frame_time
 
+    def get_bb(self):
+        return self.x - self.min_x, self.y - self.min_y, self.x + self.max_x, self.y + self.max_y
+
+    def handle_collision(self, b, group):
+        pass
 
 class Pigeon_Attack(Monster_Attack_Effect):
     def __init__(self, Monster, Player):
@@ -66,10 +74,12 @@ class Pigeon_Attack(Monster_Attack_Effect):
         self.Monster = Monster
         self.Player = Player
         self.x, self.y = self.Monster.x, self.Monster.y
-        self.frame, self.t_frame, self.delay = 0, 7, 0
+        self.min_x, self.min_y, self.max_x, self.max_y = 7,38,7,-7
+        self.frame, self.t_frame, self.delay = 0, 7, get_time()
         self.SPEED_KMPH = 15
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
-        self.dir = math.atan2((self.Player.x - self.Monster.x), (self.Player.y - self.Monster.y))
+        self.dir = math.atan2((self.Player.y - self.Monster.y), (self.Player.x - self.Monster.x))
+        self.damage = Monster.ATK
 
 
 # 방패 효과
