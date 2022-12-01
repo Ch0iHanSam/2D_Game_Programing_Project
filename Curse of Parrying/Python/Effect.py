@@ -1,5 +1,7 @@
 from pico2d import *
 import game_framework
+import game_world
+import math
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 10.0
@@ -7,6 +9,7 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
+# 몬스터 공격 이펙트
 class Test_Monster_Effect:
     def __init__(self, x = 0, y = 0, monster = None):
         self.x, self.y, self.frame, self.delay = x, y, 0, 0
@@ -34,6 +37,42 @@ class Test_Monster_Effect:
             self.first = False
 
 
+class Monster_Attack_Effect:
+    x, y, frame, t_frame, delay = None, None, 0, None, 0
+    image = None
+    Monster = None
+    Player = None
+    dir = None
+    SPEED_KMPH = 0
+    SPEED_PPS = SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+
+
+    def draw(self):
+        self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+
+    def update(self):
+        self.delay = (self.delay + 1) % 7
+        if self.delay == 6:
+            self.frame = (self.frame + 1) % self.t_frame
+
+
+        self.x += math.tan(self.dir) * self.SPEED_PPS * game_framework.frame_time
+        self.y += 1/math.tan(self.dir) * self.SPEED_PPS * game_framework.frame_time
+
+
+class Pigeon_Attack(Monster_Attack_Effect):
+    def __init__(self, Monster, Player):
+        self.image = load_image('../Effect/Monster/Monster_Attack/Pigeon/Pigeon_Attack.png')
+        self.Monster = Monster
+        self.Player = Player
+        self.x, self.y = self.Monster.x, self.Monster.y
+        self.frame, self.t_frame, self.delay = 0, 7, 0
+        self.SPEED_KMPH = 15
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        self.dir = math.atan2((self.Player.y - self.Monster.y), (self.Player.x - self.Monster.y))
+
+
+# 방패 효과
 class Lego:  # 미완 - 장난감 방패에 들어갈 것임
     def __init__(self, x = 0, y = 0):
         self.x, self.y = x, y
@@ -50,7 +89,8 @@ class Lego:  # 미완 - 장난감 방패에 들어갈 것임
         if self.x - 10 < Target.x < self.x + 10 and self.y < Target.y < self.y + 20:
             Target.HP -= self.damage
 
-#인터페이스
+
+# 인터페이스
 #HP
 class HP:
     def __init__(self, Player):

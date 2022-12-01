@@ -71,7 +71,10 @@ class Monster:
             if self.frame == 15:
                 self.first = False
         else:
-            self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+            if self.dir[0] > -1:
+                self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+            else:
+                self.image.clip_composite_draw(self.frame * 68, 0, 68, 68, 0, 'h', self.x, self.y, 68, 68)
 
     def update(self):
         if self.first:
@@ -131,8 +134,42 @@ class Pigeon(Monster):
         self.frame_normal = 7
         self.frame_attack = 9
         self.HP = 30
+        self.ATK = 10
+        self.SPEED_KMPH = 10.0
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        self.first = True
+        self.dir = [random.randint(-1,1), random.randint(-1,1)]
+        self.dir_cycle = random.randint(2, 3)
+        self.move_end = random.randint(2, 5)
+
+class Boar(Monster):
+    def __init__(self):
+        self.image = load_image('../Object/Enemy/Stage1/Boar/Enemy_Boar_Move.png')
+        self.image_normal = '../Object/Enemy/Stage1/Boar/Enemy_Boar_Move.png'
+        self.image_attack = '../Object/Enemy/Stage1/Boar/Enemy_Boar_Attack.png'
+        self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 6
+        self.frame_normal = 6
+        self.frame_attack = 16
+        self.HP = 60
         self.ATK = 5
         self.SPEED_KMPH = 5.0
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        self.first = True
+        self.dir = [random.randint(-1,1), random.randint(-1,1)]
+        self.dir_cycle = random.randint(2, 3)
+        self.move_end = random.randint(2, 5)
+
+class Rabbit(Monster):
+    def __init__(self):
+        self.image = load_image('../Object/Enemy/Stage1/Rabbit/Enemy_Rabbit_Move.png')
+        self.image_normal = '../Object/Enemy/Stage1/Rabbit/Enemy_Rabbit_Move.png'
+        self.image_attack = '../Object/Enemy/Stage1/Rabbit/Enemy_Rabbit_Attack.png'
+        self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 7
+        self.frame_normal = 7
+        self.frame_attack = 10
+        self.HP = 15
+        self.ATK = 15
+        self.SPEED_KMPH = 7.0
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         self.first = True
         self.dir = [random.randint(-1,1), random.randint(-1,1)]

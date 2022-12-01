@@ -11,6 +11,7 @@ import Shield
 import Effect
 import server
 import game_world
+import random
 
 
 
@@ -23,6 +24,32 @@ class Fu_Va:
     def update_Player():
         Player.update()
         # Player.check_hit(Test_Monster_Effect)  # 몬스터 소환한 뒤에 설정 다시 해줘야함
+
+    @staticmethod
+    def select_Monster():
+        server.Monsters = []
+
+        for i in range(10):
+            monster = random.randint(1,3)
+            if monster == 1:
+                server.Monsters.append(Enemy.Pigeon())
+            elif monster == 2:
+                server.Monsters.append(Enemy.Boar())
+            elif monster == 3:
+                server.Monsters.append(Enemy.Rabbit())
+
+        game_world.add_objects(server.Monsters, 3)
+
+    @staticmethod
+    def add_Attack_Effect():
+        for monster in game_world.objects[3]:
+            if monster.attack:
+                if type(monster) == Enemy.Pigeon:
+                    game_world.add_object(Effect.Pigeon_Attack(monster, Player), 4)
+                elif type(monster) == Enemy.Boar:
+                    pass
+                elif type(monster) == Enemy.Rabbit:
+                    pass
 
 
 Player = None  # 플레이어
@@ -51,8 +78,7 @@ def enter():
     game_world.add_object(server.Background, 0)
     server.Portal_Down = Object.Portal('../Object/ETC/Portal_Down.png', 400, 95)
     game_world.add_object(server.Portal_Down, 1)
-    server.Monsters = [Enemy.Pigeon() for i in range(10)]
-    game_world.add_objects(server.Monsters, 3)
+    Fu_Va.select_Monster()  # 몬스터 추가 (함수 내부에서 add_object까지 다 실행함)
 
     # 인터페이스
     server.HP = Effect.HP(Player)
@@ -70,6 +96,7 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
+    Fu_Va.add_Attack_Effect()
     Fu_Va.Portal_Down_update()  # 포탈 업데이트는 항상 마지막에(exit하면서 다른 객체들이 삭제되기 때문에 이 밑에 다른 객체 update가 있으면 오류남)
 
 
