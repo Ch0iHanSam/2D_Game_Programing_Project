@@ -106,6 +106,15 @@ class Monster:
 
         if int(get_time() % 6) == self.move_end:
             self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
+            if self.x == 70:
+                self.dir[0] = 1
+            elif self.x == 720:
+                self.dir[0] = -1
+            if self.y == 100:
+                self.dir[1] = 1
+            elif self.y == 550:
+                self.dir[1] = -1
+
             self.move_end = random.randint(2, 5)
             self.behavior = True
             self.frame = 0
@@ -117,6 +126,7 @@ class Monster:
                 self.image = load_image(self.image_attack)
                 self.t_frame = self.frame_attack
                 self.attack = True
+                self.frame = 4
         else:
             self.attack = False
 

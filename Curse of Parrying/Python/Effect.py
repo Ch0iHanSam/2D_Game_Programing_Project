@@ -56,8 +56,8 @@ class Monster_Attack_Effect:
             self.frame = (self.frame + 1) % self.t_frame
 
 
-        self.x += math.tan(self.dir) * self.SPEED_PPS * game_framework.frame_time
-        self.y += 1/math.tan(self.dir) * self.SPEED_PPS * game_framework.frame_time
+        self.x += math.cos(self.dir) * self.SPEED_PPS * game_framework.frame_time
+        self.y += math.sin(self.dir) * self.SPEED_PPS * game_framework.frame_time
 
 
 class Pigeon_Attack(Monster_Attack_Effect):
@@ -69,7 +69,7 @@ class Pigeon_Attack(Monster_Attack_Effect):
         self.frame, self.t_frame, self.delay = 0, 7, 0
         self.SPEED_KMPH = 15
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
-        self.dir = math.atan2((self.Player.y - self.Monster.y), (self.Player.x - self.Monster.y))
+        self.dir = math.atan2((self.Player.x - self.Monster.x), (self.Player.y - self.Monster.y))
 
 
 # 방패 효과
