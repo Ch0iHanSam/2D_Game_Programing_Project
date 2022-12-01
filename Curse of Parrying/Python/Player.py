@@ -58,10 +58,8 @@ class RUN:
 
     @staticmethod
     def do(self):
-        self.delay += 1
-        if self.delay > 100:
-            self.delay = 0
-        if self.delay % 5 == 0:
+        if get_time() - self.delay > 0.1:
+            self.delay = get_time()
             self.frame = (self.frame + 1) % 8
         self.x += self.dir_x * RUN_SPEED_PPS * game_framework.frame_time
         self.y += self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
@@ -104,10 +102,8 @@ class PARRYING:
 
     @staticmethod
     def do(self):
-        self.delay += 1
-        if self.delay > 100:
-            self.delay = 0
-        if self.delay % 2 == 0:
+        if get_time() - self.delay > 0.03:
+            self.delay = get_time()
             self.frame = (self.frame + 1) % 9
         if self.frame == 8:
             self.cur_state.exit(self)
@@ -150,7 +146,7 @@ class Player_Character:
         self.x, self.y = x, y
         self.frame = 0
         self.dir_x, self.dir_y, self.face_dir = 0, 0, face
-        self.delay = 0
+        self.delay = get_time()
         self.image = load_image('../Object/Character/Walking/Character_Player_Walking.png')
         self.HP = 100
         self.ATK = 10
