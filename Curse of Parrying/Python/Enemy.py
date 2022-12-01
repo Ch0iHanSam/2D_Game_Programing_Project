@@ -1,5 +1,6 @@
 from pico2d import *
 import game_framework
+import game_world
 import random
 
 PIXEL_PER_METER = (10.0 / 0.3)
@@ -90,6 +91,8 @@ class Monster:
             else:
                 self.set_move()
 
+        self.death()
+
     def set_move(self):
         self.image = load_image(self.image_normal)
         self.t_frame = self.frame_normal
@@ -130,6 +133,10 @@ class Monster:
             self.frame = 0
             self.move_time = get_time()
 
+    def death(self):
+        if self.HP <= 0:
+            game_world.remove_object(self)
+
 
 class Pigeon(Monster):
     def __init__(self):
@@ -140,7 +147,7 @@ class Pigeon(Monster):
         self.frame_normal = 7
         self.frame_attack = 9
         self.HP = 30
-        self.ATK = 10
+        self.ATK = 5
         self.SPEED_KMPH = 10.0
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         self.first = True
@@ -158,13 +165,48 @@ class Boar(Monster):
         self.frame_normal = 6
         self.frame_attack = 16
         self.HP = 60
-        self.ATK = 5
+        self.ATK = 20
         self.SPEED_KMPH = 5.0
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         self.first = True
         self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
         self.move_end = random.randint(2, 5)
         self.move_time = 0
+
+    def set_attack(self):
+        self.image = load_image(self.image_attack)
+        self.t_frame = self.frame_attack
+        if self.frame == 1:
+            self.attack = True
+            self.frame = 2
+
+        self.x += self.dir[0] * self.SPEED_PPS * game_framework.frame_time * 3
+        self.y += self.dir[1] * self.SPEED_PPS * game_framework.frame_time * 3
+
+        self.x = clamp(70, self.x, 720)
+        self.y = clamp(100, self.y, 550)
+
+        if self.x == 70:
+            self.dir[0] = 1
+        elif self.x == 720:
+            self.dir[0] = -1
+        if self.y == 100:
+            self.dir[1] = 1
+        elif self.y == 550:
+            self.dir[1] = -1
+
+        if self.frame == self.frame_attack - 1:
+            self.attack = False
+            self.behavior = False
+            self.frame = 0
+            self.move_time = get_time()
+
+    def get_bb(self):
+        return self.x - 23, self.y - 35, self.x + 23, self.y - 8
+
+    def handle_collision(self, b, group):
+        pass
+
 
 class Rabbit(Monster):
     def __init__(self):
@@ -175,7 +217,7 @@ class Rabbit(Monster):
         self.frame_normal = 7
         self.frame_attack = 10
         self.HP = 15
-        self.ATK = 15
+        self.ATK = 10
         self.SPEED_KMPH = 7.0
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         self.first = True

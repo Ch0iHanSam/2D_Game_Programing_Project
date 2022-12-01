@@ -30,7 +30,9 @@ class Fu_Va:
             if monster == 1:
                 server.Monsters.append(Enemy.Pigeon())
             elif monster == 2:
-                server.Monsters.append(Enemy.Boar())
+                boar = Enemy.Boar()
+                server.Monsters.append(boar)
+                game_world.add_collision_pairs(None, boar, 'player:attack')
             elif monster == 3:
                 server.Monsters.append(Enemy.Rabbit())
 
@@ -47,7 +49,9 @@ class Fu_Va:
                 elif type(monster) == Enemy.Boar:
                     pass
                 elif type(monster) == Enemy.Rabbit:
-                    pass
+                    effect = Effect.Rabbit_Attack(monster, Player)
+                    game_world.add_object(effect, 4)
+                    game_world.add_collision_pairs(None, effect, 'player:attack')
 
     @staticmethod
     def collide(a, b):

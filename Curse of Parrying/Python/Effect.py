@@ -79,8 +79,20 @@ class Pigeon_Attack(Monster_Attack_Effect):
         self.SPEED_KMPH = 15
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         self.dir = math.atan2((self.Player.y - self.Monster.y), (self.Player.x - self.Monster.x))
-        self.damage = Monster.ATK
+        self.ATK = Monster.ATK
 
+class Rabbit_Attack(Monster_Attack_Effect):
+    def __init__(self, Monster, Player):
+        self.image = load_image('../Effect/Monster/Monster_Attack/Rabbit/Rabbit_Attack.png')
+        self.Monster = Monster
+        self.Player = Player
+        self.x, self.y = self.Monster.x, self.Monster.y
+        self.min_x, self.min_y, self.max_x, self.max_y = 10,10,10,10
+        self.frame, self.t_frame, self.delay = 0, 1, get_time()
+        self.SPEED_KMPH = 5
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        self.dir = math.atan2((self.Player.y - self.Monster.y), (self.Player.x - self.Monster.x))
+        self.ATK = Monster.ATK
 
 # 방패 효과
 class Lego:  # 미완 - 장난감 방패에 들어갈 것임

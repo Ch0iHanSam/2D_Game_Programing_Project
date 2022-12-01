@@ -182,14 +182,6 @@ class Player_Character:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
 
-    def handle_collision(self, b, group):
-        if self.cur_state == PARRYING:
-            game_world.remove_object(b)
-            b.Monster.HP -= self.ATK
-        else:
-            game_world.remove_object(b)
-            self.HP -= b.damage
-        pass
 
     def cur_name(self):
         if self.dir_x == 0 and self.dir_y == 0:
@@ -206,3 +198,25 @@ class Player_Character:
 
     def get_bb(self):
         return self.x - 15, self.y - 35, self.x + 15, self.y -10
+
+    def handle_collision(self, b, group):
+        if self.cur_state == PARRYING:
+            if b in game_world.objects[4]:  # 이펙트면 이펙트 지우기
+                game_world.remove_object(b)
+                b.Monster.HP -= self.ATK
+
+            elif b in game_world.objects[3]:  # 몸통박치기면 attack만 False로 바꾸기
+                if b.attack:
+                    b.HP -= self.ATK
+                    b.attack = False
+
+        else:
+            if b in game_world.objects[4]:
+                game_world.remove_object(b)
+                self.HP -= b.ATK
+
+            elif b in game_world.objects[3]:  # 몸통박치기면 attack만 False로 바꾸기
+                if b.attack:
+                    self.HP -= b.ATK
+                    b.attack = False
+
