@@ -2,10 +2,8 @@ from pico2d import *
 import game_framework
 import random
 
-
-
 PIXEL_PER_METER = (10.0 / 0.3)
-
+time = 0
 
 class Test_Monster:
     def __init__(self, x=200, y=100):
@@ -58,11 +56,12 @@ class Monster:
     SPEED_KMPH = 0
     SPEED_PPS = SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
     first = True
-    dir = None
     attack = False
     behavior = False  # False : move, True : attack
-    move_end = 0
-
+    move_end = None
+    dir = None
+    time = None
+    move_time = None
 
     def draw(self):
         if self.first:
@@ -78,12 +77,12 @@ class Monster:
 
     def update(self):
         if self.first:
-            self.delay = (self.delay + 1) % 2
-            if self.delay == 1:
+            if get_time() - self.time > 0.005:
+                self.time = get_time()
                 self.frame = (self.frame + 1) % 16
         else:
-            self.delay = (self.delay + 1) % 7  # delay는 1~6사이의 값 (frame증가 6배 늦춤)
-            if self.delay == 6:
+            if get_time() - self.time > 0.1:
+                self.time = get_time()
                 self.frame = (self.frame + 1) % self.t_frame
 
         if not self.first:
@@ -91,7 +90,6 @@ class Monster:
                 self.set_attack()
             else:
                 self.set_move()
-
 
     def set_move(self):
         self.image = load_image(self.image_normal)
@@ -103,8 +101,7 @@ class Monster:
         self.x = clamp(70, self.x, 720)
         self.y = clamp(100, self.y, 550)
 
-
-        if int(get_time() % 6) == self.move_end:
+        if get_time() - self.move_time > self.move_end:
             self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
             if self.x == 70:
                 self.dir[0] = 1
@@ -119,7 +116,6 @@ class Monster:
             self.behavior = True
             self.frame = 0
 
-
     def set_attack(self):
         if self.frame == 3:
             if not self.attack:  # 최초 1회만 어택 발동하게
@@ -133,6 +129,7 @@ class Monster:
         if self.frame == self.frame_attack - 1:
             self.behavior = False
             self.frame = 0
+            self.move_time = get_time()
 
 
 class Pigeon(Monster):
@@ -148,9 +145,11 @@ class Pigeon(Monster):
         self.SPEED_KMPH = 10.0
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         self.first = True
-        self.dir = [random.randint(-1,1), random.randint(-1,1)]
-        self.dir_cycle = random.randint(2, 3)
+        self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
         self.move_end = random.randint(2, 5)
+        self.time = get_time()
+        self.move_time = 0
+
 
 class Boar(Monster):
     def __init__(self):
@@ -165,9 +164,10 @@ class Boar(Monster):
         self.SPEED_KMPH = 5.0
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         self.first = True
-        self.dir = [random.randint(-1,1), random.randint(-1,1)]
-        self.dir_cycle = random.randint(2, 3)
+        self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
         self.move_end = random.randint(2, 5)
+        self.time = get_time()
+        self.move_time = 0
 
 class Rabbit(Monster):
     def __init__(self):
@@ -182,6 +182,7 @@ class Rabbit(Monster):
         self.SPEED_KMPH = 7.0
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         self.first = True
-        self.dir = [random.randint(-1,1), random.randint(-1,1)]
-        self.dir_cycle = random.randint(2, 3)
+        self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
         self.move_end = random.randint(2, 5)
+        self.time = get_time()
+        self.move_time = 0
