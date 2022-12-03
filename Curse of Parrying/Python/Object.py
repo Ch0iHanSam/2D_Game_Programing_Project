@@ -71,10 +71,10 @@ class HP_Crystal:
 
     def draw(self):
         if len(game_world.objects[3]) == 0:
-            self.exist = True
+            self.condition = True
             self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
         else:
-            self.exist = False
+            self.condition = False
 
     def update(self):
         if get_time() - self.delay > 0.1:

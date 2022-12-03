@@ -16,13 +16,14 @@ class Interact:
         self.Player = Player
         self.Object = Object
         self.bndry = bndry
+        self.condition = None
+
+    def draw(self):
         for i in dir(self.Object):
             if i == 'condition':
                 self.condition = self.Object.condition
                 break
             self.condition = True
-
-    def draw(self):
         if self.condition:
             if self.Player.cur_name() == 'IDLE':
                 if (self.Object.x + self.bndry > self.x > self.Object.x - self.bndry) and (self.Object.y + self.bndry + 10 > self.y > self.Object.y - self.bndry):

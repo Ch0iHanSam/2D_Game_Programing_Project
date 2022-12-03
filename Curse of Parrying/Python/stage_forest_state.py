@@ -16,6 +16,12 @@ import random
 
 
 class Fu_Va:
+    
+    @staticmethod
+    def handle_event_Button(event):
+        for i in game_world.objects[5]:
+            i.handle_event(event)
+
     @staticmethod
     def Portal_Down_update():
         server.Portal_Down.check_enter(Player, stage_home_state, -25, 25, -30, 2)
@@ -79,6 +85,8 @@ def handle_events():
         elif (event.type, event.button) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT):  # 일시정지
             if 750 < event.x < 790 and 10 < event.y < 50:
                 game_framework.push_state(pause_state)
+        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_f):  # 상호작용
+            Fu_Va.handle_event_Button(event)
         else:
             Player.handle_event(event)  # 플레이어에게 이벤트를 전달함
 

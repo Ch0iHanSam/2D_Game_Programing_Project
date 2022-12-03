@@ -202,8 +202,6 @@ class Boar(Monster):
             self.x += math.cos(dir) * self.SPEED_PPS * game_framework.frame_time * 3
             self.y += math.sin(dir) * self.SPEED_PPS * game_framework.frame_time * 3
 
-
-
         self.x = clamp(70, self.x, 720)
         self.y = clamp(100, self.y, 550)
 
