@@ -1,6 +1,8 @@
 from pico2d import *
 import game_framework
 import conversation_state
+import game_world
+
 
 class Portal:
 
@@ -22,9 +24,8 @@ class Portal:
         # draw_rectangle(self.x-25, self.y-30, self.x+25, self.y+2)
 
     def check_enter(self, Player, state, min_x, max_x, min_y, max_y):
-        if self.x + min_x  < Player.x < self.x + max_x and self.y + min_y < Player.y < self.y + max_y:
+        if self.x + min_x < Player.x < self.x + max_x and self.y + min_y < Player.y < self.y + max_y:
             game_framework.change_state(state)
-
 
 
 class Test_Monster_Box:
@@ -43,9 +44,10 @@ class Test_Monster_Box:
         self.monster.set_summon()
         self.monster.HP = 30
 
-#NPC
+
+# NPC
 class Unknown:
-    def __init__(self, x = 0, y = 0):
+    def __init__(self, x=0, y=0):
         self.x, self.y = x, y
         self.image = load_image('../Object/NPC/NPC_UNKNOWN.png')
 
@@ -57,3 +59,27 @@ class Unknown:
 
     def act(self):
         game_framework.push_state(conversation_state)
+
+
+class HP_Crystal:
+    def __init__(self, x=0, y=0, Player=None):
+        self.x, self.y, self.frame = x, y, 0
+        self.image = load_image('../Object/NPC/NPC_HPCRYSTAL.png')
+        self.delay = get_time()
+        self.player = Player
+        self.condition = False
+
+    def draw(self):
+        if len(game_world.objects[3]) == 0:
+            self.exist = True
+            self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+        else:
+            self.exist = False
+
+    def update(self):
+        if get_time() - self.delay > 0.1:
+            self.delay = get_time()
+            self.frame = (self.frame + 1) % 10
+
+    def act(self):  # 풀체력 회복
+        self.player.HP = 100

@@ -98,6 +98,8 @@ def enter():
     server.Pause = Effect.Pause()
     game_world.add_object(server.Pause, 6)
 
+
+    #충돌 처리
     game_world.add_collision_pairs( Player, None, 'player:attack')
 
 

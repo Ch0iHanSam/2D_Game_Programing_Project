@@ -146,7 +146,7 @@ class Pigeon(Monster):
         self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 7
         self.frame_normal = 7
         self.frame_attack = 9
-        self.HP = 30
+        self.HP = 20
         self.ATK = 5
         self.SPEED_KMPH = 10.0
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
@@ -157,14 +157,14 @@ class Pigeon(Monster):
 
 
 class Boar(Monster):
-    def __init__(self):
+    def __init__(self, Player):
         self.image = load_image('../Object/Enemy/Stage1/Boar/Enemy_Boar_Move.png')
         self.image_normal = '../Object/Enemy/Stage1/Boar/Enemy_Boar_Move.png'
         self.image_attack = '../Object/Enemy/Stage1/Boar/Enemy_Boar_Attack.png'
         self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 6
         self.frame_normal = 6
         self.frame_attack = 16
-        self.HP = 60
+        self.HP = 40
         self.ATK = 20
         self.SPEED_KMPH = 5.0
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
@@ -172,16 +172,37 @@ class Boar(Monster):
         self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
         self.move_end = random.randint(2, 5)
         self.move_time = 0
+        self.attack_random = True
+        self.Player = Player
+        self.set_dir = True
 
     def set_attack(self):
         self.image = load_image(self.image_attack)
         self.t_frame = self.frame_attack
+        dir = math.atan2((self.Player.y - self.y), (self.Player.x - self.x))
+
         if self.frame == 1:
             self.attack = True
             self.frame = 2
 
-        self.x += self.dir[0] * self.SPEED_PPS * game_framework.frame_time * 3
-        self.y += self.dir[1] * self.SPEED_PPS * game_framework.frame_time * 3
+        for i in game_world.objects[3]:
+            if type(i) != Boar:
+                self.attack_random = True
+                break
+            self.attack_random = False
+
+        if self.attack_random:
+            self.x += self.dir[0] * self.SPEED_PPS * game_framework.frame_time * 3
+            self.y += self.dir[1] * self.SPEED_PPS * game_framework.frame_time * 3
+        else:
+            if self.set_dir:
+                if self.x > self.Player.x: self.dir[0] = -1
+                else: self.dir[0] = 1
+                self.set_dir = False
+            self.x += math.cos(dir) * self.SPEED_PPS * game_framework.frame_time * 3
+            self.y += math.sin(dir) * self.SPEED_PPS * game_framework.frame_time * 3
+
+
 
         self.x = clamp(70, self.x, 720)
         self.y = clamp(100, self.y, 550)
@@ -200,6 +221,7 @@ class Boar(Monster):
             self.behavior = False
             self.frame = 0
             self.move_time = get_time()
+            self.set_dir = True
 
     def get_bb(self):
         return self.x - 23, self.y - 35, self.x + 23, self.y - 8
@@ -216,7 +238,7 @@ class Rabbit(Monster):
         self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 7
         self.frame_normal = 7
         self.frame_attack = 10
-        self.HP = 15
+        self.HP = 10
         self.ATK = 10
         self.SPEED_KMPH = 7.0
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER

@@ -25,15 +25,15 @@ class Fu_Va:
     def select_Monster():
         server.Monsters = []
 
-        for i in range(10):
-            monster = random.randint(1,3)
-            if monster == 1:
+        for i in range(1):  # 첫 번째 스테이지는 몬스터 6마리
+            monster = random.randint(1,5)
+            if monster == 1 or monster == 2:
                 server.Monsters.append(Enemy.Pigeon())
-            elif monster == 2:
-                boar = Enemy.Boar()
+            elif monster == 3:
+                boar = Enemy.Boar(Player)
                 server.Monsters.append(boar)
                 game_world.add_collision_pairs(None, boar, 'player:attack')
-            elif monster == 3:
+            elif monster == 4 or monster == 5:
                 server.Monsters.append(Enemy.Rabbit())
 
         game_world.add_objects(server.Monsters, 3)
@@ -92,7 +92,11 @@ def enter():
     game_world.add_object(server.Background, 0)
     server.Portal_Down = Object.Portal('../Object/ETC/Portal_Down.png', 400, 95)
     game_world.add_object(server.Portal_Down, 1)
-    Fu_Va.select_Monster()  # 몬스터 추가 (함수 내부에서 add_object까지 다 실행함)
+    Fu_Va.select_Monster()  # 몬스터 추가 (함수 안에서 add_object 까지 다 실행함)
+    server.HP_Crystal = Object.HP_Crystal(400, 300, Player)  # Player 받아야 해서 Player 보다 나중에 위치
+    game_world.add_object(server.HP_Crystal, 1)
+    server.Button_HP_Crystal = Interact(Player, server.HP_Crystal, 30)
+    game_world.add_object(server.Button_HP_Crystal, 5)
 
     # 인터페이스
     server.HP = Effect.HP(Player)
