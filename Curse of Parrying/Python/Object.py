@@ -67,14 +67,9 @@ class HP_Crystal:
         self.image = load_image('../Object/NPC/NPC_HPCRYSTAL.png')
         self.delay = get_time()
         self.player = Player
-        self.condition = False
 
     def draw(self):
-        if len(game_world.objects[3]) == 0:
-            self.condition = True
-            self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
-        else:
-            self.condition = False
+        self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
 
     def update(self):
         if get_time() - self.delay > 0.1:

@@ -1,7 +1,7 @@
 from pico2d import *
 import game_framework
 import stage_home_state
-import stage_beach_state
+import stage_forest_state
 import pause_state
 from Player import Player_Character
 from Background import Home_Stage
@@ -30,18 +30,18 @@ class Fu_Va:
             server.Portal_Down.check_enter(Player, stage_home_state, -25, 25, -30, 2)
         else:
             if server.Portal_Down.x -25 < server.Player.x < server.Portal_Down.x + 25 and server.Portal_Down.y - 30 < server.Player.y < server.Portal_Right.y + 2:
-                server.Portal_Up.check_enter(server.Player, stage_beach_state, -25, 25, 45, 85)
-                server.Portal_Down.check_enter(Player, stage_home_state, -25, 25, -30, 2)
+                server.Portal_Up.check_enter(server.Player, stage_home_state, -25, 25, 45, 85)
+                server.Portal_Down.check_enter(Player, stage_forest_state, -25, 25, -30, 2)
             elif server.Portal_Up.x - 25 < server.Player.x < server.Portal_Up.x + 25 and server.Portal_Up.y + 45 < server.Player.y < server.Portal_Up.y + 85:
-                server.Portal_Down.check_enter(Player, stage_home_state, -25, 25, -30, 2)
-                server.Portal_Up.check_enter(server.Player, stage_beach_state, -25, 25, 45, 85)
+                server.Portal_Down.check_enter(Player, stage_forest_state, -25, 25, -30, 2)
+                server.Portal_Up.check_enter(server.Player, stage_home_state, -25, 25, 45, 85)
 
 
     @staticmethod
     def select_Monster():
         server.Monsters = []
 
-        for i in range(6):  # 첫 번째 스테이지는 몬스터 6마리
+        for i in range(10):  # 두 번째 스테이지는 몬스터 10마리
             monster = random.randint(1,5)
             if monster == 1 or monster == 2:
                 server.Monsters.append(Enemy.Pigeon())

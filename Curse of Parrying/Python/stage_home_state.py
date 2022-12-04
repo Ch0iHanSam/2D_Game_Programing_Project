@@ -3,6 +3,7 @@ import game_framework
 import stage_lab_state
 import pause_state
 import stage_forest_state
+import stage_beach_state
 from Player import Player_Character
 from Background import Home_Stage
 import Object
@@ -83,6 +84,14 @@ def enter():
         game_world.add_object(server.Button_Unknown, 5)
         server.HP = Effect.HP(Player)
         game_world.add_object(server.HP, 6)
+    # elif game_framework.ex_state == stage_beach_state:
+    #     server.Player.set_xy(400, 120, 1)
+    #     Player = server.Player
+    #     game_world.add_object(Player, 1)
+    #     server.Button_Unknown = Interact(Player, server.Unknown, 20)
+    #     game_world.add_object(server.Button_Unknown, 5)
+    #     server.HP = Effect.HP(Player)
+    #     game_world.add_object(server.HP, 6)
 
 
 

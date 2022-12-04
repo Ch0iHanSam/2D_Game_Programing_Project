@@ -16,21 +16,14 @@ class Interact:
         self.Player = Player
         self.Object = Object
         self.bndry = bndry
-        self.condition = None
 
     def draw(self):
-        for i in dir(self.Object):
-            if i == 'condition':
-                self.condition = self.Object.condition
-                break
-            self.condition = True
-        if self.condition:
-            if self.Player.cur_name() == 'IDLE':
-                if (self.Object.x + self.bndry > self.x > self.Object.x - self.bndry) and (self.Object.y + self.bndry + 10 > self.y > self.Object.y - self.bndry):
-                    self.judge = True
-                    self.image.draw(self.x, self.y)
-                else:
-                    self.judge = False
+        if self.Player.cur_name() == 'IDLE':
+            if (self.Object.x + self.bndry > self.x > self.Object.x - self.bndry) and (self.Object.y + self.bndry + 10 > self.y > self.Object.y - self.bndry):
+                self.judge = True
+                self.image.draw(self.x, self.y)
+            else:
+                self.judge = False
 
     def run(self, Object):  # Object : 상호작용 대상 / Object_Object : 대상의 대상
         Object.act()
