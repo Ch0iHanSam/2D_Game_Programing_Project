@@ -13,7 +13,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 class Test_Monster_Effect:
     def __init__(self, x = 0, y = 0, monster = None):
         self.x, self.y, self.frame, self.delay = x, y, 0, 0
-        self.image = load_image('../Object/Enemy/Test/Effect.png')
+        self.image = load_image('./Object/Enemy/Test/Effect.png')
         self.first = True
         self.Monster = monster
         self.damage = 5
@@ -70,7 +70,7 @@ class Monster_Attack_Effect:
 
 class Pigeon_Attack(Monster_Attack_Effect):
     def __init__(self, Monster, Player):
-        self.image = load_image('../Effect/Monster/Monster_Attack/Pigeon/Pigeon_Attack.png')
+        self.image = load_image('./Effect/Monster/Monster_Attack/Pigeon/Pigeon_Attack.png')
         self.Monster = Monster
         self.Player = Player
         self.x, self.y = self.Monster.x, self.Monster.y
@@ -84,7 +84,7 @@ class Pigeon_Attack(Monster_Attack_Effect):
 
 class Rabbit_Attack(Monster_Attack_Effect):
     def __init__(self, Monster, Player):
-        self.image = load_image('../Effect/Monster/Monster_Attack/Rabbit/Rabbit_Attack.png')
+        self.image = load_image('./Effect/Monster/Monster_Attack/Rabbit/Rabbit_Attack.png')
         self.Monster = Monster
         self.Player = Player
         self.x, self.y = self.Monster.x, self.Monster.y
@@ -97,7 +97,7 @@ class Rabbit_Attack(Monster_Attack_Effect):
 
 class Crab_Attack(Monster_Attack_Effect):
     def __init__(self, Monster, Player, dir_y):
-        self.image = load_image('../Effect/Monster/Monster_Attack/Crab/Crab_Attack.png')
+        self.image = load_image('./Effect/Monster/Monster_Attack/Crab/Crab_Attack.png')
         self.Monster = Monster
         self.Player = Player
         self.x, self.y = self.Monster.x, self.Monster.y-15
@@ -124,7 +124,7 @@ class Crab_Attack(Monster_Attack_Effect):
 
 class Gull_Attack(Monster_Attack_Effect):
     def __init__(self, Monster, Player):
-        self.image = load_image('../Effect/Monster/Monster_Attack/Gull/Gull_attack.png')
+        self.image = load_image('./Effect/Monster/Monster_Attack/Gull/Gull_attack.png')
         self.Monster = Monster
         self.Player = Player
         self.x, self.y = self.Monster.x, self.Monster.y
@@ -147,7 +147,7 @@ class Lego:  # 미완 - 장난감 방패에 들어갈 것임
     def __init__(self, x = 0, y = 0):
         self.x, self.y = x, y
         self.damage = 3
-        self.image = load_image('../Effect/Character/Lego.png')
+        self.image = load_image('./Effect/Character/Lego.png')
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -166,89 +166,89 @@ class HP:
     def __init__(self, Player):
         self.Player = Player
         if Player.HP == 100:
-            self.image = load_image('../Effect/Character/HP/HP=100.png')
+            self.image = load_image('./Effect/Character/HP/HP=100.png')
         elif Player.HP == 95:
-            self.image = load_image('../Effect/Character/HP/HP=95.png')
+            self.image = load_image('./Effect/Character/HP/HP=95.png')
         elif Player.HP == 90:
-            self.image = load_image('../Effect/Character/HP/HP=90.png')
+            self.image = load_image('./Effect/Character/HP/HP=90.png')
         elif Player.HP == 85:
-            self.image = load_image('../Effect/Character/HP/HP=85.png')
+            self.image = load_image('./Effect/Character/HP/HP=85.png')
         elif Player.HP == 80:
-            self.image = load_image('../Effect/Character/HP/HP=80.png')
+            self.image = load_image('./Effect/Character/HP/HP=80.png')
         elif Player.HP == 75:
-            self.image = load_image('../Effect/Character/HP/HP=75.png')
+            self.image = load_image('./Effect/Character/HP/HP=75.png')
         elif Player.HP == 70:
-            self.image = load_image('../Effect/Character/HP/HP=70.png')
+            self.image = load_image('./Effect/Character/HP/HP=70.png')
         elif Player.HP == 65:
-            self.image = load_image('../Effect/Character/HP/HP=65.png')
+            self.image = load_image('./Effect/Character/HP/HP=65.png')
         elif Player.HP == 60:
-            self.image = load_image('../Effect/Character/HP/HP=60.png')
+            self.image = load_image('./Effect/Character/HP/HP=60.png')
         elif Player.HP == 55:
-            self.image = load_image('../Effect/Character/HP/HP=55.png')
+            self.image = load_image('./Effect/Character/HP/HP=55.png')
         elif Player.HP == 50:
-            self.image = load_image('../Effect/Character/HP/HP=50.png')
+            self.image = load_image('./Effect/Character/HP/HP=50.png')
         elif Player.HP == 45:
-            self.image = load_image('../Effect/Character/HP/HP=45.png')
+            self.image = load_image('./Effect/Character/HP/HP=45.png')
         elif Player.HP == 40:
-            self.image = load_image('../Effect/Character/HP/HP=40.png')
+            self.image = load_image('./Effect/Character/HP/HP=40.png')
         elif Player.HP == 35:
-            self.image = load_image('../Effect/Character/HP/HP=35.png')
+            self.image = load_image('./Effect/Character/HP/HP=35.png')
         elif Player.HP == 30:
-            self.image = load_image('../Effect/Character/HP/HP=30.png')
+            self.image = load_image('./Effect/Character/HP/HP=30.png')
         elif Player.HP == 25:
-            self.image = load_image('../Effect/Character/HP/HP=25.png')
+            self.image = load_image('./Effect/Character/HP/HP=25.png')
         elif Player.HP == 20:
-            self.image = load_image('../Effect/Character/HP/HP=20.png')
+            self.image = load_image('./Effect/Character/HP/HP=20.png')
         elif Player.HP == 15:
-            self.image = load_image('../Effect/Character/HP/HP=15.png')
+            self.image = load_image('./Effect/Character/HP/HP=15.png')
         elif Player.HP == 10:
-            self.image = load_image('../Effect/Character/HP/HP=10.png')
+            self.image = load_image('./Effect/Character/HP/HP=10.png')
         elif Player.HP == 5:
-            self.image = load_image('../Effect/Character/HP/HP=5.png')
+            self.image = load_image('./Effect/Character/HP/HP=5.png')
         self.x = 110
         self.y = 490
 
     def update(self):
         if self.Player.HP == 100:
-            self.image = load_image('../Effect/Character/HP/HP=100.png')
+            self.image = load_image('./Effect/Character/HP/HP=100.png')
         elif self.Player.HP == 95:
-            self.image = load_image('../Effect/Character/HP/HP=95.png')
+            self.image = load_image('./Effect/Character/HP/HP=95.png')
         elif self.Player.HP == 90:
-            self.image = load_image('../Effect/Character/HP/HP=90.png')
+            self.image = load_image('./Effect/Character/HP/HP=90.png')
         elif self.Player.HP == 85:
-            self.image = load_image('../Effect/Character/HP/HP=85.png')
+            self.image = load_image('./Effect/Character/HP/HP=85.png')
         elif self.Player.HP == 80:
-            self.image = load_image('../Effect/Character/HP/HP=80.png')
+            self.image = load_image('./Effect/Character/HP/HP=80.png')
         elif self.Player.HP == 75:
-            self.image = load_image('../Effect/Character/HP/HP=75.png')
+            self.image = load_image('./Effect/Character/HP/HP=75.png')
         elif self.Player.HP == 70:
-            self.image = load_image('../Effect/Character/HP/HP=70.png')
+            self.image = load_image('./Effect/Character/HP/HP=70.png')
         elif self.Player.HP == 65:
-            self.image = load_image('../Effect/Character/HP/HP=65.png')
+            self.image = load_image('./Effect/Character/HP/HP=65.png')
         elif self.Player.HP == 60:
-            self.image = load_image('../Effect/Character/HP/HP=60.png')
+            self.image = load_image('./Effect/Character/HP/HP=60.png')
         elif self.Player.HP == 55:
-            self.image = load_image('../Effect/Character/HP/HP=55.png')
+            self.image = load_image('./Effect/Character/HP/HP=55.png')
         elif self.Player.HP == 50:
-            self.image = load_image('../Effect/Character/HP/HP=50.png')
+            self.image = load_image('./Effect/Character/HP/HP=50.png')
         elif self.Player.HP == 45:
-            self.image = load_image('../Effect/Character/HP/HP=45.png')
+            self.image = load_image('./Effect/Character/HP/HP=45.png')
         elif self.Player.HP == 40:
-            self.image = load_image('../Effect/Character/HP/HP=40.png')
+            self.image = load_image('./Effect/Character/HP/HP=40.png')
         elif self.Player.HP == 35:
-            self.image = load_image('../Effect/Character/HP/HP=35.png')
+            self.image = load_image('./Effect/Character/HP/HP=35.png')
         elif self.Player.HP == 30:
-            self.image = load_image('../Effect/Character/HP/HP=30.png')
+            self.image = load_image('./Effect/Character/HP/HP=30.png')
         elif self.Player.HP == 25:
-            self.image = load_image('../Effect/Character/HP/HP=25.png')
+            self.image = load_image('./Effect/Character/HP/HP=25.png')
         elif self.Player.HP == 20:
-            self.image = load_image('../Effect/Character/HP/HP=20.png')
+            self.image = load_image('./Effect/Character/HP/HP=20.png')
         elif self.Player.HP == 15:
-            self.image = load_image('../Effect/Character/HP/HP=15.png')
+            self.image = load_image('./Effect/Character/HP/HP=15.png')
         elif self.Player.HP == 10:
-            self.image = load_image('../Effect/Character/HP/HP=10.png')
+            self.image = load_image('./Effect/Character/HP/HP=10.png')
         elif self.Player.HP == 5:
-            self.image = load_image('../Effect/Character/HP/HP=5.png')
+            self.image = load_image('./Effect/Character/HP/HP=5.png')
 
     def draw(self):
         self.image.draw(self.x, self.y, 200, 200)
@@ -257,7 +257,7 @@ class HP:
 class Pause:
     def __init__(self):
         self.x, self.y = 770, 570
-        self.image = load_image('../BackGround/Pause_Mark.png')
+        self.image = load_image('./BackGround/Pause_Mark.png')
 
     def draw(self):
         self.image.draw(self.x, self.y, 100, 100)

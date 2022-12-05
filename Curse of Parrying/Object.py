@@ -31,7 +31,7 @@ class Portal:
 class Test_Monster_Box:
     def __init__(self, x, y, Monster):
         self.x, self.y = x, y
-        self.image = load_image('../Object/ETC/MonsterBox.png')
+        self.image = load_image('./Object/ETC/MonsterBox.png')
         self.monster = Monster
 
     def update(self):
@@ -49,7 +49,7 @@ class Test_Monster_Box:
 class Unknown:
     def __init__(self, x=0, y=0):
         self.x, self.y = x, y
-        self.image = load_image('../Object/NPC/NPC_UNKNOWN.png')
+        self.image = load_image('./Object/NPC/NPC_UNKNOWN.png')
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -64,7 +64,7 @@ class Unknown:
 class HP_Crystal:
     def __init__(self, x=0, y=0, Player=None):
         self.x, self.y, self.frame = x, y, 0
-        self.image = load_image('../Object/NPC/NPC_HPCRYSTAL.png')
+        self.image = load_image('./Object/NPC/NPC_HPCRYSTAL.png')
         self.delay = get_time()
         self.player = Player
 

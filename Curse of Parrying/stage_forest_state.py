@@ -89,7 +89,7 @@ class Fu_Va:
                 game_world.add_object(server.HP_Crystal, 1)
                 server.Button_HP_Crystal = Interact(Player, server.HP_Crystal, 30)
                 game_world.add_object(server.Button_HP_Crystal, 5)
-                server.Portal_Up = Object.Portal('../Object/ETC/Portal_UP.png', 400, 507)
+                server.Portal_Up = Object.Portal('./Object/ETC/Portal_UP.png', 400, 507)
                 game_world.add_object(server.Portal_Up, 1)
 
                 Fu_Va.check_clear = True
@@ -123,7 +123,7 @@ def enter():
     game_world.add_object(Player, 1)
     server.Background = Home_Stage()
     game_world.add_object(server.Background, 0)
-    server.Portal_Down = Object.Portal('../Object/ETC/Portal_Down.png', 400, 95)
+    server.Portal_Down = Object.Portal('./Object/ETC/Portal_Down.png', 400, 95)
     game_world.add_object(server.Portal_Down, 1)
     Fu_Va.select_Monster()  # 몬스터 추가 (함수 안에서 add_object 까지 다 실행함)
 

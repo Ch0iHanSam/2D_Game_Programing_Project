@@ -74,7 +74,7 @@ def enter():
     game_world.add_object(Player, 1)
     server.Background = Home_Stage()
     game_world.add_object(server.Background, 0)
-    server.Portal_Left = Object.Portal('../Object/ETC/Portal_LEFT.png', 97, 300)
+    server.Portal_Left = Object.Portal('./Object/ETC/Portal_LEFT.png', 97, 300)
     game_world.add_object(server.Portal_Left, 1)
     server.Test_Monster = Enemy.Test_Monster()
     game_world.add_object(server.Test_Monster, 3)

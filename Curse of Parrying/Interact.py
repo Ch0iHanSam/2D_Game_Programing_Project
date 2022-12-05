@@ -9,7 +9,7 @@ key_event_table = {
 # 상호작용 클래스
 class Interact:
     def __init__(self, Player, Object, bndry):
-        self.image = load_image('../Effect/ETC/interact.png')
+        self.image = load_image('./Effect/ETC/interact.png')
         self.x, self.y = 0, 0
         self.judge = False
         self.event_que = []

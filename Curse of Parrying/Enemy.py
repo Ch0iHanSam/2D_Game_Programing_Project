@@ -9,7 +9,7 @@ time = 0
 class Test_Monster:
     def __init__(self, x=200, y=100):
         self.x, self.y, self.frame = x, y, 0
-        self.image = load_image('../Object/Enemy/Test/Enemy_Test_Attack.png')
+        self.image = load_image('./Object/Enemy/Test/Enemy_Test_Attack.png')
         self.summon = False
         self.delay = 0
         self.attack = False
@@ -65,7 +65,7 @@ class Monster:
 
     def draw(self):
         if self.first:
-            magic_circle = load_image('../Effect/Monster/Effect_Summon.png')
+            magic_circle = load_image('./Effect/Monster/Effect_Summon.png')
             magic_circle.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
             if self.frame == 15:
                 self.first = False
@@ -140,9 +140,9 @@ class Monster:
 
 class Pigeon(Monster):
     def __init__(self):
-        self.image = load_image('../Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Fly.png')
-        self.image_normal = '../Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Fly.png'
-        self.image_attack = '../Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Attack.png'
+        self.image = load_image('./Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Fly.png')
+        self.image_normal = './Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Fly.png'
+        self.image_attack = './Object/Enemy/Stage1/Pigeon/Enemy_Pigeon_Attack.png'
         self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 7
         self.frame_normal = 7
         self.frame_attack = 9
@@ -158,9 +158,9 @@ class Pigeon(Monster):
 
 class Boar(Monster):
     def __init__(self, Player):
-        self.image = load_image('../Object/Enemy/Stage1/Boar/Enemy_Boar_Move.png')
-        self.image_normal = '../Object/Enemy/Stage1/Boar/Enemy_Boar_Move.png'
-        self.image_attack = '../Object/Enemy/Stage1/Boar/Enemy_Boar_Attack.png'
+        self.image = load_image('./Object/Enemy/Stage1/Boar/Enemy_Boar_Move.png')
+        self.image_normal = './Object/Enemy/Stage1/Boar/Enemy_Boar_Move.png'
+        self.image_attack = './Object/Enemy/Stage1/Boar/Enemy_Boar_Attack.png'
         self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 6
         self.frame_normal = 6
         self.frame_attack = 16
@@ -230,9 +230,9 @@ class Boar(Monster):
 
 class Rabbit(Monster):
     def __init__(self):
-        self.image = load_image('../Object/Enemy/Stage1/Rabbit/Enemy_Rabbit_Move.png')
-        self.image_normal = '../Object/Enemy/Stage1/Rabbit/Enemy_Rabbit_Move.png'
-        self.image_attack = '../Object/Enemy/Stage1/Rabbit/Enemy_Rabbit_Attack.png'
+        self.image = load_image('./Object/Enemy/Stage1/Rabbit/Enemy_Rabbit_Move.png')
+        self.image_normal = './Object/Enemy/Stage1/Rabbit/Enemy_Rabbit_Move.png'
+        self.image_attack = './Object/Enemy/Stage1/Rabbit/Enemy_Rabbit_Attack.png'
         self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 7
         self.frame_normal = 7
         self.frame_attack = 10
@@ -248,9 +248,9 @@ class Rabbit(Monster):
 
 class Crab(Monster):
     def __init__(self):
-        self.image = load_image('../Object/Enemy/Stage2/Crab/Enemy_Crab_Move.png')
-        self.image_normal = '../Object/Enemy/Stage2/Crab/Enemy_Crab_Move.png'
-        self.image_attack = '../Object/Enemy/Stage2/Crab/Enemy_Crab_Attack.png'
+        self.image = load_image('./Object/Enemy/Stage2/Crab/Enemy_Crab_Move.png')
+        self.image_normal = './Object/Enemy/Stage2/Crab/Enemy_Crab_Move.png'
+        self.image_attack = './Object/Enemy/Stage2/Crab/Enemy_Crab_Attack.png'
         self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 4
         self.frame_normal = 4
         self.frame_attack = 10
@@ -290,9 +290,9 @@ class Crab(Monster):
 
 class Gull(Monster):
     def __init__(self):
-        self.image = load_image('../Object/Enemy/Stage2/Gull/Enemy_Gull_Fly.png')
-        self.image_normal = '../Object/Enemy/Stage2/Gull/Enemy_Gull_Fly.png'
-        self.image_attack = '../Object/Enemy/Stage2/Gull/Enemy_Gull_Attack.png'
+        self.image = load_image('./Object/Enemy/Stage2/Gull/Enemy_Gull_Fly.png')
+        self.image_normal = './Object/Enemy/Stage2/Gull/Enemy_Gull_Fly.png'
+        self.image_attack = './Object/Enemy/Stage2/Gull/Enemy_Gull_Attack.png'
         self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 4
         self.frame_normal = 4
         self.frame_attack = 6

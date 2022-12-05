@@ -3,7 +3,7 @@ from pico2d import *
 
 class Test_Background:
     def __init__(self):
-        self.image = load_image('../BackGround/Practice.png')
+        self.image = load_image('./BackGround/Practice.png')
 
     def draw(self):
         self.image.draw(400, 300)
@@ -13,7 +13,7 @@ class Test_Background:
 
 class Home_Stage:
     def __init__(self):
-        self.image = load_image('../BackGround/Home_Stage.png')
+        self.image = load_image('./BackGround/Home_Stage.png')
 
     def draw(self):
         self.image.draw(400, 300)
@@ -23,7 +23,7 @@ class Home_Stage:
 
 class Pause:
     def __init__(self):
-        self.image = load_image('../BackGround/Pause.png')
+        self.image = load_image('./BackGround/Pause.png')
 
     def draw(self):
         self.image.draw(400,300)
@@ -33,7 +33,7 @@ class Pause:
 
 class Conversation:
     def __init__(self):
-        self.image = load_image('../BackGround/conversation.png')
+        self.image = load_image('./BackGround/conversation.png')
 
     def draw(self):
         self.image.draw(400,300)

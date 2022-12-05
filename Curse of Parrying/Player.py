@@ -93,12 +93,12 @@ class PARRYING:
     @staticmethod
     def enter(self, event):
         self.frame = 0
-        self.image = load_image('../Object/Character/Parrying/Character_Player_Parrying.png')
+        self.image = load_image('./Object/Character/Parrying/Character_Player_Parrying.png')
 
     @staticmethod
     def exit(self):
         self.frame = 0
-        self.image = load_image('../Object/Character/Walking/Character_Player_Walking.png')
+        self.image = load_image('./Object/Character/Walking/Character_Player_Walking.png')
 
     @staticmethod
     def do(self):
@@ -147,7 +147,7 @@ class Player_Character:
         self.frame = 0
         self.dir_x, self.dir_y, self.face_dir = 0, 0, face
         self.delay = get_time()
-        self.image = load_image('../Object/Character/Walking/Character_Player_Walking.png')
+        self.image = load_image('./Object/Character/Walking/Character_Player_Walking.png')
         self.HP = 100
         self.ATK = 10
         self.Parrying = False

@@ -49,9 +49,9 @@ def enter():
     global Player
     server.Background = Home_Stage()
     game_world.add_object(server.Background, 0)
-    server.Portal_Up = Object.Portal('../Object/ETC/Portal_UP.png', 400, 507)
+    server.Portal_Up = Object.Portal('./Object/ETC/Portal_UP.png', 400, 507)
     game_world.add_object(server.Portal_Up, 1)
-    server.Portal_Right = Object.Portal('../Object/ETC/Portal_RIGHT.png', 703, 300)
+    server.Portal_Right = Object.Portal('./Object/ETC/Portal_RIGHT.png', 703, 300)
     game_world.add_object(server.Portal_Right, 1)
     server.Unknown = Object.Unknown(450, 300)
     game_world.add_object(server.Unknown, 1)
