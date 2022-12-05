@@ -24,10 +24,10 @@ class Fu_Va:
         for i in game_world.objects[5]:
             i.handle_event(event)
 
-    @staticmethod
+    @staticmethod  # 윗포탈 바꿔야함~
     def Portal_update():
         if not Fu_Va.check_clear:
-            server.Portal_Down.check_enter(Player, stage_home_state, -25, 25, -30, 2)
+            server.Portal_Down.check_enter(Player, stage_forest_state, -25, 25, -30, 2)
         else:
             if server.Portal_Down.x -25 < server.Player.x < server.Portal_Down.x + 25 and server.Portal_Down.y - 30 < server.Player.y < server.Portal_Right.y + 2:
                 server.Portal_Up.check_enter(server.Player, stage_home_state, -25, 25, 45, 85)
@@ -44,13 +44,13 @@ class Fu_Va:
         for i in range(10):  # 두 번째 스테이지는 몬스터 10마리
             monster = random.randint(1,5)
             if monster == 1 or monster == 2:
-                server.Monsters.append(Enemy.Pigeon())
+                server.Monsters.append(Enemy.Crab())
             elif monster == 3:
                 boar = Enemy.Boar(Player)
                 server.Monsters.append(boar)
                 game_world.add_collision_pairs(None, boar, 'player:attack')
             elif monster == 4 or monster == 5:
-                server.Monsters.append(Enemy.Rabbit())
+                server.Monsters.append(Enemy.Gull())
 
         game_world.add_objects(server.Monsters, 3)
 
@@ -58,14 +58,17 @@ class Fu_Va:
     def add_Attack_Effect():
         for monster in game_world.objects[3]:
             if monster.attack:
-                if type(monster) == Enemy.Pigeon:
-                    effect = Effect.Pigeon_Attack(monster, Player)
-                    game_world.add_object(effect, 4)
-                    game_world.add_collision_pairs(None, effect, 'player:attack')
+                if type(monster) == Enemy.Crab:
+                    effect_up = Effect.Crab_Attack(monster, Player, 0.5)
+                    effect_down = Effect.Crab_Attack(monster, Player, -0.5)
+                    game_world.add_object(effect_up, 4)
+                    game_world.add_object(effect_down, 4)
+                    game_world.add_collision_pairs(None, effect_up, 'player:attack')
+                    game_world.add_collision_pairs(None, effect_down, 'player:attack')
                 elif type(monster) == Enemy.Boar:
                     pass
-                elif type(monster) == Enemy.Rabbit:
-                    effect = Effect.Rabbit_Attack(monster, Player)
+                elif type(monster) == Enemy.Gull:
+                    effect = Effect.Gull_Attack(monster, Player)
                     game_world.add_object(effect, 4)
                     game_world.add_collision_pairs(None, effect, 'player:attack')
 

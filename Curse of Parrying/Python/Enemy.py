@@ -244,3 +244,63 @@ class Rabbit(Monster):
         self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
         self.move_end = random.randint(2, 5)
         self.move_time = 0
+
+
+class Crab(Monster):
+    def __init__(self):
+        self.image = load_image('../Object/Enemy/Stage2/Crab/Enemy_Crab_Move.png')
+        self.image_normal = '../Object/Enemy/Stage2/Crab/Enemy_Crab_Move.png'
+        self.image_attack = '../Object/Enemy/Stage2/Crab/Enemy_Crab_Attack.png'
+        self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 4
+        self.frame_normal = 4
+        self.frame_attack = 10
+        self.HP = 20
+        self.ATK = 10
+        self.SPEED_KMPH = 5.0
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        self.first = True
+        self.dir = [random.randint(-1, 1), 0]
+        self.move_end = random.randint(2, 5)
+        self.move_time = 0
+
+    def set_move(self):
+        self.image = load_image(self.image_normal)
+        self.t_frame = self.frame_normal
+
+        self.x += self.dir[0] * self.SPEED_PPS * game_framework.frame_time
+
+        self.x = clamp(70, self.x, 720)
+        self.y = clamp(100, self.y, 550)
+
+        if get_time() - self.move_time > self.move_end:
+            self.dir = [random.randint(-1, 1), 0]
+            if self.x == 70:
+                self.dir[0] = 1
+            elif self.x == 720:
+                self.dir[0] = -1
+            if self.y == 100:
+                self.dir[1] = 1
+            elif self.y == 550:
+                self.dir[1] = -1
+
+            self.move_end = random.randint(2, 5)
+            self.behavior = True
+            self.frame = 0
+
+
+class Gull(Monster):
+    def __init__(self):
+        self.image = load_image('../Object/Enemy/Stage2/Gull/Enemy_Gull_Fly.png')
+        self.image_normal = '../Object/Enemy/Stage2/Gull/Enemy_Gull_Fly.png'
+        self.image_attack = '../Object/Enemy/Stage2/Gull/Enemy_Gull_Attack.png'
+        self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 4
+        self.frame_normal = 4
+        self.frame_attack = 6
+        self.HP = 20
+        self.ATK = 5
+        self.SPEED_KMPH = 15.0
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        self.first = True
+        self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
+        self.move_end = random.randint(2, 5)
+        self.move_time = 0

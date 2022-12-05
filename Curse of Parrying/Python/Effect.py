@@ -81,6 +81,7 @@ class Pigeon_Attack(Monster_Attack_Effect):
         self.dir = math.atan2((self.Player.y - self.Monster.y), (self.Player.x - self.Monster.x))
         self.ATK = Monster.ATK
 
+
 class Rabbit_Attack(Monster_Attack_Effect):
     def __init__(self, Monster, Player):
         self.image = load_image('../Effect/Monster/Monster_Attack/Rabbit/Rabbit_Attack.png')
@@ -93,6 +94,53 @@ class Rabbit_Attack(Monster_Attack_Effect):
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         self.dir = math.atan2((self.Player.y - self.Monster.y), (self.Player.x - self.Monster.x))
         self.ATK = Monster.ATK
+
+class Crab_Attack(Monster_Attack_Effect):
+    def __init__(self, Monster, Player, dir_y):
+        self.image = load_image('../Effect/Monster/Monster_Attack/Crab/Crab_Attack.png')
+        self.Monster = Monster
+        self.Player = Player
+        self.x, self.y = self.Monster.x, self.Monster.y-15
+        self.min_x, self.min_y, self.max_x, self.max_y = 7,7,7,7
+        self.frame, self.t_frame, self.delay = 0, 1, get_time()
+        self.SPEED_KMPH = 7
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        self.ATK = Monster.ATK
+        self.dir = self.Monster.dir[0]
+        self.dir_y = dir_y
+
+    def update(self):
+        if get_time() - self.delay > 0.1:
+            self.delay = get_time()
+            self.frame = (self.frame + 1) % self.t_frame
+
+        if self.dir != 0:
+            self.x += self.dir * self.SPEED_PPS * game_framework.frame_time
+            self.y += self.dir_y * self.SPEED_PPS * game_framework.frame_time
+        else:
+            self.x += 1 * self.SPEED_PPS * game_framework.frame_time
+            self.y += self.dir_y * self.SPEED_PPS * game_framework.frame_time
+
+
+class Gull_Attack(Monster_Attack_Effect):
+    def __init__(self, Monster, Player):
+        self.image = load_image('../Effect/Monster/Monster_Attack/Gull/Gull_attack.png')
+        self.Monster = Monster
+        self.Player = Player
+        self.x, self.y = self.Monster.x, self.Monster.y
+        self.first_x, self.first_p_x = self.Monster.x, self.Player.x
+        self.min_x, self.min_y, self.max_x, self.max_y = 7,5,7,12
+        self.frame, self.t_frame, self.delay = 0, 7, get_time()
+        self.SPEED_KMPH = 40
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        self.dir = math.atan2((self.Player.y - self.Monster.y), (self.Player.x - self.Monster.x))
+        self.ATK = Monster.ATK
+
+    def draw(self):
+        if self.first_x < self.first_p_x:
+            self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+        else:
+            self.image.clip_composite_draw(self.frame * 68, 0, 68, 68, 0, 'h', self.x, self.y, 68, 68)
 
 # 방패 효과
 class Lego:  # 미완 - 장난감 방패에 들어갈 것임
