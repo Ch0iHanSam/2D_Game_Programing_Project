@@ -314,7 +314,7 @@ class Turtle(Monster):
         self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 4
         self.frame_normal = 4
         self.frame_attack = 8
-        self.HP = 50
+        self.HP = 100
         self.ATK = 10
         self.SPEED_KMPH = 2.5
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER

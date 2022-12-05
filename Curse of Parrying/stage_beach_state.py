@@ -4,7 +4,7 @@ import stage_castle_state
 import stage_forest_state
 import pause_state
 from Player import Player_Character
-from Background import Home_Stage
+from Background import Beach_Stage
 import Object
 import Enemy
 from Interact import Interact
@@ -24,24 +24,18 @@ class Fu_Va:
         for i in game_world.objects[5]:
             i.handle_event(event)
 
-    @staticmethod  # 윗포탈 바꿔야함~
+    @staticmethod
     def Portal_update():
         if not Fu_Va.check_clear:
             server.Portal_Down.check_enter(Player, stage_forest_state, -25, 25, -30, 2)
         else:
-            if server.Portal_Down.x -25 < server.Player.x < server.Portal_Down.x + 25 and server.Portal_Down.y - 30 < server.Player.y < server.Portal_Right.y + 2:
-                server.Portal_Up.check_enter(server.Player, stage_castle_state, -25, 25, 45, 85)
-                server.Portal_Down.check_enter(Player, stage_forest_state, -25, 25, -30, 2)
-            elif server.Portal_Up.x - 25 < server.Player.x < server.Portal_Up.x + 25 and server.Portal_Up.y + 45 < server.Player.y < server.Portal_Up.y + 85:
-                server.Portal_Down.check_enter(Player, stage_forest_state, -25, 25, -30, 2)
-                server.Portal_Up.check_enter(server.Player, stage_castle_state, -25, 25, 45, 85)
-
+            server.Portal_Up.check_enter(server.Player, stage_castle_state, -25, 25, 45, 85)
 
     @staticmethod
     def select_Monster():
         server.Monsters = []
 
-        for i in range(10):  # 두 번째 스테이지는 몬스터 10마리
+        for i in range(8):  # 두 번째 스테이지는 몬스터 10마리
             monster = random.randint(1,5)
             if monster == 1 or monster == 2:
                 server.Monsters.append(Enemy.Crab())
@@ -64,8 +58,10 @@ class Fu_Va:
                     game_world.add_collision_pairs(None, effect_up, 'player:attack')
                     game_world.add_collision_pairs(None, effect_down, 'player:attack')
                 elif type(monster) == Enemy.Turtle:
-                    effects = [Effect.Turtle_Attack(monster, Player) for i in range(10)]
+                    effects = [Effect.Turtle_Attack(monster, Player) for i in range(5)]
                     game_world.add_objects(effects, 4)
+                    for i in effects:
+                        game_world.add_collision_pairs(None, i, 'player:attack')
                 elif type(monster) == Enemy.Gull:
                     effect = Effect.Gull_Attack(monster, Player)
                     game_world.add_object(effect, 4)
@@ -93,6 +89,7 @@ class Fu_Va:
                 game_world.add_object(server.Button_HP_Crystal, 5)
                 server.Portal_Up = Object.Portal('./Object/ETC/Portal_UP.png', 400, 507)
                 game_world.add_object(server.Portal_Up, 1)
+                game_world.remove_object(server.Portal_Down)
 
                 Fu_Va.check_clear = True
 
@@ -123,7 +120,7 @@ def enter():
     Player = server.Player
     Player.set_xy(400, 120, 1)
     game_world.add_object(Player, 1)
-    server.Background = Home_Stage()
+    server.Background = Beach_Stage()
     game_world.add_object(server.Background, 0)
     server.Portal_Down = Object.Portal('./Object/ETC/Portal_Down.png', 400, 95)
     game_world.add_object(server.Portal_Down, 1)

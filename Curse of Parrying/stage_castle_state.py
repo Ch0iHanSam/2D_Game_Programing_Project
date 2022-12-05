@@ -28,13 +28,6 @@ class Fu_Va:
     def Portal_update():
         if not Fu_Va.check_clear:
             server.Portal_Down.check_enter(Player, stage_beach_state, -25, 25, -30, 2)
-        else:
-            if server.Portal_Down.x -25 < server.Player.x < server.Portal_Down.x + 25 and server.Portal_Down.y - 30 < server.Player.y < server.Portal_Right.y + 2:
-                server.Portal_Up.check_enter(server.Player, stage_boss_state, -25, 25, 45, 85)
-                server.Portal_Down.check_enter(Player, stage_beach_state, -25, 25, -30, 2)
-            elif server.Portal_Up.x - 25 < server.Player.x < server.Portal_Up.x + 25 and server.Portal_Up.y + 45 < server.Player.y < server.Portal_Up.y + 85:
-                server.Portal_Down.check_enter(Player, stage_beach_state, -25, 25, -30, 2)
-                server.Portal_Up.check_enter(server.Player, stage_boss_state, -25, 25, 45, 85)
 
 
     @staticmethod
@@ -88,12 +81,7 @@ class Fu_Va:
     def clear():
         if not Fu_Va.check_clear:
             if len(game_world.objects[3]) == 0:
-                server.HP_Crystal = Object.HP_Crystal(400, 300, Player)  # Player 받아야 해서 Player 보다 나중에 위치
-                game_world.add_object(server.HP_Crystal, 1)
-                server.Button_HP_Crystal = Interact(Player, server.HP_Crystal, 30)
-                game_world.add_object(server.Button_HP_Crystal, 5)
-                server.Portal_Up = Object.Portal('./Object/ETC/Portal_UP.png', 400, 507)
-                game_world.add_object(server.Portal_Up, 1)
+                # game_framework.change_state(clear_state)
 
                 Fu_Va.check_clear = True
 

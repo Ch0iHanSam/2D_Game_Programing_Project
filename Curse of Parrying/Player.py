@@ -208,7 +208,7 @@ class Player_Character:
 
     def draw(self):
         self.cur_state.draw(self)
-        draw_rectangle(self.x-15, self.y-35, self.x+15, self.y - 10)
+        # draw_rectangle(self.x-15, self.y-35, self.x+15, self.y - 10)
         if self.HP <= 0:  # 죽음 확인 (아마 함수로 수정해야하지 않을까 싶음)
             self.x, self.y = 400, 300
             self.HP = 100

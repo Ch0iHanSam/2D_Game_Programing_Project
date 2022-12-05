@@ -132,7 +132,7 @@ class Gull_Attack(Monster_Attack_Effect):
         self.x, self.y = self.Monster.x, self.Monster.y
         self.first_x, self.first_p_x = self.Monster.x, self.Player.x
         self.min_x, self.min_y, self.max_x, self.max_y = 7,5,7,12
-        self.frame, self.t_frame, self.delay = 0, 7, get_time()
+        self.frame, self.t_frame, self.delay = 0, 8, get_time()
         self.SPEED_KMPH = 30
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         self.dir = math.atan2((self.Player.y - self.Monster.y), (self.Player.x - self.Monster.x))
@@ -150,9 +150,9 @@ class Turtle_Attack(Monster_Attack_Effect):
         self.image = load_image('./Effect/Monster/Monster_Attack/Turtle/Turtle_Attack.png')
         self.Monster = Monster
         self.Player = Player
-        self.x, self.y = self.Monster.x, self.Monster.y
-        self.min_x, self.min_y, self.max_x, self.max_y = 2,2,2,2
-        self.frame, self.t_frame, self.delay = 0, 7, get_time()
+        self.x, self.y = self.Monster.x, self.Monster.y-30
+        self.min_x, self.min_y, self.max_x, self.max_y = 5, 5, 5, 5
+        self.frame, self.t_frame, self.delay = 0, 1, get_time()
         self.SPEED_KMPH = float(random.randint(2, 4))
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         dir = math.atan2((random.randint(-20,20)), (random.randint(-20,20)))
