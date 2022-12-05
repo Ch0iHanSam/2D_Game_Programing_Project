@@ -1,7 +1,7 @@
 from pico2d import *
 import game_framework
+import stage_home_state
 import stage_castle_state
-import stage_forest_state
 import pause_state
 from Player import Player_Character
 from Background import Home_Stage
@@ -27,14 +27,14 @@ class Fu_Va:
     @staticmethod  # 윗포탈 바꿔야함~
     def Portal_update():
         if not Fu_Va.check_clear:
-            server.Portal_Down.check_enter(Player, stage_forest_state, -25, 25, -30, 2)
+            server.Portal_Down.check_enter(Player, stage_castle_state, -25, 25, -30, 2)
         else:
             if server.Portal_Down.x -25 < server.Player.x < server.Portal_Down.x + 25 and server.Portal_Down.y - 30 < server.Player.y < server.Portal_Right.y + 2:
-                server.Portal_Up.check_enter(server.Player, stage_castle_state, -25, 25, 45, 85)
-                server.Portal_Down.check_enter(Player, stage_forest_state, -25, 25, -30, 2)
+                server.Portal_Up.check_enter(server.Player, stage_home_state, -25, 25, 45, 85)
+                server.Portal_Down.check_enter(Player, stage_castle_state, -25, 25, -30, 2)
             elif server.Portal_Up.x - 25 < server.Player.x < server.Portal_Up.x + 25 and server.Portal_Up.y + 45 < server.Player.y < server.Portal_Up.y + 85:
-                server.Portal_Down.check_enter(Player, stage_forest_state, -25, 25, -30, 2)
-                server.Portal_Up.check_enter(server.Player, stage_castle_state, -25, 25, 45, 85)
+                server.Portal_Down.check_enter(Player, stage_castle_state, -25, 25, -30, 2)
+                server.Portal_Up.check_enter(server.Player, stage_home_state, -25, 25, 45, 85)
 
 
     @staticmethod
@@ -46,7 +46,9 @@ class Fu_Va:
             if monster == 1 or monster == 2:
                 server.Monsters.append(Enemy.Crab())
             elif monster == 3:
-                server.Monsters.append(Enemy.Turtle())
+                boar = Enemy.Boar(Player)
+                server.Monsters.append(boar)
+                game_world.add_collision_pairs(None, boar, 'player:attack')
             elif monster == 4 or monster == 5:
                 server.Monsters.append(Enemy.Gull())
 

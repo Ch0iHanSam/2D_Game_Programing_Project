@@ -304,3 +304,35 @@ class Gull(Monster):
         self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
         self.move_end = random.randint(2, 5)
         self.move_time = 0
+
+
+class Turtle(Monster):
+    def __init__(self):
+        self.image = load_image('./Object/Enemy/Stage2/Turtle/Enemy_Turtle_Move.png')
+        self.image_normal = './Object/Enemy/Stage2/Turtle/Enemy_Turtle_Move.png'
+        self.image_attack = './Object/Enemy/Stage2/Turtle/Enemy_Turtle_Attack.png'
+        self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 4
+        self.frame_normal = 4
+        self.frame_attack = 8
+        self.HP = 50
+        self.ATK = 10
+        self.SPEED_KMPH = 2.5
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        self.first = True
+        self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
+        self.move_end = random.randint(2, 5)
+        self.move_time = 0
+        self.attack_random = True
+        self.set_dir = True
+
+    def draw(self):
+        if self.first:
+            magic_circle = load_image('./Effect/Monster/Effect_Summon.png')
+            magic_circle.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+            if self.frame == 15:
+                self.first = False
+        else:
+            if self.dir[0] > -1:
+                self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y, 120, 120)
+            else:
+                self.image.clip_composite_draw(self.frame * 68, 0, 68, 68, 0, 'h', self.x, self.y, 120, 120)
