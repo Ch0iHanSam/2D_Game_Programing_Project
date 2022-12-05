@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 import game_world
 import math
+import random
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 10.0
@@ -37,7 +38,6 @@ class Test_Monster_Effect:
         pass
 
 
-
 class Monster_Attack_Effect:
     x, y, frame, t_frame, delay = None, None, 0, None, 0
     min_x, min_y, max_x, max_y = 0, 0, 0, 0
@@ -67,6 +67,7 @@ class Monster_Attack_Effect:
 
     def handle_collision(self, b, group):
         pass
+
 
 class Pigeon_Attack(Monster_Attack_Effect):
     def __init__(self, Monster, Player):
@@ -143,6 +144,24 @@ class Gull_Attack(Monster_Attack_Effect):
         else:
             self.image.clip_composite_draw(self.frame * 68, 0, 68, 68, 0, 'h', self.x, self.y, 68, 68)
 
+
+class Turtle_Attack(Monster_Attack_Effect):
+    def __init__(self, Monster, Player):
+        self.image = load_image('./Effect/Monster/Monster_Attack/Turtle/Turtle_Attack.png')
+        self.Monster = Monster
+        self.Player = Player
+        self.x, self.y = self.Monster.x, self.Monster.y
+        self.min_x, self.min_y, self.max_x, self.max_y = 2,2,2,2
+        self.frame, self.t_frame, self.delay = 0, 7, get_time()
+        self.SPEED_KMPH = float(random.randint(2, 4))
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        dir = math.atan2((random.randint(-20,20)), (random.randint(-20,20)))
+        if dir == 0:
+            self.dir = 1
+        else:
+            self.dir = dir
+            del dir
+        self.ATK = Monster.ATK
 
 
 # 방패 효과

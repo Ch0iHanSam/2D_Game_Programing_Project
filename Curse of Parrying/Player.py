@@ -102,7 +102,7 @@ class PARRYING:
 
     @staticmethod
     def do(self):
-        if get_time() - self.delay > 0.03:
+        if get_time() - self.delay > 0.05:
             self.delay = get_time()
             self.frame = (self.frame + 1) % 9
         if self.frame == 8:
@@ -119,7 +119,44 @@ class PARRYING:
             self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
 
 
-RD, LD, UD, DD, RU, LU, UU, DU, XD = range(9)
+class DASH:
+    @staticmethod
+    def enter(self, event):
+        self.frame = 0
+        self.image = load_image('./Object/Character/Parrying/Character_Player_Parrying.png')
+
+    @staticmethod
+    def exit(self):
+        self.frame = 0
+        self.image = load_image('./Object/Character/Walking/Character_Player_Walking.png')
+
+    @staticmethod
+    def do(self):
+        if get_time() - self.delay > 0.007:
+            self.delay = get_time()
+            self.frame = (self.frame + 1) % 9
+        if self.frame == 8:
+            self.cur_state.exit(self)
+            self.cur_state = RUN
+            self.cur_state.enter(self, None)
+            self.cur_state.draw(self)  # 들어가서 맨 처음 안그리니까 깜박거리는거 해결하기 위해 작성
+        if self.dir_x == 0 and self.dir_y == 0:
+            self.x += self.face_dir * RUN_SPEED_PPS * game_framework.frame_time * 2.5
+        else:
+            self.x += self.dir_x * RUN_SPEED_PPS * game_framework.frame_time * 2.5
+            self.y += self.dir_y * RUN_SPEED_PPS * game_framework.frame_time * 2.5
+        self.x = clamp(50, self.x, 750)
+        self.y = clamp(78, self.y, 578)
+
+    @staticmethod
+    def draw(self):
+        if self.face_dir > 0:
+            self.image.clip_draw(self.frame * 68, 68, 68, 68, self.x, self.y)
+        elif self.face_dir < 0:
+            self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+
+
+RD, LD, UD, DD, RU, LU, UU, DU, XD, ZD = range(10)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RD,
@@ -130,14 +167,16 @@ key_event_table = {
     (SDL_KEYUP, SDLK_LEFT): LU,
     (SDL_KEYUP, SDLK_UP): UU,
     (SDL_KEYUP, SDLK_DOWN): DU,
-    (SDL_KEYDOWN, SDLK_x): XD
+    (SDL_KEYDOWN, SDLK_x): XD,
+    (SDL_KEYDOWN, SDLK_z): ZD
 }
 
 next_state = {
     # IDLE: {RU: RUN, LU: RUN, UU: RUN, DU: RUN, RD: RUN, LD: RUN, UD: RUN, DD: RUN, XD: PARRYING},
-    RUN: {RU: RUN, LU: RUN, UU: RUN, DU: RUN, RD: RUN, LD: RUN, UD: RUN, DD: RUN, XD: PARRYING},
+    RUN: {RU: RUN, LU: RUN, UU: RUN, DU: RUN, RD: RUN, LD: RUN, UD: RUN, DD: RUN, XD: PARRYING, ZD: DASH},
     PARRYING: {RU: PARRYING, LU: PARRYING, UU: PARRYING, DU: PARRYING, RD: PARRYING, LD: PARRYING, UD: PARRYING,
-               DD: PARRYING, XD: PARRYING}
+               DD: PARRYING, XD: PARRYING, ZD: PARRYING},
+    DASH: {RU: DASH, LU: DASH, UU: DASH, DU: DASH, RD: DASH, LD: DASH, UD: DASH, DD: DASH, XD: DASH, ZD: DASH}
 }
 
 
@@ -160,7 +199,7 @@ class Player_Character:
     def update(self):
         self.cur_state.do(self)
 
-        if self.cur_state != PARRYING:
+        if self.cur_state == RUN:
             if self.event_que:
                 event = self.event_que.pop()
                 self.cur_state.exit(self)
@@ -190,6 +229,8 @@ class Player_Character:
             return 'RUN'
         elif self.cur_state == PARRYING:
             return 'PARRYING'
+        elif self.cur_state == DASH:
+            return 'DASH'
 
     def set_xy(self, x, y, face):
         self.x = x
@@ -200,7 +241,7 @@ class Player_Character:
         return self.x - 15, self.y - 35, self.x + 15, self.y -10
 
     def handle_collision(self, b, group):
-        if self.cur_state == PARRYING:
+        if self.cur_state == PARRYING or self.cur_state == DASH:
             if b in game_world.objects[4]:  # 이펙트면 이펙트 지우기
                 game_world.remove_object(b)
                 b.Monster.HP -= self.ATK

@@ -41,7 +41,7 @@ class Fu_Va:
     def select_Monster():
         server.Monsters = []
 
-        for i in range(0):  # 첫 번째 스테이지는 몬스터 6마리
+        for i in range(6):  # 첫 번째 스테이지는 몬스터 6마리
             monster = random.randint(1,5)
             if monster == 1 or monster == 2:
                 server.Monsters.append(Enemy.Pigeon())

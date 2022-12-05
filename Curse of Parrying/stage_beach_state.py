@@ -63,8 +63,9 @@ class Fu_Va:
                     game_world.add_object(effect_down, 4)
                     game_world.add_collision_pairs(None, effect_up, 'player:attack')
                     game_world.add_collision_pairs(None, effect_down, 'player:attack')
-                elif type(monster) == Enemy.Boar:
-                    pass
+                elif type(monster) == Enemy.Turtle:
+                    effects = [Effect.Turtle_Attack(monster, Player) for i in range(10)]
+                    game_world.add_objects(effects, 4)
                 elif type(monster) == Enemy.Gull:
                     effect = Effect.Gull_Attack(monster, Player)
                     game_world.add_object(effect, 4)
