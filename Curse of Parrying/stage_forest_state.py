@@ -17,7 +17,8 @@ import random
 
 
 class Fu_Va:
-    check_clear = False
+    check_clear = server.check_clear
+
 
     @staticmethod
     def handle_event_Button(event):
@@ -34,7 +35,7 @@ class Fu_Va:
     def select_Monster():
         server.Monsters = []
 
-        for i in range(0):  # 첫 번째 스테이지는 몬스터 6마리
+        for i in range(6):
             monster = random.randint(1,5)
             if monster == 1 or monster == 2:
                 server.Monsters.append(Enemy.Pigeon())
@@ -117,7 +118,7 @@ def enter():
     server.Background = Forest_Stage()
     game_world.add_object(server.Background, 0)
     Fu_Va.select_Monster()  # 몬스터 추가 (함수 안에서 add_object 까지 다 실행함)
-
+    Fu_Va.check_clear = server.check_clear
 
     # 인터페이스
     server.HP = Effect.HP(Player)

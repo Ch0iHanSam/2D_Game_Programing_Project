@@ -72,6 +72,8 @@ class HP_Crystal:
         self.image = load_image('./Object/NPC/NPC_HPCRYSTAL.png')
         self.delay = get_time()
         self.player = Player
+        self.sound = load_wav('./Music/heal.wav')
+        self.sound.set_volume(10)
 
     def draw(self):
         self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
@@ -83,3 +85,4 @@ class HP_Crystal:
 
     def act(self):  # 풀체력 회복
         self.player.HP = 100
+        self.sound.play()

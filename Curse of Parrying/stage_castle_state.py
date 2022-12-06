@@ -17,8 +17,8 @@ import random
 
 
 class Fu_Va:
-    phase_1 = False
-    phase_2 = False
+    phase_1 = server.phase_1
+    phase_2 = server.phase_2
 
     @staticmethod
     def handle_event_Button(event):
@@ -34,7 +34,7 @@ class Fu_Va:
     def select_Monster():
         server.Monsters = []
 
-        for i in range(0):  # 두 번째 스테이지는 몬스터 14마리
+        for i in range(10):
             monster = random.randint(1,5)
             if monster == 1 or monster == 2:
                 server.Monsters.append(Enemy.Devil())
@@ -89,6 +89,18 @@ class Fu_Va:
                                    Effect.Boss_Attack_SummonMiniBoss(monster, Player, 'down'),
                                    Effect.Boss_Attack_SummonMiniBoss(monster, Player, 'right'),
                                    Effect.Boss_Attack_SummonMiniBoss(monster, Player, 'left')]
+                        game_world.add_objects(effects, 4)
+                        for effect in effects:
+                            game_world.add_collision_pairs(None, effect, 'player:attack')
+                    elif monster.behavior == 'ATTACK_3':
+                        effects = [Effect.Boss_Attack_Needle(monster, Player,'right'),
+                                   Effect.Boss_Attack_Needle(monster, Player,'right_up'),
+                                   Effect.Boss_Attack_Needle(monster, Player,'up'),
+                                   Effect.Boss_Attack_Needle(monster, Player,'left_up'),
+                                   Effect.Boss_Attack_Needle(monster, Player,'left'),
+                                   Effect.Boss_Attack_Needle(monster, Player,'left_down'),
+                                   Effect.Boss_Attack_Needle(monster, Player,'down'),
+                                   Effect.Boss_Attack_Needle(monster, Player,'right_down')]
                         game_world.add_objects(effects, 4)
                         for effect in effects:
                             game_world.add_collision_pairs(None, effect, 'player:attack')
@@ -153,6 +165,8 @@ def enter():
     server.Background = Castle_Stage()
     game_world.add_object(server.Background, 0)
     Fu_Va.select_Monster()  # 몬스터 추가 (함수 안에서 add_object 까지 다 실행함)
+    Fu_Va.phase_1 = server.phase_1
+    Fu_Va.phase_2 = server.phase_2
 
 
     # 인터페이스

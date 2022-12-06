@@ -3,7 +3,8 @@ import game_framework
 import stage_lab_state
 import pause_state
 import stage_forest_state
-import stage_beach_state
+import death_state
+import start_state
 from Player import Player_Character
 from Background import Home_Stage
 import Object
@@ -71,7 +72,7 @@ def enter():
     # 인터페이스나 Player을 받아야 하는 객체를 여기에 쓰는 것임
     server.Pause = Effect.Pause()
     game_world.add_object(server.Pause, 6)
-    if game_framework.ex_state is None:
+    if game_framework.ex_state == start_state or game_framework.ex_state == death_state:
         server.Player = Player_Character(0, 0, 1)
         server.Player.set_xy(Fu_Va.first_x, Fu_Va.first_y, 1)
         Player = server.Player  # 플레이어는 자신의 정보를 그대로 가지고 있어야 하기 때문에 복사본을 넣어준다.

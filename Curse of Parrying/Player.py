@@ -1,35 +1,15 @@
 from pico2d import *
 import game_world
 import game_framework
-import stage_home_state
+import stage_lab_state
+import death_state
+import server
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
-
-
-# class IDLE:
-#     @staticmethod
-#     def enter(self, event):
-#         self.dir_x = 0
-#         self.dir_y = 0
-#
-#     @staticmethod
-#     def exit(self):
-#         pass
-#
-#     @staticmethod
-#     def do(self):  # 원래 함수의 update 함수 역할
-#         pass
-#
-#     @staticmethod
-#     def draw(self):
-#         if self.face_dir == 1:  # 원래 함수의 exdir 변수 역할
-#             self.image.clip_draw(2 * 68, 68, 68, 68, self.x, self.y)
-#         else:
-#             self.image.clip_draw(2 * 68, 0, 68, 68, self.x, self.y)
 
 
 class RUN:
@@ -192,8 +172,12 @@ class Player_Character:
         self.delay = get_time()
         self.image = load_image('./Object/Character/Walking/Character_Player_Walking.png')
         self.HP = 100
-        self.ATK = 10
+        self.ATK = 20
         self.Parrying = False
+        self.sound_parrying = load_wav('./Music/guard.wav')
+        self.sound_parrying.set_volume(3)
+        self.sound_hit = load_wav('./Music/hit.wav')
+        self.sound_hit.set_volume(2)
 
         self.event_que = []
         self.cur_state = RUN
@@ -212,9 +196,17 @@ class Player_Character:
 
     def draw(self):
         self.cur_state.draw(self)
-        if self.HP <= 0:  # 죽음 확인 (아마 함수로 수정해야하지 않을까 싶음)
-            self.x, self.y = 400, 300
-            self.HP = 100
+        if game_framework.stack[-1] != stage_lab_state:
+            if self.HP <= 0:
+                game_framework.change_state(death_state)
+                self.HP = 100
+                server.check_clear = False
+                server.phase_1 = False
+                server.phase_2 = False
+        else:
+            if self.HP <= 0:
+                self.x, self.y = 400, 300
+                self.HP = 100
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -247,22 +239,26 @@ class Player_Character:
         if group == 'player:attack':
             if self.cur_state == PARRYING or self.cur_state == DASH:
                 if b in game_world.objects[4]:  # 이펙트면 이펙트 지우기
+                    self.sound_parrying.play()
                     game_world.remove_object(b)
                     b.Monster.HP -= self.ATK
 
                 elif b in game_world.objects[3]:  # 몸통박치기면 attack만 False로 바꾸기
                     if b.attack:
+                        self.sound_parrying.play()
                         b.HP -= self.ATK
                         b.attack = False
 
             else:
                 if b in game_world.objects[4]:
                     game_world.remove_object(b)
+                    self.sound_hit.play()
                     self.HP -= b.ATK
 
                 elif b in game_world.objects[3]:  # 몸통박치기면 attack만 False로 바꾸기
                     if b.attack:
                         self.HP -= b.ATK
+                        self.sound_hit.play()
                         b.attack = False
 
         elif group == 'player:npc':

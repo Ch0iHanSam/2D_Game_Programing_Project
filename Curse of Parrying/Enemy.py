@@ -15,6 +15,7 @@ class Test_Monster:
         self.attack = False
         self.val_check_attack = 0  # 어택 변환 용으로 사용됨. 다른 곳에 사용되지 않음
         self.HP = 30
+        self.ATK = 5
 
     def draw(self):
         if self.summon:

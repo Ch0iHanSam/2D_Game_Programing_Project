@@ -17,7 +17,7 @@ class Test_Monster_Effect:
         self.image = load_image('./Object/Enemy/Test/Effect.png')
         self.first = True
         self.Monster = monster
-        self.damage = 5
+        self.ATK = self.Monster.ATK
 
     def draw(self):
         draw_rectangle(self.x - 12, self.y - 10, self.x + 12, self.y + 5)
@@ -229,7 +229,6 @@ class Boss_Attack_BloodWind(Monster_Attack_Effect):
             self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
         elif self.dir == -1:
             self.image.clip_composite_draw(self.frame * 68, 0, 68, 68, 0, 'h', self.x, self.y)
-        draw_rectangle(self.x - self.min_x, self.y - self.min_y, self.x + self.max_x, self.y + self.max_y)
 
     def update(self):
         if get_time() - self.delay > 0.1:
@@ -269,6 +268,37 @@ class Boss_Attack_SummonMiniBoss(Monster_Attack_Effect):
         self.x += math.cos(self.dir) * self.SPEED_PPS * game_framework.frame_time
         self.y += math.sin(self.dir) * self.SPEED_PPS * game_framework.frame_time
 
+
+class Boss_Attack_Needle(Monster_Attack_Effect):
+    def __init__(self, Monster, Player, dir):
+        self.image = load_image('Effect/Monster/Monster_Attack/Boss/Attack_3_Effect.png')
+        self.Monster = Monster
+        self.Player = Player
+        self.x, self.y = self.Monster.x, self.Monster.y
+        self.min_x, self.min_y, self.max_x, self.max_y = 7, 7, 7, 7
+        self.frame, self.t_frame, self.delay = 0, 1, get_time()
+        self.SPEED_KMPH = 20
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        if dir == 'right':
+            self.dir = 0
+        elif dir == 'right_up':
+            self.dir = 0.7853981633974483
+        elif dir == 'up':
+            self.dir = 1.5707963267948966
+        elif dir == 'left_up':
+            self.dir = 2.356194490192345
+        elif dir == 'left':
+            self.dir = 3.141592653589793
+        elif dir == 'left_down':
+            self.dir = -2.356194490192345
+        elif dir == 'down':
+            self.dir = -1.5707963267948966
+        elif dir == 'right_down':
+            self.dir = -0.7853981633974483
+        self.ATK = Monster.ATK
+
+    def draw(self):
+        self.image.clip_composite_draw(self.frame * 68, 0, 68, 68, self.dir, '', self.x, self.y)
 
 # 인터페이스
 #HP

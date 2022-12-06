@@ -14,6 +14,9 @@ class Test_Background:
 class Home_Stage:
     def __init__(self):
         self.image = load_image('./BackGround/Home_Stage.png')
+        self.bgm = load_music('./Music/stage_home.mp3')
+        self.bgm.set_volume(30)
+        self.bgm.repeat_play()
 
     def draw(self):
         self.image.draw(400, 300)
@@ -25,6 +28,9 @@ class Home_Stage:
 class Forest_Stage:
     def __init__(self):
         self.image = load_image('./BackGround/Forest_Stage.png')
+        self.bgm = load_music('./Music/stage_forest.mp3')
+        self.bgm.set_volume(30)
+        self.bgm.repeat_play()
 
     def draw(self):
         self.image.draw(400, 300)
@@ -36,6 +42,9 @@ class Forest_Stage:
 class Beach_Stage:
     def __init__(self):
         self.image = load_image('BackGround/Beach_Stage.png')
+        self.bgm = load_music('./Music/stage_beach.mp3')
+        self.bgm.set_volume(30)
+        self.bgm.repeat_play()
         self.frame = 0
         self.delay = get_time()
 
@@ -51,6 +60,9 @@ class Beach_Stage:
 class Castle_Stage:
     def __init__(self):
         self.image = load_image('./BackGround/Castle_Stage.png')
+        self.bgm = load_music('./Music/stage_castle.mp3')
+        self.bgm.set_volume(30)
+        self.bgm.repeat_play()
 
     def draw(self):
         self.image.draw(400, 300)
@@ -83,6 +95,35 @@ class Conversation:
 class Clear:
     def __init__(self):
         self.image = load_image('./BackGround/Clear.png')
+        self.bgm = load_music('./Music/start.mp3')
+        self.bgm.set_volume(30)
+        self.bgm.repeat_play()
+    def draw(self):
+        self.image.draw(400, 300)
+
+    def update(self):
+        pass
+
+
+class Death:
+    def __init__(self):
+        self.image = load_image('./BackGround/Death.png')
+        self.bgm = load_music('./Music/death.mp3')
+        self.bgm.set_volume(30)
+        self.bgm.repeat_play()
+
+    def draw(self):
+        self.image.draw(400, 300)
+
+    def update(self):
+        pass
+
+class Start:
+    def __init__(self):
+        self.image = load_image('./BackGround/Start.png')
+        self.bgm = load_music('./Music/start.mp3')
+        self.bgm.set_volume(30)
+        self.bgm.repeat_play()
 
     def draw(self):
         self.image.draw(400, 300)

@@ -10,6 +10,9 @@ HP = None  # 플레이어 HP UI
 Pause = None  # 일시정지 버튼 UI
 Shields = None  # 방패들 (# 0 : 파랑방패, 1 : 회복방패, 2 : 어디서많이본방패, 3 : 드래곤실드, 4 : 우리의 것, 5 : 자물쇠방패, 6 : 소울실드, 7 : 장난감방패)
 Button_Shield = None  # 방패 상호작용 버튼
+check_clear = False
+phase_1 = False
+phase_2 = False
 
 # stage_home
 Unknown = None  # 물음표 NPC
