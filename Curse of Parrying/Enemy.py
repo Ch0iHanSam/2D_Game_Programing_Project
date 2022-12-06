@@ -431,12 +431,12 @@ class Ork(Monster):
 
 class Boss(Monster):
     def __init__(self):
-        self.image = load_image('')
-        self.image_normal = 'Object/Enemy/Stage3/Devil/Enemy_Devil_Move.png'
-        self.image_attack_1 = 'Object/Enemy/Stage3/Devil/Enemy_Devil_Attack.png'
-        self.image_attack_2 = None
-        self.image_attack_3 = None
-        self.x, self.y, self.t_frame = 100 + random.randint(0, 11) * 40, 200 + random.randint(0, 11) * 20, 8
+        self.image = load_image('Object/Boss/Boss_1_Move.png')
+        self.image_normal = 'Object/Boss/Boss_1_Move.png'
+        self.image_attack_1 = 'Object/Boss/Boss_1_Attack1.png'
+        self.image_attack_2 = 'Object/Boss/Boss_1_Attack2.png'
+        self.image_attack_3 = 'Object/Boss/Boss_1_Attack3.png'
+        self.x, self.y, self.t_frame = 400, 500, 8
         self.frame_normal = 8
         self.frame_attack_1 = 9
         self.frame_attack_2 = 16
@@ -520,13 +520,14 @@ class Boss(Monster):
         if self.frame == 1:
             if not self.attack:  # 최초 1회만 어택 발동하게
                 self.image = load_image(self.image_attack_1)
-                self.t_frame = self.frame_attack
+                self.t_frame = self.frame_attack_1
                 self.attack = True
+                print('attack1')
                 self.frame = 2
         else:
             self.attack = False
 
-        if self.frame == self.frame_attack - 1:
+        if self.frame == self.frame_attack_1 - 1:
             self.behavior = 'MOVE'
             self.attack = False
             self.frame = 0
@@ -536,13 +537,14 @@ class Boss(Monster):
         if self.frame == 1:
             if not self.attack:  # 최초 1회만 어택 발동하게
                 self.image = load_image(self.image_attack_2)
-                self.t_frame = self.frame_attack
+                self.t_frame = self.frame_attack_2
                 self.attack = True
+                print('attack2')
                 self.frame = 2
         else:
             self.attack = False
 
-        if self.frame == self.frame_attack - 1:
+        if self.frame == self.frame_attack_2 - 1:
             self.behavior = 'MOVE'
             self.attack = False
             self.frame = 0
@@ -552,13 +554,14 @@ class Boss(Monster):
         if self.frame == 1:
             if not self.attack:  # 최초 1회만 어택 발동하게
                 self.image = load_image(self.image_attack_3)
-                self.t_frame = self.frame_attack
+                self.t_frame = self.frame_attack_3
                 self.attack = True
+                print('attack3')
                 self.frame = 3
         else:
             self.attack = False
 
-        if self.frame == self.frame_attack - 1:
+        if self.frame == self.frame_attack_3 - 1:
             self.behavior = 'MOVE'
             self.attack = False
             self.frame = 0

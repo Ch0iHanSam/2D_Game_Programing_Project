@@ -34,7 +34,7 @@ class Fu_Va:
     def select_Monster():
         server.Monsters = []
 
-        for i in range(14):  # 두 번째 스테이지는 몬스터 14마리
+        for i in range(1):  # 두 번째 스테이지는 몬스터 14마리
             monster = random.randint(1,5)
             if monster == 1 or monster == 2:
                 server.Monsters.append(Enemy.Devil())
@@ -93,7 +93,7 @@ class Fu_Va:
     def clear():
         if not Fu_Va.phase_1:
             if len(game_world.objects[3]) == 0:
-                #보스몬스터 추가
+                game_world.add_object(Enemy.Boss(), 3)
                 Fu_Va.phase_1 = True
                 Fu_Va.phase_2 = True
         if Fu_Va.phase_2:
