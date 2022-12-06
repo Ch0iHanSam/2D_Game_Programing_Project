@@ -52,6 +52,7 @@ class Unknown:
         self.image = load_image('./Object/NPC/NPC_UNKNOWN.png')
 
     def draw(self):
+        draw_rectangle(self.x - 15, self.y - 35, self.x + 15, self.y + 20)
         self.image.draw(self.x, self.y)
 
     def update(self):
@@ -59,6 +60,12 @@ class Unknown:
 
     def act(self):
         game_framework.push_state(conversation_state)
+
+    def get_bb(self):
+        return self.x - 15, self.y - 35, self.x + 15, self.y + 20
+
+    def handle_collision(self, a, group):
+        pass
 
 
 class HP_Crystal:

@@ -1,6 +1,7 @@
 from pico2d import *
 import game_world
 import game_framework
+import stage_home_state
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
@@ -63,6 +64,8 @@ class RUN:
             self.frame = (self.frame + 1) % 8
         self.x += self.dir_x * RUN_SPEED_PPS * game_framework.frame_time
         self.y += self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
+
+
         self.x = clamp(50, self.x, 750)
         self.y = clamp(78, self.y, 578)
 
@@ -145,6 +148,7 @@ class DASH:
         else:
             self.x += self.dir_x * RUN_SPEED_PPS * game_framework.frame_time * 2.5
             self.y += self.dir_y * RUN_SPEED_PPS * game_framework.frame_time * 2.5
+
         self.x = clamp(50, self.x, 750)
         self.y = clamp(78, self.y, 578)
 
@@ -208,7 +212,7 @@ class Player_Character:
 
     def draw(self):
         self.cur_state.draw(self)
-        # draw_rectangle(self.x-15, self.y-35, self.x+15, self.y - 10)
+        draw_rectangle(self.x-15, self.y-35, self.x+15, self.y - 10)
         if self.HP <= 0:  # 죽음 확인 (아마 함수로 수정해야하지 않을까 싶음)
             self.x, self.y = 400, 300
             self.HP = 100
@@ -241,23 +245,26 @@ class Player_Character:
         return self.x - 15, self.y - 35, self.x + 15, self.y -10
 
     def handle_collision(self, b, group):
-        if self.cur_state == PARRYING or self.cur_state == DASH:
-            if b in game_world.objects[4]:  # 이펙트면 이펙트 지우기
-                game_world.remove_object(b)
-                b.Monster.HP -= self.ATK
+        if group == 'player:attack':
+            if self.cur_state == PARRYING or self.cur_state == DASH:
+                if b in game_world.objects[4]:  # 이펙트면 이펙트 지우기
+                    game_world.remove_object(b)
+                    b.Monster.HP -= self.ATK
 
-            elif b in game_world.objects[3]:  # 몸통박치기면 attack만 False로 바꾸기
-                if b.attack:
-                    b.HP -= self.ATK
-                    b.attack = False
+                elif b in game_world.objects[3]:  # 몸통박치기면 attack만 False로 바꾸기
+                    if b.attack:
+                        b.HP -= self.ATK
+                        b.attack = False
 
-        else:
-            if b in game_world.objects[4]:
-                game_world.remove_object(b)
-                self.HP -= b.ATK
-
-            elif b in game_world.objects[3]:  # 몸통박치기면 attack만 False로 바꾸기
-                if b.attack:
+            else:
+                if b in game_world.objects[4]:
+                    game_world.remove_object(b)
                     self.HP -= b.ATK
-                    b.attack = False
 
+                elif b in game_world.objects[3]:  # 몸통박치기면 attack만 False로 바꾸기
+                    if b.attack:
+                        self.HP -= b.ATK
+                        b.attack = False
+
+        elif group == 'player:npc':
+            pass

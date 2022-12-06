@@ -25,7 +25,7 @@ class Shield:
 class BlueShield(Shield):
     def __init__(self, x, y, Player):
         self.x, self.y = x, y
-        self.image = load_image('../Object/Shield/Shield_BlueShield.png')
+        self.image = load_image('./Object/Shield/Shield_BlueShield.png')
         self.Player = Player
 
     def update(self):  # 공 5 증가
@@ -37,7 +37,7 @@ class BlueShield(Shield):
 class RedcrossShield(Shield):
     def __init__(self, x, y, Player):
         self.x, self.y = x, y
-        self.image = load_image('../Object/Shield/Shield_RedCrossShield.png')
+        self.image = load_image('./Object/Shield/Shield_RedCrossShield.png')
         self.Player = Player
 
     def update(self):  # 피 5 회복
@@ -52,7 +52,7 @@ class RedcrossShield(Shield):
 class CarShield(Shield):
     def __init__(self, x, y, Player):
         self.x, self.y = x, y
-        self.image = load_image('../Object/Shield/Shield_CarShield.png')
+        self.image = load_image('./Object/Shield/Shield_CarShield.png')
         self.Player = Player
 
     def update(self):  # 자동차 소환
@@ -62,7 +62,7 @@ class CarShield(Shield):
 class DragonShield(Shield):
     def __init__(self, x, y, Player):
         self.x, self.y = x, y
-        self.image = load_image('../Object/Shield/Shield_DragonShield.png')
+        self.image = load_image('./Object/Shield/Shield_DragonShield.png')
         self.Player = Player
 
     def update(self):  # 전방에 브레스
@@ -72,7 +72,7 @@ class DragonShield(Shield):
 class GukpongShield(Shield):
     def __init__(self, x, y, Player):
         self.x, self.y = x, y
-        self.image = load_image('../Object/Shield/Shield_GukPongShield.png')
+        self.image = load_image('./Object/Shield/Shield_GukPongShield.png')
         self.Player = Player
 
     def update(self):  # 발 밑에 태극문양(개사기버프)
@@ -82,7 +82,7 @@ class GukpongShield(Shield):
 class LockShield(Shield):
     def __init__(self, x, y, Player):
         self.x, self.y = x, y
-        self.image = load_image('../Object/Shield/Shield_LockShield.png')
+        self.image = load_image('./Object/Shield/Shield_LockShield.png')
         self.Player = Player
 
     def update(self):  # 적을 잠시 멈춤
@@ -92,7 +92,7 @@ class LockShield(Shield):
 class SoulShield(Shield):
     def __init__(self, x, y, Player):
         self.x, self.y = x, y
-        self.image = load_image('../Object/Shield/Shield_SoulShield.png')
+        self.image = load_image('./Object/Shield/Shield_SoulShield.png')
         self.Player = Player
 
     def update(self):  # 스테이지당 한 번 강력한 빔 사출 가능
@@ -102,7 +102,7 @@ class SoulShield(Shield):
 class ToyShield(Shield):
     def __init__(self, x, y, Player):
         self.x, self.y = x, y
-        self.image = load_image('../Object/Shield/Shield_ToyShield.png')
+        self.image = load_image('./Object/Shield/Shield_ToyShield.png')
         self.Player = Player
 
     def update(self):  # 발 밑에 지뢰(적이 밟으면 데미지)

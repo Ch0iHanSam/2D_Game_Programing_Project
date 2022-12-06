@@ -1,10 +1,10 @@
 from pico2d import *
 import game_framework
+import clear_state
 import stage_beach_state
-import stage_boss_state
 import pause_state
 from Player import Player_Character
-from Background import Home_Stage
+from Background import Castle_Stage
 import Object
 import Enemy
 from Interact import Interact
@@ -17,33 +17,31 @@ import random
 
 
 class Fu_Va:
-    check_clear = False
+    phase_1 = False
+    phase_2 = False
 
     @staticmethod
     def handle_event_Button(event):
         for i in game_world.objects[5]:
             i.handle_event(event)
 
-    @staticmethod  # 윗포탈 바꿔야함~
+    @staticmethod
     def Portal_update():
-        if not Fu_Va.check_clear:
-            server.Portal_Down.check_enter(Player, stage_beach_state, -25, 25, -30, 2)
-
+        if Fu_Va.phase_2:
+            server.Portal_Up.check_enter(server.Player, clear_state, -25, 25, 45, 85)
 
     @staticmethod
     def select_Monster():
         server.Monsters = []
 
-        for i in range(10):  # 두 번째 스테이지는 몬스터 10마리
+        for i in range(14):  # 두 번째 스테이지는 몬스터 14마리
             monster = random.randint(1,5)
             if monster == 1 or monster == 2:
-                server.Monsters.append(Enemy.Crab())
+                server.Monsters.append(Enemy.Devil())
             elif monster == 3:
-                boar = Enemy.Boar(Player)
-                server.Monsters.append(boar)
-                game_world.add_collision_pairs(None, boar, 'player:attack')
+                server.Monsters.append(Enemy.Ork())
             elif monster == 4 or monster == 5:
-                server.Monsters.append(Enemy.Gull())
+                server.Monsters.append(Enemy.Vampire())
 
         game_world.add_objects(server.Monsters, 3)
 
@@ -51,19 +49,33 @@ class Fu_Va:
     def add_Attack_Effect():
         for monster in game_world.objects[3]:
             if monster.attack:
-                if type(monster) == Enemy.Crab:
-                    effect_up = Effect.Crab_Attack(monster, Player, 0.5)
-                    effect_down = Effect.Crab_Attack(monster, Player, -0.5)
-                    game_world.add_object(effect_up, 4)
-                    game_world.add_object(effect_down, 4)
-                    game_world.add_collision_pairs(None, effect_up, 'player:attack')
-                    game_world.add_collision_pairs(None, effect_down, 'player:attack')
-                elif type(monster) == Enemy.Boar:
-                    pass
-                elif type(monster) == Enemy.Gull:
-                    effect = Effect.Gull_Attack(monster, Player)
+                if type(monster) == Enemy.Vampire:
+                    effect = Effect.Vampire_Attack(monster, Player, random.choice([0.3, 0.5, 0.8, 1.0, 1.2]))
+                    effect2 = Effect.Vampire_Attack(monster, Player, random.choice([0.3, 0.5, 0.8, 1.0, 1.2]))
+                    effect3 = Effect.Vampire_Attack(monster, Player, random.choice([0.3, 0.5, 0.8, 1.0, 1.2]))
                     game_world.add_object(effect, 4)
+                    game_world.add_object(effect2, 4)
+                    game_world.add_object(effect3, 4)
                     game_world.add_collision_pairs(None, effect, 'player:attack')
+                    game_world.add_collision_pairs(None, effect2, 'player:attack')
+                    game_world.add_collision_pairs(None, effect3, 'player:attack')
+                elif type(monster) == Enemy.Ork:
+                    effect = Effect.Ork_Attack(monster, Player, random.choice([0.3, 0.5, 0.8, 1.0, 1.2]))
+                    effect2 = Effect.Ork_Attack(monster, Player, random.choice([0.3, 0.5, 0.8, 1.0, 1.2]))
+                    game_world.add_object(effect, 4)
+                    game_world.add_object(effect2, 4)
+                    game_world.add_collision_pairs(None, effect, 'player:attack')
+                    game_world.add_collision_pairs(None, effect2, 'player:attack')
+                elif type(monster) == Enemy.Devil:
+                    effect = Effect.Devil_Attack(monster, Player, random.choice([0.3, 0.5, 0.8, 1.0, 1.2]))
+                    effect2 = Effect.Devil_Attack(monster, Player, random.choice([0.3, 0.5, 0.8, 1.0, 1.2]))
+                    effect3 = Effect.Devil_Attack(monster, Player, random.choice([0.3, 0.5, 0.8, 1.0, 1.2]))
+                    game_world.add_object(effect, 4)
+                    game_world.add_object(effect2, 4)
+                    game_world.add_object(effect3, 4)
+                    game_world.add_collision_pairs(None, effect, 'player:attack')
+                    game_world.add_collision_pairs(None, effect2, 'player:attack')
+                    game_world.add_collision_pairs(None, effect3, 'player:attack')
 
     @staticmethod
     def collide(a, b):
@@ -79,11 +91,21 @@ class Fu_Va:
 
     @staticmethod
     def clear():
-        if not Fu_Va.check_clear:
+        if not Fu_Va.phase_1:
             if len(game_world.objects[3]) == 0:
-                # game_framework.change_state(clear_state)
+                #보스몬스터 추가
+                Fu_Va.phase_1 = True
+                Fu_Va.phase_2 = True
+        if Fu_Va.phase_2:
+            if len(game_world.objects[3]) == 0:
+                server.HP_Crystal = Object.HP_Crystal(400, 300, Player)  # Player 받아야 해서 Player 보다 나중에 위치
+                game_world.add_object(server.HP_Crystal, 1)
+                server.Button_HP_Crystal = Interact(Player, server.HP_Crystal, 30)
+                game_world.add_object(server.Button_HP_Crystal, 5)
+                server.Portal_Up = Object.Portal('./Object/ETC/Portal_UP.png', 400, 507)
+                game_world.add_object(server.Portal_Up, 1)
 
-                Fu_Va.check_clear = True
+                Fu_Va.phase_2 = False
 
 
 
@@ -112,10 +134,8 @@ def enter():
     Player = server.Player
     Player.set_xy(400, 120, 1)
     game_world.add_object(Player, 1)
-    server.Background = Home_Stage()
+    server.Background = Castle_Stage()
     game_world.add_object(server.Background, 0)
-    server.Portal_Down = Object.Portal('./Object/ETC/Portal_Down.png', 400, 95)
-    game_world.add_object(server.Portal_Down, 1)
     Fu_Va.select_Monster()  # 몬스터 추가 (함수 안에서 add_object 까지 다 실행함)
 
 

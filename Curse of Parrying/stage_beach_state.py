@@ -26,16 +26,14 @@ class Fu_Va:
 
     @staticmethod
     def Portal_update():
-        if not Fu_Va.check_clear:
-            server.Portal_Down.check_enter(Player, stage_forest_state, -25, 25, -30, 2)
-        else:
+        if Fu_Va.check_clear:
             server.Portal_Up.check_enter(server.Player, stage_castle_state, -25, 25, 45, 85)
 
     @staticmethod
     def select_Monster():
         server.Monsters = []
 
-        for i in range(8):  # 두 번째 스테이지는 몬스터 10마리
+        for i in range(0):  # 두 번째 스테이지는 몬스터 10마리
             monster = random.randint(1,5)
             if monster == 1 or monster == 2:
                 server.Monsters.append(Enemy.Crab())
@@ -89,7 +87,6 @@ class Fu_Va:
                 game_world.add_object(server.Button_HP_Crystal, 5)
                 server.Portal_Up = Object.Portal('./Object/ETC/Portal_UP.png', 400, 507)
                 game_world.add_object(server.Portal_Up, 1)
-                game_world.remove_object(server.Portal_Down)
 
                 Fu_Va.check_clear = True
 
@@ -122,8 +119,6 @@ def enter():
     game_world.add_object(Player, 1)
     server.Background = Beach_Stage()
     game_world.add_object(server.Background, 0)
-    server.Portal_Down = Object.Portal('./Object/ETC/Portal_Down.png', 400, 95)
-    game_world.add_object(server.Portal_Down, 1)
     Fu_Va.select_Monster()  # 몬스터 추가 (함수 안에서 add_object 까지 다 실행함)
 
 

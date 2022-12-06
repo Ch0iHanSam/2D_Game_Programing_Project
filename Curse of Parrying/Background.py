@@ -69,12 +69,23 @@ class Pause:
     def update(self):
         pass
 
+
 class Conversation:
     def __init__(self):
         self.image = load_image('./BackGround/conversation.png')
 
     def draw(self):
         self.image.draw(400,300)
+
+    def update(self):
+        pass
+
+class Clear:
+    def __init__(self):
+        self.image = load_image('./BackGround/Clear.png')
+
+    def draw(self):
+        self.image.draw(400, 300)
 
     def update(self):
         pass

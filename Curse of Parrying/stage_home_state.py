@@ -24,6 +24,18 @@ class Fu_Va:
             server.Portal_Right.check_enter(server.Player, stage_lab_state, 24, 48, 0, 55)
             server.Portal_Up.check_enter(server.Player, stage_forest_state, -25, 25, 45, 85)
 
+    @staticmethod
+    def collide(a, b):
+        left_a, bottom_a, right_a, top_a = a.get_bb()
+        left_b, bottom_b, right_b, top_b = b.get_bb()
+
+        if left_a > right_b: return False
+        if right_a < left_b: return False
+        if top_a < bottom_b: return False
+        if bottom_a > top_b: return False
+
+        return True
+
 
 Player = None  # 플레이어
 
@@ -64,34 +76,20 @@ def enter():
         server.Player.set_xy(Fu_Va.first_x, Fu_Va.first_y, 1)
         Player = server.Player  # 플레이어는 자신의 정보를 그대로 가지고 있어야 하기 때문에 복사본을 넣어준다.
         game_world.add_object(Player, 1)
-        server.Button_Unknown = Interact(Player, server.Unknown, 20)
+        server.Button_Unknown = Interact(Player, server.Unknown, 50)
         game_world.add_object(server.Button_Unknown, 5)
         server.HP = Effect.HP(Player)
         game_world.add_object(server.HP, 6)
+        game_world.add_collision_pairs(Player, server.Unknown, 'player:npc')
     elif game_framework.ex_state == stage_lab_state:
         server.Player.set_xy(680, 330, -1)
         Player = server.Player
         game_world.add_object(Player, 1)
-        server.Button_Unknown = Interact(Player, server.Unknown, 20)
+        server.Button_Unknown = Interact(Player, server.Unknown, 50)
         game_world.add_object(server.Button_Unknown, 5)
         server.HP = Effect.HP(Player)
         game_world.add_object(server.HP, 6)
-    elif game_framework.ex_state == stage_forest_state:
-        server.Player.set_xy(400, 520, 1)
-        Player = server.Player
-        game_world.add_object(Player, 1)
-        server.Button_Unknown = Interact(Player, server.Unknown, 20)
-        game_world.add_object(server.Button_Unknown, 5)
-        server.HP = Effect.HP(Player)
-        game_world.add_object(server.HP, 6)
-    elif game_framework.ex_state == stage_beach_state:
-        server.Player.set_xy(400, 120, 1)
-        Player = server.Player
-        game_world.add_object(Player, 1)
-        server.Button_Unknown = Interact(Player, server.Unknown, 20)
-        game_world.add_object(server.Button_Unknown, 5)
-        server.HP = Effect.HP(Player)
-        game_world.add_object(server.HP, 6)
+        game_world.add_collision_pairs(Player, server.Unknown, 'player:npc')
 
 
 
@@ -102,6 +100,12 @@ def exit():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+
+    for a, b, group in game_world.all_collision_pairs():
+        if Fu_Va.collide(a, b):
+            a.handle_collision(b, group)
+            b.handle_collision(a, group)
+
 
     Fu_Va.Portal_update()# 포탈 체크는 항상 마지막에(exit하면서 다른 객체들이 삭제되기 때문에 이 밑에 다른 객체 update가 있으면 오류남)
 
