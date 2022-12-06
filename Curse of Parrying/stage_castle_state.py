@@ -27,14 +27,14 @@ class Fu_Va:
 
     @staticmethod
     def Portal_update():
-        if Fu_Va.phase_2:
+        if not Fu_Va.phase_2 and Fu_Va.phase_1:
             server.Portal_Up.check_enter(server.Player, clear_state, -25, 25, 45, 85)
 
     @staticmethod
     def select_Monster():
         server.Monsters = []
 
-        for i in range(1):  # 두 번째 스테이지는 몬스터 14마리
+        for i in range(0):  # 두 번째 스테이지는 몬스터 14마리
             monster = random.randint(1,5)
             if monster == 1 or monster == 2:
                 server.Monsters.append(Enemy.Devil())
@@ -76,6 +76,22 @@ class Fu_Va:
                     game_world.add_collision_pairs(None, effect, 'player:attack')
                     game_world.add_collision_pairs(None, effect2, 'player:attack')
                     game_world.add_collision_pairs(None, effect3, 'player:attack')
+                elif type(monster) == Enemy.Boss:
+                    if monster.behavior == 'ATTACK_1':
+                        effect = Effect.Boss_Attack_BloodWind(monster, Player, 1)
+                        effect2 = Effect.Boss_Attack_BloodWind(monster, Player, -1)
+                        game_world.add_object(effect, 4)
+                        game_world.add_object(effect2, 4)
+                        game_world.add_collision_pairs(None, effect, 'player:attack')
+                        game_world.add_collision_pairs(None, effect2, 'player:attack')
+                    elif monster.behavior == 'ATTACK_2':
+                        effects = [Effect.Boss_Attack_SummonMiniBoss(monster, Player, 'up'),
+                                   Effect.Boss_Attack_SummonMiniBoss(monster, Player, 'down'),
+                                   Effect.Boss_Attack_SummonMiniBoss(monster, Player, 'right'),
+                                   Effect.Boss_Attack_SummonMiniBoss(monster, Player, 'left')]
+                        game_world.add_objects(effects, 4)
+                        for effect in effects:
+                            game_world.add_collision_pairs(None, effect, 'player:attack')
 
     @staticmethod
     def collide(a, b):

@@ -443,11 +443,11 @@ class Boss(Monster):
         self.frame_attack_3 = 15
         self.HP = 200
         self.ATK = 20
-        self.SPEED_KMPH = 5.0
+        self.SPEED_KMPH = 10
         self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
         self.first = True
         self.dir = [random.randint(-1, 1), random.randint(-1, 1)]
-        self.move_end = random.randint(2, 5)
+        self.move_end = 1
         self.move_time = 0
         self.behavior = 'MOVE'
 
@@ -506,7 +506,7 @@ class Boss(Monster):
             elif self.y == 550:
                 self.dir[1] = -1
 
-            self.move_end = random.randint(2, 5)
+
             bh = random.randint(1,3)
             if bh == 1:
                 self.behavior = 'ATTACK_1'
@@ -522,7 +522,6 @@ class Boss(Monster):
                 self.image = load_image(self.image_attack_1)
                 self.t_frame = self.frame_attack_1
                 self.attack = True
-                print('attack1')
                 self.frame = 2
         else:
             self.attack = False
@@ -539,7 +538,6 @@ class Boss(Monster):
                 self.image = load_image(self.image_attack_2)
                 self.t_frame = self.frame_attack_2
                 self.attack = True
-                print('attack2')
                 self.frame = 2
         else:
             self.attack = False
@@ -556,7 +554,6 @@ class Boss(Monster):
                 self.image = load_image(self.image_attack_3)
                 self.t_frame = self.frame_attack_3
                 self.attack = True
-                print('attack3')
                 self.frame = 3
         else:
             self.attack = False

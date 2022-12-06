@@ -51,9 +51,11 @@ class Monster_Attack_Effect:
 
     def draw(self):
         self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
-        draw_rectangle(self.x - self.min_x, self.y - self.min_y, self.x + self.max_x, self.y + self.max_y)
 
     def update(self):
+        if self.x > 900 or self.x < -100 or self.y > 700 or self.y < -100:
+            game_world.remove_object(self)
+
         if get_time() - self.delay > 0.1:
             self.delay = get_time()
             self.frame = (self.frame + 1) % self.t_frame
@@ -206,22 +208,66 @@ class Ork_Attack(Monster_Attack_Effect):
         self.ATK = Monster.ATK
 
 
-# 방패 효과
-class Lego:  # 미완 - 장난감 방패에 들어갈 것임
-    def __init__(self, x = 0, y = 0):
-        self.x, self.y = x, y
-        self.damage = 3
-        self.image = load_image('./Effect/Character/Lego.png')
+class Boss_Attack_BloodWind(Monster_Attack_Effect):
+    def __init__(self, Monster, Player, dir):
+        self.image = load_image('Effect/Monster/Monster_Attack/Boss/Attack_1_Effect.png')
+        self.Monster = Monster
+        self.Player = Player
+        self.min_x, self.min_y, self.max_x, self.max_y = 5, 25, 5, 25
+        self.frame, self.t_frame, self.delay = 0, 1, get_time()
+        self.SPEED_KMPH = 30
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        self.dir = dir
+        if self.dir == 1:
+            self.x, self.y = -30, self.Player.y
+        elif self.dir == -1:
+            self.x, self.y = 830, self.Player.y
+        self.ATK = Monster.ATK
 
     def draw(self):
-        self.image.draw(self.x, self.y)
+        if self.dir == 1:
+            self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y)
+        elif self.dir == -1:
+            self.image.clip_composite_draw(self.frame * 68, 0, 68, 68, 0, 'h', self.x, self.y)
+        draw_rectangle(self.x - self.min_x, self.y - self.min_y, self.x + self.max_x, self.y + self.max_y)
 
     def update(self):
-        pass
+        if get_time() - self.delay > 0.1:
+            self.delay = get_time()
+            self.frame = (self.frame + 1) % self.t_frame
 
-    def check_hit(self, Target):
-        if self.x - 10 < Target.x < self.x + 10 and self.y < Target.y < self.y + 20:
-            Target.HP -= self.damage
+        self.x += self.dir * self.SPEED_PPS * game_framework.frame_time
+
+
+class Boss_Attack_SummonMiniBoss(Monster_Attack_Effect):
+    def __init__(self, Monster, Player, location):
+        self.image = load_image('Effect/Monster/Monster_Attack/Boss/Attack_2_Effect.png')
+        self.Monster = Monster
+        self.Player = Player
+        if location == 'right':
+            self.x, self.y = self.Monster.x + 50, self.Monster.y
+        elif location == 'left':
+            self.x, self.y = self.Monster.x - 50, self.Monster.y
+        elif location == 'up':
+            self.x, self.y = self.Monster.x, self.Monster.y + 50
+        elif location == 'down':
+            self.x, self.y = self.Monster.x, self.Monster.y - 50
+        self.min_x, self.min_y, self.max_x, self.max_y = 10, 10, 10, 10
+        self.frame, self.t_frame, self.delay = 0, 7, get_time()
+        self.SPEED_KMPH = 3 + random.randint(1, 4)
+        self.SPEED_PPS = self.SPEED_KMPH * 1000.0 / 60.0 / 60.0 * PIXEL_PER_METER
+        self.dir = math.atan2((self.Player.y - self.Monster.y), (self.Player.x - self.Monster.x))
+        self.ATK = Monster.ATK
+
+    def update(self):
+        self.dir = math.atan2((self.Player.y - self.Monster.y), (self.Player.x - self.Monster.x))
+        if get_time() - self.delay > 0.1:
+            self.delay = get_time()
+            self.frame = (self.frame + 1) % self.t_frame
+
+
+        self.x += math.cos(self.dir) * self.SPEED_PPS * game_framework.frame_time
+        self.y += math.sin(self.dir) * self.SPEED_PPS * game_framework.frame_time
 
 
 # 인터페이스

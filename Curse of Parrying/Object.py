@@ -21,7 +21,6 @@ class Portal:
 
     def draw(self):
         self.image.clip_draw(self.frame * 68, 0, 68, 68, self.x, self.y, 100, 100)
-        # draw_rectangle(self.x-25, self.y-30, self.x+25, self.y+2)
 
     def check_enter(self, Player, state, min_x, max_x, min_y, max_y):
         if self.x + min_x < Player.x < self.x + max_x and self.y + min_y < Player.y < self.y + max_y:
@@ -52,7 +51,6 @@ class Unknown:
         self.image = load_image('./Object/NPC/NPC_UNKNOWN.png')
 
     def draw(self):
-        draw_rectangle(self.x - 15, self.y - 35, self.x + 15, self.y + 20)
         self.image.draw(self.x, self.y)
 
     def update(self):
